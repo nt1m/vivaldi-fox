@@ -37,7 +37,6 @@ const ColourManager = {
         this.putColourInMap(tab, "default", false);
         return ColourManager.getColourFromFavicon().then((colour) => {
           this.putColourInMap(tab, "rgb(" + colour.join(",") + ")");
-          console.log("PUT COLOUR IN MAP AFTER FETCHING IT", colour)
         });
       }
       this.putColourInMap(tab, data);
@@ -62,12 +61,15 @@ const ColourManager = {
         let imgEl = doc.createElementNS("http://www.w3.org/1999/xhtml","img");
         let colours = [];
         imgEl.src = url;
+        imgEl.onerror = reject;
         imgEl.onload = function() {
+          // This will:
+          // - Take the median of a sorted list of colours (excluding shades of gray)
+          // - If image only contains shades of gray, it takes the average instead
           let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
           let width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
           ctx.drawImage(imgEl, 0, 0);
           let data = ctx.getImageData(0, 0, width, height).data;
-          //console.log(data, height, width)
           let count = 0;
           let rValues = [], gValues = [], bValues = [];
           let rAvg = 0, gAvg = 0, bAvg = 0;
@@ -80,6 +82,12 @@ const ColourManager = {
             }
             // Transparent pixel, move on
             if (r == 0 && g == 0 && b == 0 && a == 0) continue;
+            rAvg += r;
+            gAvg += g;
+            bAvg += b;
+            count++;
+            // Shade of gray, move on
+            if (r == g && g == b) continue;
             if (rValues.indexOf(r) == -1) {
               rValues.push(r);
             }
@@ -90,28 +98,33 @@ const ColourManager = {
               bValues.push(b);
             }
             colours.push([r, g, b]);
-            count++;
           }
-          let maxChannel;
-          let max = Math.max(rValues.length, gValues.length, bValues.length);
-          switch (max) {
-            case rValues.length:
-              maxChannel = 0;
-            case gValues.length:
-              maxChannel = 1;
-            default:
-              maxChannel = 2;
+
+          let result;
+          if (colours.length > 0) {
+            let maxChannel;
+            let max = Math.max(rValues.length, gValues.length, bValues.length);
+            switch (max) {
+              case rValues.length:
+                maxChannel = 0;
+              case gValues.length:
+                maxChannel = 1;
+              default:
+                maxChannel = 2;
+            }
+            colours = colours.sort((a, b) => {
+              return b[maxChannel] - a[maxChannel];
+            });
+            result = colours[Math.floor(colours.length / 2)];
+          } else {
+            rAvg = Math.floor(rAvg/count);
+            gAvg = Math.floor(gAvg/count);
+            bAvg = Math.floor(bAvg/count);
+            result = [rAvg, gAvg, bAvg];
           }
-          colours = colours.sort((a, b) => {
-            return b[maxChannel] - a[maxChannel];
-          });
-          // rAvg = Math.floor(rAvg/count);
-          // gAvg = Math.floor(gAvg/count);
-          // bAvg = Math.floor(bAvg/count);
-          // console.log(rAvg,gAvg,bAvg)
           canvas.remove();
           imgEl.remove();
-          resolve(colours[Math.floor(colours.length / 2)])
+          resolve(result)
         };
       });
     });
@@ -127,9 +140,10 @@ const ColourManager = {
     let [r, g, b] = color.split(",");
     r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
     b = isAlpha ? b : b.substring(0, r.length - 1);
-    let luminance = 0.2125 * r + 0.7154 * g + 0.0721 * b;
-    console.log(luminance);
-    if (luminance > 110) { // was 110
+    let bgLuminance = 0.2125 * r + 0.7154 * g + 0.0721 * b;
+    let ratio = (bgLuminance + 0.05) / 0.05;
+    console.log(ratio)
+    if (ratio < 3) {
       doc.documentElement.style.removeProperty("--theme-colour");
     } else {
       doc.documentElement.style.setProperty("--theme-colour", "#fff");
