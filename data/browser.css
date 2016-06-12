@@ -1,0 +1,90 @@
+:root {
+  --theme-colour: black;
+  --theme-background: #fff;
+  --theme-secondary-background: #ebebeb;
+  --toolbarbutton-hover-background: transparent;
+  --toolbarbutton-hover-bordercolor: var(--theme-colour);
+  --toolbarbutton-hover-boxshadow: 0 0 0 1px var(--theme-colour) inset;
+
+  --toolbarbutton-active-background: rgba(128,128,128,0.2);
+  --toolbarbutton-active-bordercolor: var(--theme-colour);
+  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--theme-colour) inset;
+
+  --toolbarbutton-checkedhover-backgroundcolor: var(--theme-colour);
+}
+#TabsToolbar {
+  --tab-stroke-background-size: 0 0;
+}
+/*.tab-background-start::before,
+.tab-background-end::before {
+  content: none;
+}*/
+.tab-background-start,
+.tab-background-end {
+  visibility: hidden !important;
+}
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]), .tabs-newtab-button:hover {
+  background: none;
+}
+.tabbrowser-tab:not([visuallyselected="true"]):hover .tab-background-middle, .tabs-newtab-button:hover > .toolbarbutton-icon {
+  background-color: rgba(150,150,150,0.3) !important;
+}
+.tabbrowser-tab .tab-background-middle,
+.tabs-newtab-button:hover > .toolbarbutton-icon {
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 2px !important;
+  pointer-events: auto !important;
+}
+.tabbrowser-tab {
+  pointer-events: auto !important;
+}
+.tabbrowser-tab[visuallyselected] .tab-content {
+  color: var(--theme-colour);
+  text-shadow: none !important;
+}
+.tab-icon-image {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #fff;
+  border-radius: 2px;
+}
+#main-window {
+  background-image: none !important;
+  text-shadow: none !important;
+  background-color: var(--theme-secondary-background);
+}
+#titlebar {
+  -moz-appearance: none !important;
+}
+#urlbar-container #back-button {
+  background: none;
+  border-color: var(--theme-secondary-background);
+  box-shadow: none !important;
+}
+#urlbar-container #back-button .toolbarbutton-icon {
+  border-color: var(--theme-colour) !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+#TabsToolbar + #nav-bar {
+  box-shadow: none;
+  border-top-color: transparent !important;
+}
+#navigator-toolbox::after {
+  background: none;
+}
+.tabbrowser-tab[visuallyselected] .tab-background-middle,
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
+  transition: background 0.1s;
+  background: var(--theme-background) !important;
+  color: var(--theme-colour);
+}
+#urlbar,
+#nav-bar #search-container .searchbar-textbox {
+  border-color: transparent;
+  background: var(--theme-secondary-background);
+  box-shadow: none !important;
+}
+#urlbar[focused],
+#nav-bar #search-container .searchbar-textbox[focused] {
+  border-color: Highlight;
+}

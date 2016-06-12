@@ -1,0 +1,12 @@
+{
+  "title": "Colour the fox",
+  "name": "color-the-fox",
+  "version": "0.0.1",
+  "description": "An add-on that allows coloring Firefox",
+  "main": "index.js",
+  "author": "Tim Nguyen",
+  "engines": {
+    "firefox": ">=38.0a1"
+  },
+  "license": "MIT"
+}
