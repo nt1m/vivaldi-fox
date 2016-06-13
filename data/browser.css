@@ -136,6 +136,13 @@
 :root.vivaldi-fox-os-linux #toolbar-menubar {
   -moz-appearance: none !important;
 }
+:root.vivaldi-fox-os-linux:not(:-moz-lwtheme) #tabbrowser-tabs,
+:root.vivaldi-fox-os-linux:not(:-moz-lwtheme) #TabsToolbar,
+:root.vivaldi-fox-os-linux:not(:-moz-lwtheme) #browser-panel
+:root.vivaldi-fox-os-linux:not(:-moz-lwtheme) #alltabs-button,
+:root.vivaldi-fox-os-linux:not(:-moz-lwtheme) #new-tab-button {
+  background: var(--theme-secondary-background);
+}
 
 /** navbar **/
 #identity-box {
