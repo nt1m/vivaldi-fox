@@ -53,9 +53,6 @@
 #navigator-toolbox > #TabsToolbar {
   color: var(--theme-secondary-colour) !important;
 }
-#titlebar {
-  -moz-appearance: none !important;
-}
 #urlbar-container #back-button {
   background: none;
   border-color: var(--theme-secondary-background);
@@ -82,6 +79,13 @@
   background: var(--theme-accent-background) !important;
   color: var(--theme-accent-colour);
 }
+:root.vivaldi-fox-os-mac #titlebar {
+  -moz-appearance: none !important;
+}
+#titlebar-buttonbox.vivaldi-fox-invert-controls .titlebar-button:not(#titlebar-close:hover) {
+  filter: invert(1);
+}
+#titlebar,
 #urlbar,
 #nav-bar #search-container .searchbar-textbox {
   border-color: transparent;

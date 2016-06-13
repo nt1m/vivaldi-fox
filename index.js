@@ -4,14 +4,14 @@ const windowUtils = require("sdk/window/utils");
 const { on, off, once } = require("sdk/event/core");
 const DOMEvents = require("sdk/dom/events");
 const { loadSheet } = require("sdk/stylesheet/utils");
-const { getLuminance, getContrastRatio} = require("lib/colour-utils");
+const { getLuminance, getContrastRatio, extractRGBFromCSSColour } = require("lib/colour-utils");
 const Preferences = require("sdk/simple-prefs");
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
 const DefaultThemes = {
   light: {
     "accent-background": "#fff",
     "accent-colour": "#000",
-    "secondary-background": "#ebebeb",
+    "secondary-background": "#e5e5e5",
     "secondary-colour": "#000"
   },
   dark: {
@@ -24,6 +24,17 @@ const DefaultThemes = {
 const ColourManager = {
   tabColourMap: new Map(),
   injectStyleSheetToWindow: doToAllWindows((win) => {
+    let os;
+    let platform = win.navigator.platform;
+    if (platform.startsWith("Win")) {
+      os = "win";
+    } else if (platform.startsWith("Mac")) {
+      os = "mac";
+    } else {
+      os = "linux";
+    }
+    this.os = os;
+    win.document.documentElement.classList.add("vivaldi-fox-os-"+os);
     loadSheet(win, self.data.url("browser.css"), "author");
   }),
   putColourInMap(tab, colour, applyIfSelected = true) {
@@ -73,7 +84,7 @@ const ColourManager = {
     let onTransitionEnd = (e) => {
       if (e.target !== navbar) return;
       win.ToolbarIconColor.inferFromText();
-      DOMEvents.off(navbar, "transitionend", onTransitionEnd);
+      DOMEvents.removeListener(navbar, "transitionend", onTransitionEnd);
     }
     DOMEvents.on(navbar, "transitionend", onTransitionEnd);
   },
@@ -171,21 +182,17 @@ const ColourManager = {
     let navbar = doc.querySelector("#nav-bar");
     let onTransitionEnd = function(e) {
       if (e.target !== navbar) return;
-      let color = win.getComputedStyle(navbar).getPropertyValue("background-color");
-      let isAlpha = color.startsWith("rgba");
-      let [r, g, b] = color.split(",");
-      r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-      b = isAlpha ? b : b.substring(0, b.length - 1);
-
+      let colour = win.getComputedStyle(navbar).getPropertyValue("background-color");
+      let [r, g, b] = extractRGBFromCSSColour(colour);
       let lum = getLuminance([r, g, b]);
       let ratio = getContrastRatio(lum, 0);
       if (ratio > 7) {
-        doc.documentElement.style.removeProperty("--theme-accent-colour");
+        doc.documentElement.style.setProperty("--theme-accent-colour", "#000");
       } else {
         doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
       }
       win.ToolbarIconColor.inferFromText();
-      DOMEvents.off(navbar, "transitionend", onTransitionEnd)
+      DOMEvents.removeListener(navbar, "transitionend", onTransitionEnd)
     };
     DOMEvents.on(navbar, "transitionend", onTransitionEnd);
   },
@@ -217,6 +224,12 @@ const ColourManager = {
       let $ = (s) => doc.querySelector(s);
       if ($("#" + THEME_STYLE_ID)) {
         $("#" + THEME_STYLE_ID).textContent = styleText;
+      }
+      if (this.os == "win") {
+        let colour = win.getComputedStyle(doc.querySelector("#TabsToolbar")).getPropertyValue("color");
+        let RGB = extractRGBFromCSSColour(colour);
+        let ratio = getContrastRatio(getLuminance(RGB), 0);
+        doc.querySelector("#titlebar-buttonbox").classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
       }
       win.ToolbarIconColor.inferFromText();
     })();
