@@ -2,7 +2,9 @@ const self = require("sdk/self");
 const tabs = require("sdk/tabs");
 const windowUtils = require("sdk/window/utils");
 const { on, off, once } = require("sdk/event/core");
+const DOMEvents = require("sdk/dom/events");
 const { loadSheet } = require("sdk/stylesheet/utils");
+const { getLuminance, getContrastRatio} = require("lib/colour-utils");
 const Preferences = require("sdk/simple-prefs");
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
 const DefaultThemes = {
@@ -67,6 +69,13 @@ const ColourManager = {
     let doc = win.document;
     doc.documentElement.style.removeProperty("--theme-accent-background");
     doc.documentElement.style.removeProperty("--theme-accent-colour");
+    let navbar = doc.querySelector("#nav-bar");
+    let onTransitionEnd = (e) => {
+      if (e.target !== navbar) return;
+      win.ToolbarIconColor.inferFromText();
+      DOMEvents.off(navbar, "transitionend", onTransitionEnd);
+    }
+    DOMEvents.on(navbar, "transitionend", onTransitionEnd);
   },
   analyseFavicon(imgEl) {
     let doc = imgEl.ownerDocument;
@@ -76,9 +85,11 @@ const ColourManager = {
     // This will:
     // - Take the median of a sorted list of colours (excluding shades of gray)
     // - If image only contains shades of gray, it takes the average instead
-    let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
     let width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+    let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
     ctx.drawImage(imgEl, 0, 0);
+    // ctx.fillStyle = "white";
+    // ctx.fillRect(0,0, width, height);
     let data = ctx.getImageData(0, 0, width, height).data;
     let count = 0;
     let rValues = [], gValues = [], bValues = [];
@@ -157,24 +168,26 @@ const ColourManager = {
     let win = windowUtils.getMostRecentBrowserWindow();
     let doc = win.document;
     doc.documentElement.style.setProperty("--theme-accent-background", colour);
-    let navbar = doc.querySelector("#nav-bar")
-    let color = win.getComputedStyle(navbar).getPropertyValue("background-color");
-    let isAlpha = color.startsWith("rgba");
-    let [r, g, b] = color.split(",");
-    r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-    b = isAlpha ? b : b.substring(0, r.length - 1);
-    // Calculate contrast ratio according to https://www.w3.org/TR/WCAG20/
-    let bgLuminance = 0.2125 * r + 0.7154 * g + 0.0721 * b;
-    let ratio = Math.max(bgLuminance + 0.05, 0.05) / Math.min(bgLuminance + 0.05, 0.05);
-    if (ratio < 3) {
-      doc.documentElement.style.removeProperty("--theme-accent-colour");
-    } else {
-      doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
-    }
-    navbar.addEventListener("transitionend", function transitionend() {
+    let navbar = doc.querySelector("#nav-bar");
+    let onTransitionEnd = function(e) {
+      if (e.target !== navbar) return;
+      let color = win.getComputedStyle(navbar).getPropertyValue("background-color");
+      let isAlpha = color.startsWith("rgba");
+      let [r, g, b] = color.split(",");
+      r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
+      b = isAlpha ? b : b.substring(0, b.length - 1);
+
+      let lum = getLuminance([r, g, b]);
+      let ratio = getContrastRatio(lum, 0);
+      if (ratio > 7) {
+        doc.documentElement.style.removeProperty("--theme-accent-colour");
+      } else {
+        doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
+      }
       win.ToolbarIconColor.inferFromText();
-      navbar.removeEventListener(transitionend);
-    });
+      DOMEvents.off(navbar, "transitionend", onTransitionEnd)
+    };
+    DOMEvents.on(navbar, "transitionend", onTransitionEnd);
   },
   getCustomThemes() {
     let themes = JSON.parse(Preferences.prefs["themes"]);
@@ -281,6 +294,11 @@ let button = ActionButton({
     "32": "./img/icon.svg"
   },
   onClick: function(state) {
+    for (let tab of tabs) {
+      if (tab.url == self.data.url("options.html")) {
+        return tab.activate();
+      }
+    }
     let tab = tabs.open({
       url: "options.html",
       onReady: (tab) => {

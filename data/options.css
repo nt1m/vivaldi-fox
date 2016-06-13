@@ -15,9 +15,21 @@ a {
   color: #0996f8;
 }
 .header {
+  position: sticky;
+  top: 0;
   background-color: #EF3939;
   color: #fff;
   padding: 1em;
+  transition: padding 0.2s;
+}
+.header h1 {
+  transition: font-size 0.2s;
+}
+.small-header > .header {
+  padding: 0.5em;
+}
+.small-header > .header > h1 {
+  font-size: 1.25em;
 }
 .main-content {
   padding: 1em;

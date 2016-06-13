@@ -24,6 +24,10 @@ let PrefDefinitions =  {
 
 function init() {
   getPrefs(buildPrefsUI);
+  let headerHeight = document.querySelector(".header").clientHeight / 2;
+  window.addEventListener("scroll", () => {
+    document.body.classList.toggle("small-header", window.scrollY > headerHeight);
+  });
 }
 
 function buildPrefsUI(prefs) {
