@@ -24,7 +24,7 @@
   background: none;
 }
 .tabbrowser-tab:not([visuallyselected="true"]):hover, .tabs-newtab-button:hover > .toolbarbutton-icon {
-  background-color: rgba(150,150,150,0.3) !important;
+  background-color: rgba(128,128,128,0.25) !important;
 }
 .tabbrowser-tab .tab-background-middle,
 .tabs-newtab-button:hover > .toolbarbutton-icon {

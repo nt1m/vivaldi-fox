@@ -13,9 +13,9 @@ const DefaultThemes = {
     "secondary-colour": "#000"
   },
   dark: {
-    "accent-background": "#333",
+    "accent-background": "#343434",
     "accent-colour": "#f1f1f1",
-    "secondary-background": "#111",
+    "secondary-background": "#0a0a0a",
     "secondary-colour": "#f1f1f1"
   }
 }
