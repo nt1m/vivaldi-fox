@@ -129,7 +129,7 @@ const ColourManager = {
       if (bValues.indexOf(b) == -1) {
         bValues.push(b);
       }
-      colours.push([r, g, b]);
+      colours.push([Math.floor(r), Math.floor(g), Math.floor(b)]);
     }
 
     let result;
