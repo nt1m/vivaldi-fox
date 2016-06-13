@@ -172,23 +172,21 @@ h1 {
 .button::before {
   margin-inline-end: 0.5em;
   vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  background-size: cover;
 }
 .money::before {
   content: "$";
+  font-weight: bold;
+  text-align: center;
 }
 .star::before {
   content: "";
-  width: 1em;
-  height: 1em;
   background-image: url(img/star.svg);
-  display: inline-block;
-  background-size: cover;
 }
 .github::before {
   content: "";
-  width: 1em;
-  height: 1em;
   background-image: url(img/github.png);
-  display: inline-block;
-  background-size: cover;
 }
