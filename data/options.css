@@ -1,0 +1,40 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans);
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Fira Sans, sans-serif;
+  background-color: #fbfbfb;
+}
+.header {
+  background-color: #EF3939;
+  color: #fff;
+  padding: 1em;
+}
+.main-content {
+  padding: 1em;
+  text-align: center;
+}
+.setting {
+  padding: 2em 25%;
+  overflow: auto;
+  text-align: start;
+}
+.setting > input,
+.setting > select {
+  float: right;
+}
+h1 {
+  font-weight: 300;
+  margin: 0;
+}
+.header > .icon {
+  margin-inline-end: 2em;
+}
+.icon {
+  background-image: url(img/icon.svg);
+  background-size: cover;
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  vertical-align: middle;
+}

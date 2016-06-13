@@ -1,7 +1,4 @@
 :root {
-  --theme-colour: black;
-  --theme-background: #fff;
-  --theme-secondary-background: #ebebeb;
   --toolbarbutton-hover-background: transparent;
   --toolbarbutton-hover-bordercolor: var(--theme-colour);
   --toolbarbutton-hover-boxshadow: 0 0 0 1px var(--theme-colour) inset;
@@ -26,7 +23,7 @@
 .tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]), .tabs-newtab-button:hover {
   background: none;
 }
-.tabbrowser-tab:not([visuallyselected="true"]):hover .tab-background-middle, .tabs-newtab-button:hover > .toolbarbutton-icon {
+.tabbrowser-tab:not([visuallyselected="true"]):hover, .tabs-newtab-button:hover > .toolbarbutton-icon {
   background-color: rgba(150,150,150,0.3) !important;
 }
 .tabbrowser-tab .tab-background-middle,
@@ -39,7 +36,7 @@
   pointer-events: auto !important;
 }
 .tabbrowser-tab[visuallyselected] .tab-content {
-  color: var(--theme-colour);
+  color: var(--theme-accent-colour);
   text-shadow: none !important;
 }
 .tab-icon-image {
@@ -52,6 +49,10 @@
   text-shadow: none !important;
   background-color: var(--theme-secondary-background);
 }
+#navigator-toolbox,
+#navigator-toolbox > #TabsToolbar {
+  color: var(--theme-secondary-colour) !important;
+}
 #titlebar {
   -moz-appearance: none !important;
 }
@@ -61,7 +62,7 @@
   box-shadow: none !important;
 }
 #urlbar-container #back-button .toolbarbutton-icon {
-  border-color: var(--theme-colour) !important;
+  border-color: var(--theme-secondary-background) !important;
   background: none !important;
   box-shadow: none !important;
 }
@@ -72,16 +73,20 @@
 #navigator-toolbox::after {
   background: none;
 }
+.tabbrowser-tab[visuallyselected]:not(:-moz-window-inactive) .tab-background-middle,
+#navigator-toolbox:not(:-moz-window-inactive) > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
+  transition: background 0.1s;
+}
 .tabbrowser-tab[visuallyselected] .tab-background-middle,
 #navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
-  transition: background 0.1s;
-  background: var(--theme-background) !important;
-  color: var(--theme-colour);
+  background: var(--theme-accent-background) !important;
+  color: var(--theme-accent-colour);
 }
 #urlbar,
 #nav-bar #search-container .searchbar-textbox {
   border-color: transparent;
   background: var(--theme-secondary-background);
+  color: var(--theme-secondary-colour);
   box-shadow: none !important;
 }
 #urlbar[focused],

@@ -1,12 +1,45 @@
 {
-  "title": "Colour the fox",
-  "name": "color-the-fox",
-  "version": "0.0.1",
-  "description": "An add-on that allows coloring Firefox",
+  "title": "VivaldiFox",
+  "name": "vivaldi-fox",
+  "version": "0.0.2",
+  "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
   "main": "index.js",
   "author": "Tim Nguyen",
   "engines": {
     "firefox": ">=38.0a1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "preferences": [
+    {
+        "name": "selected-theme",
+        "title": "Selected Theme",
+        "description": "Currently selected theme",
+        "type": "string",
+        "value": "light"
+    },
+    {
+        "name": "use-page-colours",
+        "title": "Use Page Colours for UI",
+        "description": "Extract page colours for main UI",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "grayed-out-inactive-windows",
+        "title": "Gray out inactive windows",
+        "description": "Gray out inactive windows",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "use-australis-tabs",
+        "title": "Use Australis Tabs (coming soon)",
+        "description": "Use Australis Tabs instead of squared tabs",
+        "type": "bool",
+        "value": false
+    }
+  ],
+  "permissions": {
+    "private-browsing": true
+  }
 }
