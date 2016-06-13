@@ -15,6 +15,7 @@
   --tab-stroke-background-size: 0 0;
 }
 
+/* Thanks to jotted on reddit for the australis tabs! */
 /* Hide stroked background */
 .tabbrowser-tab[visuallyselected] .tab-background-end::after,
 .tabbrowser-tab[visuallyselected] .tab-background-end::before,
