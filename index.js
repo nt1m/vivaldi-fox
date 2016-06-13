@@ -3,7 +3,7 @@ const tabs = require("sdk/tabs");
 const windowUtils = require("sdk/window/utils");
 const { on, off, once } = require("sdk/event/core");
 const DOMEvents = require("sdk/dom/events");
-const { loadSheet } = require("sdk/stylesheet/utils");
+const { loadSheet, removeSheet } = require("sdk/stylesheet/utils");
 const { getLuminance, getContrastRatio, extractRGBFromCSSColour } = require("lib/colour-utils");
 const Preferences = require("sdk/simple-prefs");
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
@@ -271,6 +271,10 @@ const ColourManager = {
     style.hidden = true;
     doc.documentElement.appendChild(style);
   }),
+  onDestroy: doToAllWindows((win) => {
+    removeSheet(win, self.data.url("browser.css"), "author");
+    win.document.getElementById(THEME_STYLE_ID).remove();
+  }),
   init() {
     this.onTabRemove = this.onTabRemove.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
@@ -282,6 +286,7 @@ const ColourManager = {
     this.initThemes();
     this.onUpdatePrefs();
     Preferences.on("", this.onUpdatePrefs);
+    require("sdk/system/unload").when(this.onDestroy);
   }
 }
 
