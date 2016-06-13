@@ -1,13 +1,13 @@
 {
   "title": "VivaldiFox",
   "name": "vivaldi-fox",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
   "main": "index.js",
   "author": "Tim Nguyen",
   "icon": "resource://vivaldi-fox/data/img/icon.svg",
   "engines": {
-    "firefox": ">=38.0a1"
+    "firefox": ">=45.0a1"
   },
   "license": "MIT",
   "preferences": [

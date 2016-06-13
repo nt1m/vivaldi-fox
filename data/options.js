@@ -168,10 +168,11 @@ function removeTheme(name) {
       break;
     }
   }
-  savePref("themes", JSON.stringify(customThemes));
   setSelectedTheme("light");
+  savePref("themes", JSON.stringify(customThemes));
   let editor = document.querySelector("#theme-editor");
   editor.textContent = "";
+  document.querySelector("select[data-pref='selected-theme'] option[value='" + name + "']").remove();
   document.querySelector("#themes-list li[data-theme='" + name + "']").remove();
 }
 function updateTheme(name, prop, value) {

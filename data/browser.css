@@ -1,6 +1,6 @@
 :root {
   --toolbarbutton-hover-background: transparent;
-  --toolbarbutton-hover-bordercolor: var(--theme-colour);
+  --toolbarbutton-hover-bordercolor: rgba(128,128,128,0.2);
   --toolbarbutton-hover-boxshadow: 0 0 0 1px var(--theme-colour) inset;
 
   --toolbarbutton-active-background: rgba(128,128,128,0.2);
@@ -9,6 +9,8 @@
 
   --toolbarbutton-checkedhover-backgroundcolor: var(--theme-colour);
 }
+
+/** Tab bar **/
 #TabsToolbar {
   --tab-stroke-background-size: 0 0;
 }
@@ -44,21 +46,48 @@
   box-shadow: 0 0 0 2px #fff;
   border-radius: 2px;
 }
+
+/** Main window **/
+:root.vivaldi-fox-os-mac #titlebar {
+  -moz-appearance: none !important;
+}
 #main-window {
   background-image: none !important;
   text-shadow: none !important;
   background-color: var(--theme-secondary-background);
 }
+#titlebar-buttonbox.vivaldi-fox-invert-controls .titlebar-button:not(#titlebar-close),
+#titlebar-buttonbox.vivaldi-fox-invert-controls #titlebar-close:not(:hover) {
+  filter: invert(1);
+}
+.tabbrowser-tab[visuallyselected] .tab-background-middle,
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
+  background: var(--theme-accent-background) !important;
+  color: var(--theme-accent-colour);
+}
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) .toolbarbutton-text {
+  color: inherit;
+}
+.tabbrowser-tab[visuallyselected]:not(:-moz-window-inactive) .tab-background-middle,
+#navigator-toolbox:not(:-moz-window-inactive) > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
+  transition: background 0.1s;
+}
 #navigator-toolbox,
 #navigator-toolbox > #TabsToolbar {
   color: var(--theme-secondary-colour) !important;
 }
-#urlbar-container #back-button {
+
+/** navbar **/
+#identity-box {
+  --identity-box-verified-background-color: rgba(128,128,128,0.2)
+}
+#urlbar-container #back-button, #urlbar-container #forward-button {
   background: none;
   border-color: var(--theme-secondary-background);
   box-shadow: none !important;
 }
-#urlbar-container #back-button .toolbarbutton-icon {
+#urlbar-container #back-button .toolbarbutton-icon,
+#urlbar-container #forward-button .toolbarbutton-icon {
   border-color: var(--theme-secondary-background) !important;
   background: none !important;
   box-shadow: none !important;
@@ -69,22 +98,6 @@
 }
 #navigator-toolbox::after {
   background: none;
-}
-.tabbrowser-tab[visuallyselected]:not(:-moz-window-inactive) .tab-background-middle,
-#navigator-toolbox:not(:-moz-window-inactive) > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
-  transition: background 0.1s;
-}
-.tabbrowser-tab[visuallyselected] .tab-background-middle,
-#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
-  background: var(--theme-accent-background) !important;
-  color: var(--theme-accent-colour);
-}
-:root.vivaldi-fox-os-mac #titlebar {
-  -moz-appearance: none !important;
-}
-#titlebar-buttonbox.vivaldi-fox-invert-controls .titlebar-button:not(#titlebar-close),
-#titlebar-buttonbox.vivaldi-fox-invert-controls #titlebar-close:not(:hover) {
-  filter: invert(1);
 }
 #titlebar,
 #urlbar,
