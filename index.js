@@ -226,7 +226,7 @@ const ColourManager = {
         $("#" + THEME_STYLE_ID).textContent = styleText;
       }
       if (this.os == "win") {
-        let colour = win.getComputedStyle(doc.querySelector("#TabsToolbar")).getPropertyValue("color");
+        let colour = win.getComputedStyle(doc.querySelector("#main-window")).getPropertyValue("background-color");
         let RGB = extractRGBFromCSSColour(colour);
         let ratio = getContrastRatio(getLuminance(RGB), 0);
         doc.querySelector("#titlebar-buttonbox").classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
