@@ -11,9 +11,14 @@ let PrefDefinitions =  {
     "type": "bool"
   },
   "use-australis-tabs": {
-    "title": "Use Australis Tabs (coming soon)",
+    "title": "Use Australis Tabs",
     "description": "Use Australis Tabs instead of squared tabs",
     "type": "bool",
+  },
+  "tab-icon-background": {
+    "title": "Add white background around tab icon",
+    "description": "",
+    "type": "bool"
   },
   "grayed-out-inactive-windows": {
     "title": "Gray out inactive windows",

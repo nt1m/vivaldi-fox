@@ -14,22 +14,77 @@
 #TabsToolbar {
   --tab-stroke-background-size: 0 0;
 }
-/*.tab-background-start::before,
-.tab-background-end::before {
+
+/* Hide stroked background */
+.tabbrowser-tab[visuallyselected] .tab-background-end::after,
+.tabbrowser-tab[visuallyselected] .tab-background-end::before,
+.tabbrowser-tab[visuallyselected] .tab-background-start::after,
+.tabbrowser-tab[visuallyselected] .tab-background-start::before {
   content: none;
-}*/
+}
+
+.tabbrowser-tab[visuallyselected] .tab-background-end,
+.tabbrowser-tab[visuallyselected] .tab-background-start {
+  background-color: var(--theme-accent-background);
+}
+
+/* Use built-in curve. */
+.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-end {
+  clip-path: url("chrome://browser/content/browser.xul#tab-curve-clip-path-end");
+}
+.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-start {
+  clip-path: url("chrome://browser/content/browser.xul#tab-curve-clip-path-start");
+}
+
+/* Built-in curve has a gap at the top for the stroke. Simulate that with a linear gradient. */
+.tabbrowser-tab[visuallyselected] .tab-background-middle {
+  background-color: transparent;
+  background-image: linear-gradient(
+                      transparent,
+                      transparent 2px,
+                      var(--theme-accent-background) 2px,
+                      var(--theme-accent-background)
+                    ) !important;
+  background-size: auto;
+}
+
+/* Squared tabs */
+/* Override @tabCurveHalfWidth@ and @tabCurveWidth@ for squared tabs */
+:root:not(.vivaldi-fox-australis-tabs) .tab-background-middle {
+  border-left-width: 0;
+  border-right-width: 0;
+  margin: 0;
+}
+
+:root:not(.vivaldi-fox-australis-tabs) .tab-background,
+:root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button {
+  margin-inline-end: 0;
+  margin-inline-start: 0;
+}
+
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-arrowscrollbox > .arrowscrollbox-scrollbox {
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
+
 :root:not(.vivaldi-fox-australis-tabs) .tab-background-start,
 :root:not(.vivaldi-fox-australis-tabs) .tab-background-end {
-  visibility: hidden !important;
+  width: 0;
 }
-.tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]), .tabs-newtab-button:hover {
+/* End override @tabCurveHalfWidth@ and @tabCurveWidth@ */
+:root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button {
+  width: auto !important;
+}
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]),
+:root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button:hover {
   background: none;
 }
-.tabbrowser-tab:not([visuallyselected="true"]):hover, .tabs-newtab-button:hover > .toolbarbutton-icon {
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab:not([visuallyselected="true"]):hover, 
+:root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button:hover {
   background-color: rgba(128,128,128,0.25) !important;
 }
-.tabbrowser-tab .tab-background-middle,
-.tabs-newtab-button:hover > .toolbarbutton-icon {
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab,
+:root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button:hover {
   border-top-left-radius: 2px !important;
   border-top-right-radius: 2px !important;
   pointer-events: auto !important;
@@ -37,14 +92,16 @@
 :root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab {
   pointer-events: auto !important;
 }
+/* End squared tabs */
+
 .tabbrowser-tab[visuallyselected] .tab-content {
   color: var(--theme-accent-colour);
   text-shadow: none !important;
 }
-.tab-icon-image {
+:root.vivaldi-fox-tab-icon-background .tab-icon-image {
   background-color: #fff;
   box-shadow: 0 0 0 2px #fff;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 /** Main window **/
@@ -59,7 +116,7 @@
 #titlebar-buttonbox.vivaldi-fox-invert-controls #titlebar-close:not(:hover) {
   filter: invert(1);
 }
-.tabbrowser-tab[visuallyselected] .tab-background-middle,
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected="true"],
 #navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
   background: var(--theme-accent-background) !important;
   color: var(--theme-accent-colour);
@@ -102,7 +159,7 @@
   border-top-color: transparent !important;
 }
 #navigator-toolbox::after {
-  background: none;
+  background: var(--theme-accent-background);
 }
 #titlebar:not(:-moz-lwtheme),
 #urlbar,

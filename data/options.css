@@ -94,7 +94,7 @@ a {
   text-align: center;
 }
 #theme-editor:empty::after {
-  content: "Select a theme or create a new one to start";
+  content: "Create a theme using the `+` button";
 }
 #theme-editor {
   padding: 1em 0;

@@ -234,10 +234,10 @@ const ColourManager = {
       win.ToolbarIconColor.inferFromText();
     })();
   },
-  setAustralisTabs(enabled) {
+  setClassNameSetting(className, enabled) {
     return doToAllWindows((win) => {
       let doc = win.document;
-      doc.documentElement.classList.toggle("vivaldi-fox-australis-tabs", enabled);
+      doc.documentElement.classList.toggle("vivaldi-fox-" + className, enabled);
     })();
   },
   onUpdatePrefs() {
@@ -248,7 +248,8 @@ const ColourManager = {
       selectedTheme = this.getCustomThemes()[Preferences.prefs["selected-theme"]];
     }
     this.refreshThemeCSS(selectedTheme);
-    this.setAustralisTabs(Preferences.prefs["use-australis-tabs"]);
+    this.setClassNameSetting("australis-tabs", Preferences.prefs["use-australis-tabs"]);
+    this.setClassNameSetting("tab-icon-background", Preferences.prefs["tab-icon-background"]);
     if (Preferences.prefs["use-page-colours"]) {
       tabs.on("close", this.onTabRemove);
       tabs.on("activate", this.onTabChange);
