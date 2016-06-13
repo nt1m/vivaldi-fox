@@ -158,7 +158,7 @@
 :root:not(.vivaldi-fox-os-mac) #urlbar-container #forward-button:not(:hover):not(:active) .toolbarbutton-icon {
   background: rgba(200,200,200,0.3) !important;
 }
-#TabsToolbar + #nav-bar {
+#main-window #TabsToolbar:not([collapsed="true"]) + #nav-bar {
   box-shadow: none;
   border-top-color: transparent !important;
 }
