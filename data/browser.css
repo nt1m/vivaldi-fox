@@ -129,9 +129,12 @@
 #navigator-toolbox:not(:-moz-window-inactive) > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
   transition: background 0.1s;
 }
-#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar),
 #navigator-toolbox > #TabsToolbar:not(:-moz-lwtheme) {
   color: var(--theme-secondary-colour) !important;
+}
+:root.vivaldi-fox-os-linux #TabsToolbar,
+:root.vivaldi-fox-os-linux #toolbar-menubar {
+  -moz-appearance: none !important;
 }
 
 /** navbar **/
