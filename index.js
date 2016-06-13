@@ -33,7 +33,7 @@ const ColourManager = {
     } else {
       os = "linux";
     }
-    this.os = os;
+    ColourManager.os = os;
     win.document.documentElement.classList.add("vivaldi-fox-os-"+os);
     loadSheet(win, self.data.url("browser.css"), "author");
   }),

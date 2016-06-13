@@ -82,7 +82,8 @@
 :root.vivaldi-fox-os-mac #titlebar {
   -moz-appearance: none !important;
 }
-#titlebar-buttonbox.vivaldi-fox-invert-controls .titlebar-button:not(#titlebar-close:hover) {
+#titlebar-buttonbox.vivaldi-fox-invert-controls .titlebar-button:not(#titlebar-close),
+#titlebar-buttonbox.vivaldi-fox-invert-controls #titlebar-close:not(:hover) {
   filter: invert(1);
 }
 #titlebar,
