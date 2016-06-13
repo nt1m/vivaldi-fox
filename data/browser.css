@@ -79,13 +79,13 @@
 
 /** navbar **/
 #identity-box {
-  --identity-box-verified-background-color: rgba(128,128,128,0.2) !important;
-  --identity-box-hover-background-color: rgba(128,128,128,0.3) !important;
-  --identity-box-active-background-color: rgba(128,128,128,0.1) !important;
+  --identity-box-verified-background-color: transparent !important;
+  --identity-box-hover-background-color: rgba(180,180,180,0.2) !important;
+  --identity-box-selected-background-color: rgba(180,180,180,0.4) !important;
 }
 :root.vivaldi-fox-os-mac #urlbar-container #back-button,
 :root.vivaldi-fox-os-mac #urlbar-container #forward-button {
-  background: rgba(200,200,200,0.35);
+  background: rgba(200,200,200,0.3);
   border-color: rgba(0,0,0,0.1) !important;
   box-shadow: none !important;
 }
@@ -96,7 +96,7 @@
 }
 :root:not(.vivaldi-fox-os-mac) #urlbar-container #back-button:not(:hover):not(:active) .toolbarbutton-icon,
 :root:not(.vivaldi-fox-os-mac) #urlbar-container #forward-button:not(:hover):not(:active) .toolbarbutton-icon {
-  background: rgba(200,200,200,0.35) !important;
+  background: rgba(200,200,200,0.3) !important;
 }
 #TabsToolbar + #nav-bar {
   box-shadow: none;
