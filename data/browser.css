@@ -79,7 +79,9 @@
 
 /** navbar **/
 #identity-box {
-  --identity-box-verified-background-color: rgba(128,128,128,0.2)
+  --identity-box-verified-background-color: rgba(128,128,128,0.2);
+  --identity-box-hover-background-color: rgba(128,128,128,0.3);
+  --identity-box-active-background-color: rgba(128,128,128,0.1);
 }
 #urlbar-container #back-button, #urlbar-container #forward-button {
   background: none;
