@@ -52,7 +52,6 @@
   -moz-appearance: none !important;
 }
 #main-window {
-  background-image: none !important;
   text-shadow: none !important;
   background-color: var(--theme-secondary-background);
 }
@@ -72,8 +71,8 @@
 #navigator-toolbox:not(:-moz-window-inactive) > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
   transition: background 0.1s;
 }
-#navigator-toolbox,
-#navigator-toolbox > #TabsToolbar {
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar),
+#navigator-toolbox > #TabsToolbar:not(:-moz-lwtheme) {
   color: var(--theme-secondary-colour) !important;
 }
 
@@ -105,7 +104,7 @@
 #navigator-toolbox::after {
   background: none;
 }
-#titlebar,
+#titlebar:not(:-moz-lwtheme),
 #urlbar,
 #nav-bar #urlbar:hover,
 #nav-bar #search-container .searchbar-textbox {
