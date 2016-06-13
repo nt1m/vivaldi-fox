@@ -1,13 +1,13 @@
 :root {
-  --toolbarbutton-hover-background: transparent;
-  --toolbarbutton-hover-bordercolor: rgba(128,128,128,0.2);
+  --toolbarbutton-hover-background: rgba(200,200,200,0.4);
+  --toolbarbutton-hover-bordercolor: transparent;
   --toolbarbutton-hover-boxshadow: 0 0 0 1px var(--theme-colour) inset;
 
-  --toolbarbutton-active-background: rgba(128,128,128,0.2);
-  --toolbarbutton-active-bordercolor: var(--theme-colour);
+  --toolbarbutton-active-background: rgba(200,200,200,0.6);
+  --toolbarbutton-active-bordercolor: transparent;
   --toolbarbutton-active-boxshadow: 0 0 0 1px var(--theme-colour) inset;
 
-  --toolbarbutton-checkedhover-backgroundcolor: var(--theme-colour);
+  --toolbarbutton-checkedhover-backgroundcolor: rgba(200,200,200,0.5);
 }
 
 /** Tab bar **/
@@ -83,16 +83,20 @@
   --identity-box-hover-background-color: rgba(128,128,128,0.3) !important;
   --identity-box-active-background-color: rgba(128,128,128,0.1) !important;
 }
-#urlbar-container #back-button, #urlbar-container #forward-button {
-  background: none;
-  border-color: var(--theme-secondary-background);
+:root.vivaldi-fox-os-mac #urlbar-container #back-button,
+:root.vivaldi-fox-os-mac #urlbar-container #forward-button {
+  background: rgba(200,200,200,0.35);
+  border-color: rgba(0,0,0,0.1) !important;
   box-shadow: none !important;
 }
-#urlbar-container #back-button .toolbarbutton-icon,
-#urlbar-container #forward-button .toolbarbutton-icon {
-  border-color: var(--theme-secondary-background) !important;
-  background: none !important;
+:root:not(.vivaldi-fox-os-mac) #urlbar-container #back-button .toolbarbutton-icon,
+:root:not(.vivaldi-fox-os-mac) #urlbar-container #forward-button .toolbarbutton-icon {
+  border-color: rgba(0,0,0,0.1) !important;
   box-shadow: none !important;
+}
+:root:not(.vivaldi-fox-os-mac) #urlbar-container #back-button:not(:hover):not(:active) .toolbarbutton-icon,
+:root:not(.vivaldi-fox-os-mac) #urlbar-container #forward-button:not(:hover):not(:active) .toolbarbutton-icon {
+  background: rgba(200,200,200,0.35) !important;
 }
 #TabsToolbar + #nav-bar {
   box-shadow: none;
