@@ -1,9 +1,18 @@
 @import url(https://fonts.googleapis.com/css?family=Fira+Sans);
+
 body {
   margin: 0;
   padding: 0;
   font-family: Fira Sans, sans-serif;
   background-color: #fbfbfb;
+}
+.card h1 {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+a {
+  color: #0996f8;
 }
 .header {
   background-color: #EF3939;
@@ -15,13 +24,135 @@ body {
   text-align: center;
 }
 .setting {
-  padding: 2em 25%;
+  padding: 1em 0;
   overflow: auto;
   text-align: start;
+}
+.card {
+  background: #fff;
+  padding: 0.5em 1em;
+  margin: 1em 25%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .setting > input,
 .setting > select {
   float: right;
+}
+.row {
+  display: flex;
+}
+#themes {
+  text-align: left;
+}
+#themes-list {
+  list-style: none;
+  text-align: center;
+  display: flex;
+  flex: 1;
+  padding: 0;
+  margin: 0;
+}
+#themes-list li {
+  display: inline-block;
+  cursor: pointer;
+  margin: 0;
+  padding: 5px;
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+  border-bottom: 1px solid transparent;
+}
+#themes-list li.selected {
+  color: #0996f8;
+  font-weight: 600;
+  border-bottom-color: #0996f8;
+}
+#add {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: monospace;
+  margin-inline-start: 1rem;
+  text-align: center;
+}
+#theme-editor:empty {
+  text-align: center;
+}
+#theme-editor:empty::after {
+  content: "Select a theme or create a new one to start";
+}
+#theme-editor {
+  padding: 1em 0;
+}
+#theme-editor div {
+  overflow: auto;
+  margin-bottom: 1em;
+}
+#theme-editor div input {
+  float: right;
+}
+.button, button, input[type="color"] {
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+  background: #fcfcfc;
+  border: 1px solid rgba(0,0,0,0.1);
+  color: #000;
+  border-radius: 2px;
+  padding: 0.5em;
+  font-size: 0.8em;
+  font: inherit;
+}
+input[type="color"] {
+  padding: 2px;
+}
+input[type="color"]:hover {
+  background-color: #ebebeb;
+}
+input[type="color"]:active {
+  background-color: #c1c1c1;
+}
+.button::after,
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.button:hover::after,
+button:hover::after {
+  background-color: rgba(255,255,255,0.1);
+}
+.button:active::after,
+button:active::after {
+  background-color: rgba(0,0,0,0.1);
+}
+.button.remove,
+button.remove {
+  background-color: #d92215;
+  color: #fff;
+}
+.button.green {
+  background-color: #57bd35;
+  color: #fff;
+}
+.button.yellow {
+  background-color: #ffc446;
+}
+.button.black {
+  background-color: #111;
+  color: #fff;
+}
+button:focus,
+input[type=color]:focus,
+.button:focus {
+  box-shadow: 0 0 0 2px rgba(97,181,255,.75);
 }
 h1 {
   font-weight: 300;
@@ -37,4 +168,27 @@ h1 {
   height: 2em;
   display: inline-block;
   vertical-align: middle;
+}
+.button::before {
+  margin-inline-end: 0.5em;
+  vertical-align: middle;
+}
+.money::before {
+  content: "$";
+}
+.star::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  background-image: url(img/star.svg);
+  display: inline-block;
+  background-size: cover;
+}
+.github::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  background-image: url(img/github.png);
+  display: inline-block;
+  background-size: cover;
 }

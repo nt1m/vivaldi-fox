@@ -37,6 +37,13 @@
         "description": "Use Australis Tabs instead of squared tabs",
         "type": "bool",
         "value": false
+    },
+    {
+        "name": "themes",
+        "title": "Themes",
+        "description": "Theme data",
+        "type": "string",
+        "value": "[]"
     }
   ],
   "permissions": {

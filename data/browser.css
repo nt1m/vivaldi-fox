@@ -16,8 +16,8 @@
 .tab-background-end::before {
   content: none;
 }*/
-.tab-background-start,
-.tab-background-end {
+:root:not(.vivaldi-fox-australis-tabs) .tab-background-start,
+:root:not(.vivaldi-fox-australis-tabs) .tab-background-end {
   visibility: hidden !important;
 }
 .tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]), .tabs-newtab-button:hover {
@@ -32,7 +32,7 @@
   border-top-right-radius: 2px !important;
   pointer-events: auto !important;
 }
-.tabbrowser-tab {
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab {
   pointer-events: auto !important;
 }
 .tabbrowser-tab[visuallyselected] .tab-content {

@@ -176,6 +176,14 @@ const ColourManager = {
       navbar.removeEventListener(transitionend);
     });
   },
+  getCustomThemes() {
+    let themes = JSON.parse(Preferences.prefs["themes"]);
+    let obj = {};
+    for (let theme of themes) {
+      obj[theme.name] = theme.data;
+    }
+    return obj;
+  },
   refreshThemeCSS(theme) {
     let styleText = `
 :root {
@@ -200,8 +208,21 @@ const ColourManager = {
       win.ToolbarIconColor.inferFromText();
     })();
   },
+  setAustralisTabs(enabled) {
+    return doToAllWindows((win) => {
+      let doc = win.document;
+      doc.documentElement.classList.toggle("vivaldi-fox-australis-tabs", enabled);
+    })();
+  },
   onUpdatePrefs() {
-    this.refreshThemeCSS(DefaultThemes[Preferences.prefs["selected-theme"]]);
+    let selectedTheme;
+    if (DefaultThemes.hasOwnProperty(Preferences.prefs["selected-theme"])) {
+      selectedTheme = DefaultThemes[Preferences.prefs["selected-theme"]];
+    } else {
+      selectedTheme = this.getCustomThemes()[Preferences.prefs["selected-theme"]];
+    }
+    this.refreshThemeCSS(selectedTheme);
+    this.setAustralisTabs(Preferences.prefs["use-australis-tabs"]);
     if (Preferences.prefs["use-page-colours"]) {
       tabs.on("close", this.onTabRemove);
       tabs.on("activate", this.onTabChange);
@@ -228,10 +249,12 @@ const ColourManager = {
     this.onTabChange = this.onTabChange.bind(this);
     this.onNewTab = this.onNewTab.bind(this);
     this.onNewURL = this.onNewURL.bind(this);
+    this.onUpdatePrefs = this.onUpdatePrefs.bind(this);
     this.injectStyleSheetToWindow();
 
     this.initThemes();
     this.onUpdatePrefs();
+    Preferences.on("", this.onUpdatePrefs);
   }
 }
 
@@ -269,7 +292,6 @@ let button = ActionButton({
         });
         worker.port.on("save-pref", ([pref, value]) => {
           Preferences.prefs[pref] = value;
-          ColourManager.onUpdatePrefs();
         });
       }
     });
