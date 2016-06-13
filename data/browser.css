@@ -107,6 +107,7 @@
 }
 #titlebar,
 #urlbar,
+#nav-bar #urlbar:hover,
 #nav-bar #search-container .searchbar-textbox {
   border-color: transparent;
   background: var(--theme-secondary-background);
