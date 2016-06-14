@@ -1,8 +1,11 @@
+/* eslint-env browser */
+/* global unsafeWindow, cloneInto, exportFunction */
+"use strict";
 let OptionsManager = {
   getPreferences(callback) {
     self.port.emit("request-prefs");
     self.port.once("receive-prefs", (prefs) => {
-      let newPrefObj = {}
+      let newPrefObj = {};
       for (let pref in prefs) {
         if (!pref.startsWith("sdk.")) {
           newPrefObj[pref] = prefs[pref];
@@ -17,7 +20,7 @@ let OptionsManager = {
   savePreference(pref, value) {
     self.port.emit("save-pref", [pref, value]);
   }
-}
+};
 
 exportFunction(OptionsManager.getPreferences, unsafeWindow, {defineAs: "getPrefs"});
 exportFunction(OptionsManager.savePreference, unsafeWindow, {defineAs: "savePref"});

@@ -1,4 +1,8 @@
-let PrefDefinitions =  {
+/* eslint-env browser */
+/* global savePref, getPrefs */
+"use strict";
+
+let PrefDefinitions = {
   "selected-theme": {
     "title": "Selected Theme",
     "description": "Currently selected theme",
@@ -27,16 +31,18 @@ let PrefDefinitions =  {
   }
 };
 
+let $ = (s) => document.querySelector(s);
+
 function init() {
   getPrefs(buildPrefsUI);
-  let headerHeight = document.querySelector(".header").clientHeight / 2;
+  let headerHeight = $(".header").clientHeight / 2;
   window.addEventListener("scroll", () => {
     document.body.classList.toggle("small-header", window.scrollY > headerHeight);
   });
 }
 
 function buildPrefsUI(prefs) {
-  let mainContent = document.querySelector("#settings");
+  let mainContent = $("#settings");
   for (let pref in prefs) {
     if (pref == "themes") {
       initThemesUI(JSON.parse(prefs[pref]));
@@ -48,7 +54,7 @@ function buildPrefsUI(prefs) {
 
     let el;
     let label = document.createElement("span");
-    label.textContent = prefDef["title"];
+    label.textContent = prefDef.title;
     settingDiv.appendChild(label);
     switch (prefDef.type) {
       case "string": {
@@ -71,7 +77,7 @@ function buildPrefsUI(prefs) {
       }
     }
     el.dataset.pref = pref;
-    settingDiv.title = prefDef["description"];
+    settingDiv.title = prefDef.description;
     wireElementWithExtension(el, pref);
     settingDiv.appendChild(el);
     mainContent.appendChild(settingDiv);
@@ -97,21 +103,24 @@ function initThemesUI(themes) {
   for (let theme of themes) {
     createThemeElement(theme);
   }
+  $("#add").addEventListener("click", addTheme);
 }
 
 function themeExists(theme) {
   let themes = customThemes.map((i) => i.name);
   themes.push("light");
   themes.push("dark");
-  console.log(themes);
   return themes.indexOf(theme) > -1;
 }
+
 function addTheme() {
   let name;
   do {
     name = prompt("Name of theme");
   } while (themeExists(name));
-  if (!name) return;
+  if (!name) {
+    return;
+  }
   let data = {
     name,
     data: {
@@ -120,11 +129,11 @@ function addTheme() {
       "secondary-background": "#ebebeb",
       "secondary-colour": "#000000"
     },
-  }
+  };
   customThemes.push(data);
   savePref("themes", JSON.stringify(customThemes));
 
-  let themeSelect = document.querySelector("select[data-pref='selected-theme']");
+  let themeSelect = $("select[data-pref='selected-theme']");
   let opt = document.createElement("option");
   opt.value = name;
   opt.textContent = name;
@@ -133,7 +142,7 @@ function addTheme() {
 }
 
 function showThemeEditor(theme) {
-  let editor = document.querySelector("#theme-editor");
+  let editor = $("#theme-editor");
   editor.textContent = "";
   for (let prop in theme.data) {
     createInput(prop, theme.data[prop]);
@@ -161,7 +170,7 @@ function showThemeEditor(theme) {
   }
 }
 function setSelectedTheme(theme) {
-  let themeSelect = document.querySelector("select[data-pref='selected-theme']");
+  let themeSelect = $("select[data-pref='selected-theme']");
   themeSelect.value = theme;
   themeSelect.dispatchEvent(new Event("change"));
 }
@@ -175,10 +184,10 @@ function removeTheme(name) {
   }
   setSelectedTheme("light");
   savePref("themes", JSON.stringify(customThemes));
-  let editor = document.querySelector("#theme-editor");
+  let editor = $("#theme-editor");
   editor.textContent = "";
-  document.querySelector("select[data-pref='selected-theme'] option[value='" + name + "']").remove();
-  document.querySelector("#themes-list li[data-theme='" + name + "']").remove();
+  $("select[data-pref='selected-theme'] option[value='" + name + "']").remove();
+  $("#themes-list li[data-theme='" + name + "']").remove();
 }
 function updateTheme(name, prop, value) {
   for (let i = 0; i < customThemes.length; i++) {
@@ -197,7 +206,7 @@ function createThemeElement(theme) {
   item.dataset.theme = theme.name;
   name.textContent = theme.name;
   item.appendChild(name);
-  let list = document.querySelector("#themes-list");
+  let list = $("#themes-list");
   list.appendChild(item);
   item.onclick = () => {
     for (let i of item.parentNode.childNodes) {
