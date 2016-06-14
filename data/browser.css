@@ -118,9 +118,17 @@
   filter: invert(1);
 }
 :root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected="true"],
-#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) {
+#navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar),
+/* Beyond Australis compat */
+#theFoxOnlyBetter-slimChrome-toolbars,
+#theFoxOnlyBetter-slimChrome-toolbars-before,
+#theFoxOnlyBetter-slimChrome-toolbars-after {
   background: var(--theme-accent-background) !important;
   color: var(--theme-accent-colour);
+}
+#theFoxOnlyBetter-slimChrome-container,
+#theFoxOnlyBetter-slimChrome-slimmer {
+  border: none !important;
 }
 #navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar) toolbarbutton:not(.subview-button) {
   color: inherit;
