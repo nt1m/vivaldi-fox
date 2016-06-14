@@ -156,6 +156,7 @@ let Addon = {
   setupWindow(win) {
     this.injectStyleSheetToWindow(win);
     ThemeManager.initThemes(win);
+    this.onUpdatePrefs();
   },
   onUpdatePrefs() {
     ThemeManager.setTheme(ThemeManager.selectedTheme);
