@@ -48,6 +48,10 @@ const ColourManager = {
   },
   onNewTab(tab) {
     let win = viewFor(tab.window);
+    if (!win) {
+      // Window is not yet initialised.
+      return;
+    }
     // Those 2 URLs don't trigger a `ready` event on the tab, which means this is needed
     if (tab.url == "about:newtab" || tab.url == "about:blank") {
       this.resetColours(win);
