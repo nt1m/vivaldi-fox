@@ -24,7 +24,9 @@ const ColourManager = {
     if (!this.tabColourMap.has(tab.id)) {
       this.onNewURL(tab);
     } else if (this.tabColourMap.get(tab.id) == "default") {
-      this.resetColours(win);
+      if (win) {
+        this.resetColours(win);
+      }
     } else {
       this.setColour(win, this.tabColourMap.get(tab.id));
     }
@@ -36,39 +38,26 @@ const ColourManager = {
     let worker = tab.attach({
       contentScriptFile: self.data.url("contentscript.js")
     });
+    this.putColourInMap(tab, "default", false);
     worker.port.once("theme-colour-change", (data) => {
-      if (data == "default") {
-        this.putColourInMap(tab, "default", false);
-        return this.getColourFromFavicon().then((colour) => {
+      if (data == "default" || !data) {
+        return this.getColourFromFavicon(tab).then((colour) => {
           return this.putColourInMap(tab, "rgb(" + colour.join(",") + ")");
-        }).catch(() => {});
+        }).catch((e) => {
+          this.putColourInMap(tab, "default");
+        });
       }
       return this.putColourInMap(tab, data);
     });
   },
-  onNewTab(tab) {
-    let win = viewFor(tab.window);
-    if (!win) {
-      // Window is not yet initialised.
-      return;
-    }
-    if (tab != tabs.activeTab) {
-      // Tab was opened, but not switched to
-      return;
-    }
-    // Those 2 URLs don't trigger a `ready` event on the tab, which means this is needed
-    if (tab.url == "about:newtab" || tab.url == "about:blank") {
-      this.resetColours(win);
-    }
-  },
 
-  getColourFromFavicon() {
+  getColourFromFavicon(tab) {
     return new Promise((resolve, reject) => {
       let { getFavicon } = require("sdk/places/favicon");
 
-      return getFavicon(tabs.activeTab.url).then((url) => {
+      return getFavicon(tab.url).then((url) => {
         if (!url) {
-          reject();
+          throw new Error("No favicon URL: " + url);
         }
         let win = require("sdk/window/utils").getMostRecentBrowserWindow();
         let doc = win.document;
@@ -78,7 +67,9 @@ const ColourManager = {
         imgEl.onload = () => {
           resolve(getColourFromImage(imgEl));
         };
-      }).catch(() => {});
+      }).catch((e) => {
+        reject(e);
+      });
     });
   },
 
@@ -122,13 +113,11 @@ const ColourManager = {
     if (Preferences.prefs["use-page-colours"]) {
       tabs.on("close", this.onTabRemove);
       tabs.on("activate", this.onTabChange);
-      tabs.on("open", this.onNewTab);
       tabs.on("ready", this.onNewURL);
       this.onNewURL(tabs.activeTab);
     } else {
       tabs.off("close", this.onTabRemove);
       tabs.off("activate", this.onTabChange);
-      tabs.off("open", this.onNewTab);
       tabs.off("ready", this.onNewURL);
       doToAllWindows(this.resetColours)();
     }
@@ -141,7 +130,6 @@ const ColourManager = {
   init() {
     this.onTabRemove = this.onTabRemove.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
-    this.onNewTab = this.onNewTab.bind(this);
     this.onNewURL = this.onNewURL.bind(this);
     this.resetColours = this.resetColours.bind(this);
   }
