@@ -45,7 +45,6 @@ function buildPrefsUI(prefs) {
   let mainContent = $("#settings");
   for (let pref in prefs) {
     if (pref == "themes") {
-      initThemesUI(JSON.parse(prefs[pref]));
       continue;
     }
     let settingDiv = document.createElement("div");
@@ -82,6 +81,7 @@ function buildPrefsUI(prefs) {
     settingDiv.appendChild(el);
     mainContent.appendChild(settingDiv);
   }
+  initThemesUI(JSON.parse(prefs.themes), prefs["selected-theme"]);
 }
 
 function wireElementWithExtension(el, pref) {
@@ -98,10 +98,13 @@ function wireElementWithExtension(el, pref) {
 }
 
 let customThemes;
-function initThemesUI(themes) {
+function initThemesUI(themes, selected) {
   customThemes = themes;
   for (let theme of themes) {
     createThemeElement(theme);
+  }
+  if ($("#themes-list li[data-theme='" + selected + "']")) {
+    $("#themes-list li[data-theme='" + selected + "']").click();
   }
   $("#add").addEventListener("click", addTheme);
 }
@@ -201,11 +204,18 @@ function updateTheme(name, prop, value) {
 }
 
 function createThemeElement(theme) {
+  let themeSelect = $("select[data-pref='selected-theme']");
+  let opt = document.createElement("option");
+  opt.value = theme.name;
+  opt.textContent = theme.name;
+  themeSelect.appendChild(opt);
+
   let item = document.createElement("li");
   let name = document.createElement("span");
   item.dataset.theme = theme.name;
   name.textContent = theme.name;
   item.appendChild(name);
+
   let list = $("#themes-list");
   list.appendChild(item);
   item.onclick = () => {
@@ -216,7 +226,6 @@ function createThemeElement(theme) {
     item.classList.add("selected");
     showThemeEditor(theme);
   };
-  item.click();
 }
 
 window.addEventListener("contentscript-load", init);

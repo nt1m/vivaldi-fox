@@ -2,8 +2,8 @@
 
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
 const Preferences = require("sdk/simple-prefs");
-const { doToAllWindows } = require("lib/utils");
-const { getLuminance, getContrastRatio, extractRGBFromCSSColour } = require("lib/colour-utils");
+const { doToAllWindows } = require("utils/misc");
+const { getLuminance, getContrastRatio, extractRGBFromCSSColour } = require("utils/colour");
 module.exports = {
   initThemes(win) {
     let doc = win.document;

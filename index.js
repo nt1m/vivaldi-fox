@@ -5,9 +5,9 @@ const windows = require("sdk/windows").browserWindows;
 const { viewFor } = require("sdk/view/core");
 const DOMEvents = require("sdk/dom/events");
 const { loadSheet, removeSheet } = require("sdk/stylesheet/utils");
-const { getLuminance, getContrastRatio, extractRGBFromCSSColour, getColourFromImage } = require("lib/colour-utils");
+const { getLuminance, getContrastRatio, extractRGBFromCSSColour, getColourFromImage } = require("utils/colour");
 const Preferences = require("sdk/simple-prefs");
-const { doToAllWindows } = require("lib/utils");
+const { doToAllWindows, getComputedCSSProperty } = require("utils/misc");
 
 const ThemeManager = require("themes");
 const ColourManager = {
@@ -81,7 +81,7 @@ const ColourManager = {
       if (e.target !== navbar) {
         return;
       }
-      let navbarBg = win.getComputedStyle(navbar).getPropertyValue("background-color");
+      let navbarBg = getComputedCSSProperty(navbar, "background-color");
       let [r, g, b] = extractRGBFromCSSColour(navbarBg);
       let lum = getLuminance([r, g, b]);
       let ratio = getContrastRatio(lum, 0);
