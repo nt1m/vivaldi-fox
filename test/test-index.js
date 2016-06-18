@@ -186,6 +186,8 @@ exports["test settings custom-themes"] = function* (assert) {
   $("#theme-editor .remove", doc).click();
   assert.ok(!$("[data-pref='selected-theme'] [value='test-custom-theme']", doc),
     "Custom theme should be removed from selected-theme select");
+  assert.equal($("#themes-list", doc).childNodes.length, 0,
+    "Theme list should have no child");
   assert.equal($("#theme-editor", doc).childNodes.length, 0,
     "Theme editor should be destroyed");
   assert.equal($("[data-pref='selected-theme']", doc).value, "light",
