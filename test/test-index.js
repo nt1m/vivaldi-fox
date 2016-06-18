@@ -1,4 +1,6 @@
 "use strict";
+/* global console */
+const { before, after } = require("sdk/test/utils");
 const { setTimeout } = require("sdk/timers");
 const ColourUtils = require("../utils/colour");
 const { getComputedCSSProperty } = require("../utils/misc");
@@ -6,6 +8,8 @@ const tabs = require("sdk/tabs");
 const { viewFor } = require("sdk/view/core");
 const self = require("sdk/self");
 const $ = (s, t) => t.querySelector(s);
+const $$ = (s, t) => t.querySelectorAll(s);
+const { Task } = require("resource://gre/modules/Task.jsm", {});
 
 /* Helpers */
 let openURL = function* (url) {
@@ -69,7 +73,7 @@ exports["test meta-tags"] = function* (assert) {
     "Text colour is set to white");
 };
 
-exports["test settings"] = function* (assert) {
+exports["test settings all"] = function* (assert) {
   let tab = yield openSettings();
   assert.ok(tab.url == "resource://vivaldi-fox/data/options.html",
     "Settings tab is opened");
@@ -111,8 +115,6 @@ exports["test settings"] = function* (assert) {
   assert.ok(!root.classList.contains("vivaldi-fox-australis-tabs"),
     "Root element stops containing australis tabs");
 
-  $("[data-pref='use-australis-tabs']", doc).click();
-
   /* Test selected-theme */
   assert.equal($("[data-pref='selected-theme']", doc).value, "light",
     "Test use-page-colours default setting value");
@@ -123,7 +125,7 @@ exports["test settings"] = function* (assert) {
 
   $("[data-pref='use-page-colours']", doc).click();
   yield waitForPrefChange("use-page-colours");
-  assert.equal(getComputedCSSProperty(root, "--theme-accent-background"), "#343434",
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-background"), "#393939",
     "Theme accent bg changed to black");
   assert.equal(getComputedCSSProperty(root, "--theme-accent-colour"), "#f1f1f1",
     "Text colour is set to white");
@@ -134,5 +136,72 @@ exports["test settings"] = function* (assert) {
   tab.close();
 };
 
+exports["test settings custom-themes"] = function* (assert) {
+  let tab = yield openSettings();
+  let win = viewFor(tab).linkedBrowser.contentWindow;
+  let doc = win.document;
+
+  let chromeWin = getWindowForTab(tab);
+  let root = chromeWin.document.documentElement;
+
+  assert.equal($$("#themes-list li", doc).length, 0,
+    "should be 0 custom theme initially");
+
+  $("[data-pref='use-page-colours']", doc).click();
+  yield waitForPrefChange("use-page-colours");
+
+  tab.attach({
+    contentScript: "unsafeWindow.addTheme('test-custom-theme')"
+  });
+  yield waitForPrefChange("themes");
+  assert.equal($$("#themes-list li", doc).length, 1, "should now be 1 custom theme");
+
+  let themeEl = $("#themes-list li[data-theme='test-custom-theme']", doc);
+  themeEl.click();
+  assert.ok(themeEl.classList.contains("selected"),
+    "Theme item is selected");
+
+  assert.equal($("[data-pref='selected-theme']", doc).value, "test-custom-theme",
+    "Custom theme should be selected in selected-theme select");
+  assert.equal($("#theme-editor", doc).childNodes.length, 5,
+    "should be 4 custom colour settings + 1 remove button");
+
+  let children = $("#theme-editor", doc).childNodes;
+  for (let i = 0; i < children.length - 1; i++) {
+    let child = children[i];
+    let input = $("input", child);
+    let label = $("span", child).textContent;
+    let colour = "#000000".split("");
+    colour[i + 1] = "f";
+    colour[i + 2] = "f";
+    colour = colour.join("");
+    input.value = colour;
+    input.dispatchEvent(new win.Event("input"));
+    yield waitForPrefChange("themes");
+    assert.equal(getComputedCSSProperty(root, "--theme-" + label), colour,
+      "--theme-" + label + " should be properly set");
+  }
+  tab.close();
+};
+
 require("../index.js");
+
+// Clean up prefs after each test.
+let initialPrefs = JSON.parse(JSON.stringify(require("sdk/simple-prefs").prefs));
+before(exports, function* (name) {
+  console.log("****\n*****");
+  console.log("Running " + name);
+  console.log("****\n*****");
+});
+after(exports, Task.async(function* () {
+  for (let pref in initialPrefs) {
+    if (pref.startsWith("sdk.")) {
+      continue;
+    }
+    if (require("sdk/simple-prefs").prefs[pref] !== initialPrefs[pref]) {
+      require("sdk/simple-prefs").prefs[pref] = initialPrefs[pref];
+      yield waitForPrefChange(pref);
+    }
+  }
+}));
 require("sdk/test").run(exports);

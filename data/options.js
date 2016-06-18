@@ -106,7 +106,16 @@ function initThemesUI(themes, selected) {
   if ($("#themes-list li[data-theme='" + selected + "']")) {
     $("#themes-list li[data-theme='" + selected + "']").click();
   }
-  $("#add").addEventListener("click", addTheme);
+  $("#add").addEventListener("click", () => {
+    let name;
+    do {
+      name = prompt("Name of theme");
+    } while (themeExists(name));
+    if (!name) {
+      return;
+    }
+    addTheme(name);
+  });
 }
 
 function themeExists(theme) {
@@ -116,13 +125,9 @@ function themeExists(theme) {
   return themes.indexOf(theme) > -1;
 }
 
-function addTheme() {
-  let name;
-  do {
-    name = prompt("Name of theme");
-  } while (themeExists(name));
-  if (!name) {
-    return;
+function addTheme(name) {
+  if (themeExists(name)) {
+    throw new Error("Theme " + name + " already exists.");
   }
   let data = {
     name,
