@@ -1,10 +1,45 @@
 "use strict";
 const { setTimeout } = require("sdk/timers");
-const ColourUtils = require("../lib/colour-utils");
+const ColourUtils = require("../utils/colour");
+const { getComputedCSSProperty } = require("../utils/misc");
 const tabs = require("sdk/tabs");
 const { viewFor } = require("sdk/view/core");
-const { after, waitUntil } = require("sdk/test/utils");
+const self = require("sdk/self");
+const { Task } = require("resource://gre/modules/Task.jsm", {});
 const $ = (s, t) => t.querySelector(s);
+
+let openURL = Task.async(function* (url) {
+  let tab = tabs.activeTab;
+  tab.url = url;
+  let t = yield once(tab, "load");
+  yield wait(200);
+  return t;
+});
+
+function wait(time) {
+  return new Promise((r) => {
+    setTimeout(r, time);
+  });
+}
+
+function waitForPrefChange(pref) {
+  return once(require("sdk/simple-prefs"), pref);
+}
+
+function once(target, event) {
+  return new Promise((resolve) => {
+    target.once(event, resolve);
+  });
+}
+function getWindowForTab(tab = tabs.activeTab) {
+  return viewFor(tab.window);
+}
+let openSettings = function* (tab) {
+  $("#action-button--vivaldi-fox-vivaldi-fox-options",
+    getWindowForTab().document).click();
+  let t = yield once(tabs[1], "load");
+  return t;
+};
 
 exports["test colour-utils"] = function(assert) {
   assert.pass("Running colour-utils tests");
@@ -14,33 +49,61 @@ exports["test colour-utils"] = function(assert) {
     "Test contrast between black and white");
 };
 
-exports["test meta-tags"] = function(assert, done) {
-  openURLAndTest("../test/test-meta-theme-color.html", function(tab) {
-    let win = viewFor(tab.window);
-    let root = $("#main-window", win.document);
-    assert.ok(root.style.getPropertyValue("--theme-accent-color") == "#EF3939",
-      "<meta name='theme-color'> is correctly extracted");
-    done();
-  });
+exports["test meta-tags"] = function* (assert) {
+  let tab = yield openURL(self.data.url("../test/test-meta-theme-color.html"));
+  let win = getWindowForTab(tab);
+  let root = win.document.documentElement;
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#ef3939",
+    "<meta name='theme-color'> is correctly extracted");
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#fff",
+    "Text colour is set to white");
 };
 
-function wait(time) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
-function openURLAndTest(url, test) {
-  tabs.open({
-    url,
-    onOpen: (tab) => {
-      tab.activate();
-    },
-    onLoad: (tab) => {
-      test(tab);
-      tab.close();
-    }
-  });
-}
+exports["test settings"] = function* (assert) {
+  let tab = yield openSettings();
+  assert.ok(tab.url == "resource://vivaldi-fox/data/options.html",
+    "Settings tab is opened");
+
+  let doc = viewFor(tab).linkedBrowser._contentWindow.document;
+
+  let chromeWin = getWindowForTab(tab);
+  let root = chromeWin.document.documentElement;
+
+  /* Test use-page-colours */
+  assert.ok($("[data-pref='use-page-colours']", doc).checked,
+    "Test use-page-colours default setting value");
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#ef3939",
+    "<meta name='theme-color'> is correctly extracted");
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#fff",
+    "Text colour is set to white");
+
+  $("[data-pref='use-page-colours']", doc).click();
+  assert.ok(!$("[data-pref='use-page-colours']", doc).checked,
+    "use-page-colours should no longer be checked");
+  yield waitForPrefChange("use-page-colours");
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#fff",
+    "Theme colour doesn't depend on the page");
+  assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#000",
+    "Text colour is reset to black");
+
+  $("[data-pref='use-page-colours']", doc).click();
+
+  /* Test use australis tabs */
+  assert.ok($("[data-pref='use-australis-tabs']", doc).checked,
+    "Test use-page-colours default setting value");
+  assert.ok(root.classList.contains("vivaldi-fox-australis-tabs"),
+    "Root element contains australis tabs");
+
+  $("[data-pref='use-australis-tabs']", doc).click();
+  assert.ok(!$("[data-pref='use-australis-tabs']", doc).checked,
+    "use-page-colours should be checked");
+  yield waitForPrefChange("use-australis-tabs");
+  assert.ok(!root.classList.contains("vivaldi-fox-australis-tabs"),
+    "Root element stops containing australis tabs");
+
+  $("[data-pref='use-australis-tabs']", doc).click();
+  tab.close();
+};
 
 require("../index.js");
 require("sdk/test").run(exports);

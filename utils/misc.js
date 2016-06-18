@@ -10,6 +10,6 @@ module.exports = {
   },
   getComputedCSSProperty(target, property) {
     let win = target.ownerDocument.defaultView;
-    return win.getComputedStyle(target).getPropertyValue(property);
+    return win.getComputedStyle(target).getPropertyValue(property).trim().toLowerCase();
   }
 };
