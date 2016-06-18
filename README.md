@@ -17,5 +17,5 @@ This repository integrates with Travis CI, which runs the add-on automated tests
 
 - `jpm test` runs the add-on tests
 - `eslint ./` runs eslint across the directory 
-	- note that you'll need to install `eslint` and `eslint-plugin-mozilla` globally first
+	- You'll need to install `eslint` and `eslint-plugin-mozilla` globally with:
 		- `npm install -g eslint && npm install -g eslint-plugin-mozilla`
