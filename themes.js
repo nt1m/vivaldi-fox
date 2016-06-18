@@ -19,16 +19,26 @@ module.exports = {
       selectedTheme = this.defaultThemes[name];
     } else if (this.customThemes.hasOwnProperty(name)) {
       selectedTheme = this.customThemes[name];
+    } else {
+      Preferences.prefs["selected-theme"] = "light";
+      selectedTheme = this.defaultThemes.light;
     }
     return selectedTheme;
   },
 
   get customThemes() {
-    let themes = JSON.parse(Preferences.prefs.themes);
+    let themes;
+    try {
+      themes = JSON.parse(Preferences.prefs.themes);
+    } catch (e) {
+      Preferences.prefs.themes = [];
+      themes = [];
+    }
     let obj = {};
     for (let theme of themes) {
       obj[theme.name] = theme.data;
     }
+
     return obj;
   },
   setTheme(theme) {
