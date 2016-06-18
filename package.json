@@ -56,6 +56,7 @@
     }
   ],
   "permissions": {
-    "private-browsing": true
+    "private-browsing": true,
+    "multiprocess": true
   }
 }
