@@ -179,6 +179,7 @@ exports["test settings custom-themes"] = function* (assert) {
     input.value = colour;
     input.dispatchEvent(new win.Event("input"));
     yield waitForPrefChange("themes");
+    yield wait(400);
     assert.equal(getComputedCSSProperty(root, "--theme-" + label), colour,
       "--theme-" + label + " should be properly set");
   }
