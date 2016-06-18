@@ -8,6 +8,7 @@ const self = require("sdk/self");
 const { Task } = require("resource://gre/modules/Task.jsm", {});
 const $ = (s, t) => t.querySelector(s);
 
+/* Helpers */
 let openURL = Task.async(function* (url) {
   let tab = tabs.activeTab;
   tab.url = url;
@@ -34,6 +35,7 @@ function once(target, event) {
 function getWindowForTab(tab = tabs.activeTab) {
   return viewFor(tab.window);
 }
+
 let openSettings = function* (tab) {
   $("#action-button--vivaldi-fox-vivaldi-fox-options",
     getWindowForTab().document).click();
@@ -41,6 +43,7 @@ let openSettings = function* (tab) {
   return t;
 };
 
+/* Actual tests */
 exports["test colour-utils"] = function(assert) {
   assert.pass("Running colour-utils tests");
   assert.ok(ColourUtils.getContrastRatio(0, 1) == 21,
