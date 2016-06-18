@@ -160,13 +160,14 @@ exports["test settings custom-themes"] = function* (assert) {
   themeEl.click();
   yield waitForPrefChange("selected-theme");
 
+  assert.equal(require("sdk/simple-prefs").prefs["selected-theme"], "test-custom-theme",
+    "Selected theme should now be test-custom-theme");
   assert.ok(themeEl.classList.contains("selected"),
     "Theme item is selected");
   assert.equal($("[data-pref='selected-theme']", doc).value, "test-custom-theme",
     "Custom theme should be selected in selected-theme select");
   assert.equal($("#theme-editor", doc).childNodes.length, 5,
     "should be 4 custom colour settings + 1 remove button");
-
   let children = $("#theme-editor", doc).childNodes;
   for (let i = 0; i < children.length - 1; i++) {
     let child = children[i];
@@ -179,7 +180,6 @@ exports["test settings custom-themes"] = function* (assert) {
     input.value = colour;
     input.dispatchEvent(new win.Event("input"));
     yield waitForPrefChange("themes");
-    yield wait(400);
     assert.equal(getComputedCSSProperty(root, "--theme-" + label), colour,
       "--theme-" + label + " should be properly set");
   }
