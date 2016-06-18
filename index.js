@@ -27,7 +27,7 @@ const ColourManager = {
       if (win) {
         this.resetColours(win);
       }
-    } else {
+    } else if (win) {
       this.setColour(win, this.tabColourMap.get(tab.id));
     }
   },

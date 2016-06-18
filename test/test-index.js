@@ -5,17 +5,16 @@ const { getComputedCSSProperty } = require("../utils/misc");
 const tabs = require("sdk/tabs");
 const { viewFor } = require("sdk/view/core");
 const self = require("sdk/self");
-const { Task } = require("resource://gre/modules/Task.jsm", {});
 const $ = (s, t) => t.querySelector(s);
 
 /* Helpers */
-let openURL = Task.async(function* (url) {
+let openURL = function* (url) {
   let tab = tabs.activeTab;
   tab.url = url;
   let t = yield once(tab, "load");
   yield wait(200);
   return t;
-});
+};
 
 function wait(time) {
   return new Promise((r) => {
@@ -83,36 +82,55 @@ exports["test settings"] = function* (assert) {
   /* Test use-page-colours */
   assert.ok($("[data-pref='use-page-colours']", doc).checked,
     "Test use-page-colours default setting value");
-  assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#ef3939",
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-background"), "#ef3939",
     "<meta name='theme-color'> is correctly extracted from settings");
-  assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#fff",
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-colour"), "#fff",
     "Settings page should trigger white accent colour");
 
   $("[data-pref='use-page-colours']", doc).click();
   assert.ok(!$("[data-pref='use-page-colours']", doc).checked,
     "use-page-colours should no longer be checked");
   yield waitForPrefChange("use-page-colours");
-  assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#fff",
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-background"), "#fff",
     "Theme colour doesn't depend on the page");
-  assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#000",
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-colour"), "#000",
     "Text colour is reset to black");
 
   $("[data-pref='use-page-colours']", doc).click();
 
   /* Test use-australis-tabs */
   assert.ok($("[data-pref='use-australis-tabs']", doc).checked,
-    "Test use-page-colours default setting value");
+    "Test use-australis-tabs default setting value");
   assert.ok(root.classList.contains("vivaldi-fox-australis-tabs"),
     "Root element contains australis tabs");
 
   $("[data-pref='use-australis-tabs']", doc).click();
   assert.ok(!$("[data-pref='use-australis-tabs']", doc).checked,
-    "use-page-colours should be checked");
+    "use-australis-tabs should be checked");
   yield waitForPrefChange("use-australis-tabs");
   assert.ok(!root.classList.contains("vivaldi-fox-australis-tabs"),
     "Root element stops containing australis tabs");
 
   $("[data-pref='use-australis-tabs']", doc).click();
+
+  /* Test selected-theme */
+  assert.equal($("[data-pref='selected-theme']", doc).value, "light",
+    "Test use-page-colours default setting value");
+  $("[data-pref='selected-theme']", doc).value = "dark";
+  $("[data-pref='selected-theme']", doc).dispatchEvent(
+    new doc.defaultView.Event("change"));
+  yield waitForPrefChange("selected-theme");
+
+  $("[data-pref='use-page-colours']", doc).click();
+  yield waitForPrefChange("use-page-colours");
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-background"), "#343434",
+    "Theme accent bg changed to black");
+  assert.equal(getComputedCSSProperty(root, "--theme-accent-colour"), "#f1f1f1",
+    "Text colour is set to white");
+  assert.equal(getComputedCSSProperty(root, "--theme-secondary-background"), "#0a0a0a",
+    "secondary background is now black");
+  assert.equal(getComputedCSSProperty(root, "--theme-secondary-colour"), "#f1f1f1",
+    "Text colour is set to white");
   tab.close();
 };
 
