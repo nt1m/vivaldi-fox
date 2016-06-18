@@ -12,7 +12,7 @@ let openURL = function* (url) {
   let tab = tabs.activeTab;
   tab.url = url;
   let t = yield once(tab, "load");
-  yield wait(200);
+  yield wait(400);
   return t;
 };
 
@@ -46,7 +46,7 @@ let openSettings = function* (tab) {
   $("#action-button--vivaldi-fox-vivaldi-fox-options",
     getWindowForTab().document).click();
   let t = yield once(tabs[1], "load");
-  yield wait(200);
+  yield wait(400);
   return t;
 };
 
