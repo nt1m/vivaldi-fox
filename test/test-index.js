@@ -74,7 +74,7 @@ exports["test settings"] = function* (assert) {
   assert.ok(tab.url == "resource://vivaldi-fox/data/options.html",
     "Settings tab is opened");
 
-  let doc = viewFor(tab).linkedBrowser._contentWindow.document;
+  let doc = viewFor(tab).linkedBrowser.contentWindow.document;
 
   let chromeWin = getWindowForTab(tab);
   let root = chromeWin.document.documentElement;
