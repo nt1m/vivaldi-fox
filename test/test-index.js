@@ -91,7 +91,7 @@ exports["test settings"] = function* (assert) {
 
   $("[data-pref='use-page-colours']", doc).click();
 
-  /* Test use australis tabs */
+  /* Test use-australis-tabs */
   assert.ok($("[data-pref='use-australis-tabs']", doc).checked,
     "Test use-page-colours default setting value");
   assert.ok(root.classList.contains("vivaldi-fox-australis-tabs"),
