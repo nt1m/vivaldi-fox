@@ -178,9 +178,19 @@ exports["test settings custom-themes"] = function* (assert) {
     input.value = colour;
     input.dispatchEvent(new win.Event("input"));
     yield waitForPrefChange("themes");
+    yield wait(400);
     assert.equal(getComputedCSSProperty(root, "--theme-" + label), colour,
       "--theme-" + label + " should be properly set");
   }
+
+  $("#theme-editor .remove", doc).click();
+  assert.ok(!$("[data-pref='selected-theme'] [value='test-custom-theme']", doc),
+    "Custom theme should be removed from selected-theme select");
+  assert.equal($("#theme-editor", doc).childNodes.length, 0,
+    "Theme editor should be destroyed");
+  assert.equal($("[data-pref='selected-theme']", doc).value, "light",
+    "Light theme should now be selected");
+
   tab.close();
 };
 
@@ -189,9 +199,7 @@ require("../index.js");
 // Clean up prefs after each test.
 let initialPrefs = JSON.parse(JSON.stringify(require("sdk/simple-prefs").prefs));
 before(exports, function* (name) {
-  console.log("****\n*****");
-  console.log("Running " + name);
-  console.log("****\n*****");
+  console.log("\n*****\n*****", "\nRunning " + name, "\n*****\n*****");
 });
 after(exports, Task.async(function* () {
   for (let pref in initialPrefs) {
