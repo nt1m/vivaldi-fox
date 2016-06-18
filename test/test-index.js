@@ -23,7 +23,14 @@ function wait(time) {
   });
 }
 
-function waitForPrefChange(pref) {
+function waitForTick(time) {
+  return new Promise((r) => {
+    r();
+  });
+}
+
+function* waitForPrefChange(pref) {
+  yield waitForTick();
   return once(require("sdk/simple-prefs"), pref);
 }
 
@@ -76,9 +83,9 @@ exports["test settings"] = function* (assert) {
   assert.ok($("[data-pref='use-page-colours']", doc).checked,
     "Test use-page-colours default setting value");
   assert.ok(getComputedCSSProperty(root, "--theme-accent-background") == "#ef3939",
-    "<meta name='theme-color'> is correctly extracted");
+    "<meta name='theme-color'> is correctly extracted from settings");
   assert.ok(getComputedCSSProperty(root, "--theme-accent-colour") == "#fff",
-    "Text colour is set to white");
+    "Settings page should trigger white accent colour");
 
   $("[data-pref='use-page-colours']", doc).click();
   assert.ok(!$("[data-pref='use-page-colours']", doc).checked,

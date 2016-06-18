@@ -12,6 +12,7 @@ before_install:
 before_script:
   - npm install -g jpm
   - npm install -g eslint
+  - npm install -g eslint-plugin-mozilla
 script:
   - jpm test
   - eslint ./
