@@ -136,11 +136,6 @@ function addTheme() {
   customThemes.push(data);
   savePref("themes", JSON.stringify(customThemes));
 
-  let themeSelect = $("select[data-pref='selected-theme']");
-  let opt = document.createElement("option");
-  opt.value = name;
-  opt.textContent = name;
-  themeSelect.appendChild(opt);
   createThemeElement(data);
 }
 
