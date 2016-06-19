@@ -8,6 +8,7 @@
   --toolbarbutton-active-boxshadow: 0 0 0 1px var(--theme-colour) inset;
 
   --toolbarbutton-checkedhover-backgroundcolor: rgba(200,200,200,0.5);
+  --tab-toolbar-navbar-overlap: 0px !important;
 }
 
 /** Tab bar **/
@@ -18,22 +19,25 @@
 /* Thanks to jotted on reddit for the australis tabs! */
 /* Hide stroked background */
 .tabbrowser-tab[visuallyselected] .tab-background-end::after,
-.tabbrowser-tab[visuallyselected] .tab-background-end::before,
-.tabbrowser-tab[visuallyselected] .tab-background-start::after,
-.tabbrowser-tab[visuallyselected] .tab-background-start::before {
+.tabbrowser-tab[visuallyselected] .tab-background-start::after {
   content: none;
 }
 
-.tabbrowser-tab[visuallyselected] .tab-background-end,
-.tabbrowser-tab[visuallyselected] .tab-background-start {
-  background-color: var(--theme-accent-background);
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected],
+.tabbrowser-tab[visuallyselected] .tab-background-end::before,
+.tabbrowser-tab[visuallyselected] .tab-background-start::before {
+  background-image: linear-gradient(
+                      var(--theme-accent-background),
+                      var(--theme-accent-background) calc(100% - 1px),
+                      transparent calc(100% - 1px)
+                    ) !important;
 }
 
 /* Use built-in curve. */
-.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-end {
+.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-end::before {
   clip-path: url("chrome://browser/content/browser.xul#tab-curve-clip-path-end");
 }
-.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-start {
+.vivaldi-fox-australis-tabs .tabbrowser-tab[visuallyselected] .tab-background-start::before {
   clip-path: url("chrome://browser/content/browser.xul#tab-curve-clip-path-start");
 }
 
@@ -44,7 +48,8 @@
                       transparent,
                       transparent 2px,
                       var(--theme-accent-background) 2px,
-                      var(--theme-accent-background)
+                      var(--theme-accent-background) calc(100% - 1px),
+                      transparent calc(100% - 1px)
                     ) !important;
   background-size: auto;
 }
@@ -72,6 +77,7 @@
 :root:not(.vivaldi-fox-australis-tabs) .tab-background-end {
   width: 0;
 }
+
 /* End override @tabCurveHalfWidth@ and @tabCurveWidth@ */
 :root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button {
   min-width: 30px !important;
@@ -94,10 +100,17 @@
 :root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab {
   pointer-events: auto !important;
 }
+
+:root:not(.vivaldi-fox-australis-tabs) .tab-background-middle,
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected] .tab-background-end::before,
+:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected] .tab-background-start::before {
+  background: none !important;
+}
+
 /* End squared tabs */
 
 .tabbrowser-tab[visuallyselected] .tab-content {
-  color: var(--theme-accent-colour);
+  color: var(--theme-accent-colour) !important;
   text-shadow: none !important;
 }
 :root.vivaldi-fox-tab-icon-background .tab-icon-image {
@@ -118,7 +131,7 @@
 #titlebar-buttonbox.vivaldi-fox-invert-controls #titlebar-close:not(:hover) {
   filter: invert(1);
 }
-:root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab[visuallyselected="true"],
+
 #navigator-toolbox > toolbar:not(#TabsToolbar):not(#toolbar-menubar),
 /* Beyond Australis compat */
 #theFoxOnlyBetter-slimChrome-toolbars,
@@ -180,6 +193,9 @@
 }
 #navigator-toolbox::after {
   background: var(--theme-accent-background);
+}
+#urlbar, #nav-bar #search-container .searchbar-textbox {
+  opacity: var(--theme-textbox-opacity) !important;
 }
 #titlebar:not(:-moz-lwtheme),
 #urlbar,

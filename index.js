@@ -5,7 +5,7 @@ const windows = require("sdk/windows").browserWindows;
 const { viewFor } = require("sdk/view/core");
 const DOMEvents = require("sdk/dom/events");
 const { loadSheet, removeSheet } = require("sdk/stylesheet/utils");
-const { getLuminance, getContrastRatio, extractRGBFromCSSColour, getColourFromImage } = require("utils/colour");
+const { getLuminance, getContrastRatio, toRgb, getColourFromImage } = require("utils/colour");
 const Preferences = require("sdk/simple-prefs");
 const { doToAllWindows, getComputedCSSProperty } = require("utils/misc");
 
@@ -74,21 +74,27 @@ const ColourManager = {
   },
 
   setColour(win, colour) {
+    let [r, g, b] = toRgb(colour);
+    let bg = `rgba(${r}, ${g}, ${b}, ${Preferences.prefs["toolbar-opacity"] / 100})`;
+
     let doc = win.document;
-    doc.documentElement.style.setProperty("--theme-accent-background", colour);
+    doc.documentElement.style.setProperty("--theme-accent-background", bg);
+
+    let lum = getLuminance([r, g, b]);
+    let ratio = getContrastRatio(lum, 0);
+    if (ratio > 7 && Preferences.prefs["toolbar-opacity"] < 50) {
+      doc.documentElement.style.setProperty("--theme-accent-colour", "#000");
+    } else if (Preferences.prefs["toolbar-opacity"] > 50) {
+      doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
+    } else {
+      doc.documentElement.style.setProperty("--theme-accent-colour",
+        "var(--theme-secondary-colour)");
+    }
+
     let navbar = doc.querySelector("#nav-bar");
     let onTransitionEnd = function(e) {
       if (e.target !== navbar) {
         return;
-      }
-      let navbarBg = getComputedCSSProperty(navbar, "background-color");
-      let [r, g, b] = extractRGBFromCSSColour(navbarBg);
-      let lum = getLuminance([r, g, b]);
-      let ratio = getContrastRatio(lum, 0);
-      if (ratio > 7) {
-        doc.documentElement.style.setProperty("--theme-accent-colour", "#000");
-      } else {
-        doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
       }
       win.ToolbarIconColor.inferFromText();
       DOMEvents.removeListener(navbar, "transitionend", onTransitionEnd);

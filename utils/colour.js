@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = {
+let ColourUtils = module.exports = {
   getLuminance(colour) {
     // Calculate relative luminance according to https://www.w3.org/TR/WCAG/#relativeluminancedef
     for (let i = 0; i < 3; i++) {
@@ -17,13 +17,31 @@ module.exports = {
     // Calculate contrast ratio according to https://www.w3.org/TR/WCAG/#contrast-ratiodef
     return Math.max(l1 + 0.05, l2 + 0.05) / Math.min(l1 + 0.05, l2 + 0.05);
   },
-  // colour is from getComputedStyle which always returns rgb or rgba
-  extractRGBFromCSSColour(colour) {
-    let isAlpha = colour.startsWith("rgba");
-    let [r, g, b] = colour.split(",");
-    r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-    b = isAlpha ? b : b.substring(0, b.length - 1);
-    return [Math.floor(r), Math.floor(g), Math.floor(b)];
+  getColourFormat(colour) {
+    if (colour.startsWith("#")) {
+      return "hex";
+    } else if (colour.startsWith("rgb") || colour.startsWith("rgba")) {
+      return "rgb";
+    }
+    return "hsl";
+  },
+  toRgb(colour) {
+    let r, g, b;
+    if (ColourUtils.getColourFormat(colour) == "hex") {
+      if (colour.length == 4) {
+        colour = "#" + colour[1].repeat(2) + colour[2].repeat(2) + colour[3].repeat(2);
+      }
+      r = "0x" + colour[1] + colour[2];
+      g = "0x" + colour[3] + colour[4];
+      b = "0x" + colour[5] + colour[6];
+    } else {
+      let isAlpha = colour.startsWith("rgba");
+      colour = colour.replace(/\s/g, "");
+      ([r, g, b] = colour.split(","));
+      r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
+      b = isAlpha ? b : b.substring(0, b.length - 1);
+    }
+    return [Math.floor(Number(r)), Math.floor(Number(g)), Math.floor(Number(b))];
   },
   getColourFromImage(imgEl) {
     let doc = imgEl.ownerDocument;

@@ -3,7 +3,7 @@
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
 const Preferences = require("sdk/simple-prefs");
 const { doToAllWindows } = require("utils/misc");
-const { getLuminance, getContrastRatio, extractRGBFromCSSColour } = require("utils/colour");
+const { getLuminance, getContrastRatio, extractRGBFromCSSColour, toRgb } = require("utils/colour");
 module.exports = {
   initThemes(win) {
     let doc = win.document;
@@ -55,18 +55,21 @@ module.exports = {
     return os;
   },
   setTheme(theme) {
+    let accentBg = toRgb(theme["accent-background"]);
+    let bg = `rgba(${accentBg.join(",")},${Preferences.prefs["toolbar-opacity"] / 100})`;
     let styleText = `
 :root {
   --theme-accent-colour: ${theme["accent-colour"]};
-  --theme-accent-background: ${theme["accent-background"]};
+  --theme-accent-background: ${bg};
   --theme-secondary-colour: ${theme["secondary-colour"]};
   --theme-secondary-background: ${theme["secondary-background"]};
+  --theme-textbox-opacity: ${Preferences.prefs["textbox-opacity"] / 100};
 }`;
     if (Preferences.prefs["grayed-out-inactive-windows"]) {
       styleText += `
 :root:-moz-window-inactive {
   --theme-accent-colour: ${theme["accent-colour"]} !important;
-  --theme-accent-background: ${theme["accent-background"]} !important;
+  --theme-accent-background: ${bg} !important;
 }`;
     }
     doToAllWindows((win) => {
@@ -93,14 +96,18 @@ module.exports = {
     light: {
       "accent-background": "#fff",
       "accent-colour": "#000",
-      "secondary-background": "#e5e5e5",
-      "secondary-colour": "#000"
+      "secondary-background": "#dfdfdf",
+      "secondary-colour": "#000",
+      "toolbar-opacity": "1",
+      "textbox-opacity": "1"
     },
     dark: {
-      "accent-background": "#393939",
+      "accent-background": "#404040",
       "accent-colour": "#f1f1f1",
-      "secondary-background": "#0a0a0a",
-      "secondary-colour": "#f1f1f1"
+      "secondary-background": "#000",
+      "secondary-colour": "#f1f1f1",
+      "toolbar-opacity": "1",
+      "textbox-opacity": "1"
     }
   }
 };

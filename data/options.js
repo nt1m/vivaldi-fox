@@ -30,6 +30,16 @@ let PrefDefinitions = {
     "description": "Gray out inactive windows",
     "type": "bool",
   },
+  "toolbar-opacity": {
+    "title": "Toolbar opacity",
+    "type": "integer",
+    "placement": "#opacity-settings"
+  },
+  "textbox-opacity": {
+    "title": "Url bar and searchbox opacity",
+    "type": "integer",
+    "placement": "#opacity-settings"
+  },
   "use-addon-stylesheet": {
     "title": "Use add-on stylesheet (browser.css)",
     "description": "Load browser.css into the browser window",
@@ -39,6 +49,13 @@ let PrefDefinitions = {
       $("#normal-settings").classList.toggle("disabled", !value);
     },
   }
+};
+
+let DefaultThemeData = {
+  "accent-background": "#ffffff",
+  "accent-colour": "#000000",
+  "secondary-background": "#ebebeb",
+  "secondary-colour": "#000000"
 };
 
 let $ = (s) => document.querySelector(s);
@@ -82,6 +99,14 @@ function buildPrefsUI(prefs) {
         el.value = prefs[pref];
         el.checked = prefs[pref];
         break;
+      }
+      case "integer": {
+        el = document.createElement("input");
+        el.type = "range";
+        el.min = 0;
+        el.max = 100;
+        el.step = 1;
+        el.value = prefs[pref];
       }
     }
     el.dataset.pref = pref;
@@ -146,12 +171,7 @@ function addTheme(name) {
   }
   let data = {
     name,
-    data: {
-      "accent-background": "#ffffff",
-      "accent-colour": "#000000",
-      "secondary-background": "#ebebeb",
-      "secondary-colour": "#000000"
-    },
+    data: DefaultThemeData
   };
   customThemes.push(data);
   savePref("themes", JSON.stringify(customThemes));
@@ -162,8 +182,14 @@ function addTheme(name) {
 function showThemeEditor(theme) {
   let editor = $("#theme-editor");
   editor.textContent = "";
-  for (let prop in theme.data) {
-    createInput(prop, theme.data[prop]);
+  for (let prop in DefaultThemeData) {
+    let type;
+    if (prop.endsWith("opacity")) {
+      type = "opacity";
+    } else {
+      type = "color";
+    }
+    createInput(prop, type, theme.data[prop]);
   }
   let removeButton = document.createElement("button");
   removeButton.textContent = "Remove theme";
@@ -171,13 +197,18 @@ function showThemeEditor(theme) {
   removeButton.onclick = () => removeTheme(theme.name);
   editor.appendChild(removeButton);
 
-  function createInput(prop, value) {
+  function createInput(prop, type, value) {
     let setting = document.createElement("div");
     let label = document.createElement("span");
     label.textContent = prop;
 
     let input = document.createElement("input");
-    input.type = "color";
+    input.type = type == "opacity" ? "range" : "color";
+    if (type == "opacity") {
+      input.min = 0;
+      input.step = 0.01;
+      input.max = 1;
+    }
     input.value = value;
     input.addEventListener("input", function() {
       updateTheme(theme.name, prop, this.value);

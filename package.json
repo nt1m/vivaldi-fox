@@ -1,7 +1,7 @@
 {
   "title": "VivaldiFox",
   "name": "vivaldi-fox",
-  "version": "1.1.6",
+  "version": "1.2",
   "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
   "main": "index.js",
   "author": "Tim Nguyen",
@@ -53,6 +53,20 @@
       "type": "bool",
       "value": true,
       "hidden": true
+    },
+    {
+      "name": "toolbar-opacity",
+      "title": "Toolbar opacity",
+      "description": "From 0 to 100.",
+      "type": "integer",
+      "value": 100
+    },
+    {
+      "name": "textbox-opacity",
+      "title": "Url bar and searchbox opacity",
+      "description": "From 0 to 100.",
+      "type": "bool",
+      "value": 100
     },
     {
       "name": "themes",
