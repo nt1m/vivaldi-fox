@@ -7,7 +7,7 @@ const DOMEvents = require("sdk/dom/events");
 const { loadSheet, removeSheet } = require("sdk/stylesheet/utils");
 const { getLuminance, getContrastRatio, toRgb, getColourFromImage } = require("utils/colour");
 const Preferences = require("sdk/simple-prefs");
-const { doToAllWindows, getComputedCSSProperty } = require("utils/misc");
+const { doToAllWindows } = require("utils/misc");
 
 const ThemeManager = require("themes");
 const ColourManager = {
