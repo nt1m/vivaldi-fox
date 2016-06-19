@@ -71,22 +71,68 @@ p {
 }
 #themes-list {
   list-style: none;
-  text-align: center;
-  display: flex;
+  display: block;
+  white-space: nowrap;
   flex: 1;
   padding: 0;
   margin: 0;
+  overflow-y: auto;
+}
+#themes-list li span {
+  position: absolute;
+  bottom: 0.75em;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #themes-list li {
   display: inline-block;
   cursor: pointer;
   margin: 0;
-  padding: 5px;
-  flex: 1;
-  text-overflow: ellipsis;
+  margin-right: 0.5em;
   overflow: hidden;
   text-align: center;
-  border-bottom: 1px solid transparent;
+  width: 5em;
+  height: 4em;
+  border: 0.1em solid transparent;
+  box-sizing: border-box;
+  background-color: var(--theme-secondary);
+  position: relative;
+}
+#themes-list li::before {
+  content: "";
+  display: block;
+  height: 100%;
+  background-image: linear-gradient(
+    var(--theme-accent),
+    var(--theme-accent)
+  ),
+  linear-gradient(
+    var(--theme-accent),
+    var(--theme-accent) 0.7em,
+    #fff 0.7em
+  );
+  background-repeat: no-repeat, no-repeat;
+  background-size: 45% 0.6em, 100% calc(100% - 0.6em);
+  background-position: 0 0, 0 0.6em;
+}
+#themes-list li::after {
+  content: "";
+  display: block;
+  background: linear-gradient(
+    to right,
+    var(--theme-secondary),
+    var(--theme-secondary) 60%,
+    transparent 60%,
+    transparent calc(60% + 0.2em),
+    var(--theme-secondary) calc(60% + 0.2em)
+  );
+  height: 0.35em;
+  width: calc(100% - 0.8em);
+  position: absolute;
+  top: 0.8em;
+  left: 0.4em;
 }
 #themes-list li.selected {
   color: #0996f8;
@@ -102,12 +148,15 @@ p {
   font-family: monospace;
   margin-inline-start: 1rem;
   text-align: center;
+  align-self: center;
 }
 #theme-editor:empty {
   text-align: center;
 }
 #theme-editor:empty::after {
-  content: "Create a theme using the `+` button";
+  content: "Click on a theme to edit it\A or\A Create a theme using the + button";
+  white-space: pre-wrap;
+  line-height: 1.1em;
 }
 #theme-editor {
   padding: 1em 0;

@@ -2,7 +2,7 @@
 /* global savePref, getPrefs */
 "use strict";
 
-let PrefDefinitions = {
+const PrefDefinitions = {
   "selected-theme": {
     "title": "Selected Theme",
     "description": "Currently selected theme",
@@ -51,7 +51,7 @@ let PrefDefinitions = {
   }
 };
 
-let DefaultThemeData = {
+const DefaultThemeData = {
   "accent-background": "#ffffff",
   "accent-colour": "#000000",
   "secondary-background": "#ebebeb",
@@ -171,7 +171,7 @@ function addTheme(name) {
   }
   let data = {
     name,
-    data: DefaultThemeData
+    data: JSON.parse(JSON.stringify(DefaultThemeData))
   };
   customThemes.push(data);
   savePref("themes", JSON.stringify(customThemes));
@@ -181,7 +181,7 @@ function addTheme(name) {
 
 function showThemeEditor(theme) {
   let editor = $("#theme-editor");
-  editor.textContent = "";
+  editor.innerHTML = "";
   for (let prop in DefaultThemeData) {
     let type;
     if (prop.endsWith("opacity")) {
@@ -210,9 +210,9 @@ function showThemeEditor(theme) {
       input.max = 1;
     }
     input.value = value;
-    input.addEventListener("input", function() {
+    input.oninput = function() {
       updateTheme(theme.name, prop, this.value);
-    });
+    };
     setting.appendChild(label);
     setting.appendChild(input);
     editor.appendChild(setting);
@@ -239,6 +239,12 @@ function removeTheme(name) {
   $("#themes-list li[data-theme='" + name + "']").remove();
 }
 function updateTheme(name, prop, value) {
+  let item = $("#themes-list li[data-theme='" + name + "']");
+  if (prop == "accent-background") {
+    item.style.setProperty("--theme-accent", value);
+  } else if (prop == "secondary-background") {
+    item.style.setProperty("--theme-secondary", value);
+  }
   for (let i = 0; i < customThemes.length; i++) {
     let theme = customThemes[i];
     if (theme.name == name) {
@@ -257,6 +263,8 @@ function createThemeElement(theme) {
   themeSelect.appendChild(opt);
 
   let item = document.createElement("li");
+  item.style.setProperty("--theme-accent", theme.data["accent-background"]);
+  item.style.setProperty("--theme-secondary", theme.data["secondary-background"]);
   let name = document.createElement("span");
   item.dataset.theme = theme.name;
   name.textContent = theme.name;
@@ -265,6 +273,7 @@ function createThemeElement(theme) {
   let list = $("#themes-list");
   list.appendChild(item);
   item.onclick = () => {
+    console.log(theme)
     for (let i of item.parentNode.childNodes) {
       i.classList.remove("selected");
     }
