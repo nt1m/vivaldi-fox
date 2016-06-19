@@ -74,6 +74,7 @@
 }
 /* End override @tabCurveHalfWidth@ and @tabCurveWidth@ */
 :root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button {
+  min-width: 30px !important;
   width: auto !important;
 }
 :root:not(.vivaldi-fox-australis-tabs) .tabbrowser-tab:hover > .tab-stack > .tab-background:not([visuallyselected="true"]),
