@@ -47,6 +47,14 @@
       "value": false
     },
     {
+      "name": "use-addon-stylesheet",
+      "title": "Use add-on stylesheet (browser.css)",
+      "description": "Load browser.css into the browser window",
+      "type": "bool",
+      "value": true,
+      "hidden": true
+    },
+    {
       "name": "themes",
       "title": "Themes",
       "description": "Theme data",

@@ -41,6 +41,19 @@ module.exports = {
 
     return obj;
   },
+  get os() {
+    let win = require("sdk/window/utils").getMostRecentBrowserWindow();
+    let os;
+    let platform = win.navigator.platform;
+    if (platform.startsWith("Win")) {
+      os = "win";
+    } else if (platform.startsWith("Mac")) {
+      os = "mac";
+    } else {
+      os = "linux";
+    }
+    return os;
+  },
   setTheme(theme) {
     let styleText = `
 :root {

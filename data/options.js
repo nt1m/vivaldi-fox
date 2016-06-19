@@ -7,12 +7,13 @@ let PrefDefinitions = {
     "title": "Selected Theme",
     "description": "Currently selected theme",
     "type": "string",
-    "values": ["light", "dark"]
+    "values": ["light", "dark"],
+    "placement": "#selected-theme-setting"
   },
   "use-page-colours": {
     "title": "Use Page Colours for UI",
     "description": "Extract page colours for main UI",
-    "type": "bool"
+    "type": "bool",
   },
   "use-australis-tabs": {
     "title": "Use Australis Tabs",
@@ -22,12 +23,21 @@ let PrefDefinitions = {
   "tab-icon-background": {
     "title": "Add white background around tab icon",
     "description": "",
-    "type": "bool"
+    "type": "bool",
   },
   "grayed-out-inactive-windows": {
     "title": "Gray out inactive windows",
     "description": "Gray out inactive windows",
     "type": "bool",
+  },
+  "use-addon-stylesheet": {
+    "title": "Use add-on stylesheet (browser.css)",
+    "description": "Load browser.css into the browser window",
+    "type": "bool",
+    "placement": "#advanced-settings",
+    "onChange": (value) => {
+      $("#normal-settings").classList.toggle("disabled", !value);
+    },
   }
 };
 
@@ -42,7 +52,6 @@ function init() {
 }
 
 function buildPrefsUI(prefs) {
-  let mainContent = $("#settings");
   for (let pref in prefs) {
     if (pref == "themes") {
       continue;
@@ -79,7 +88,8 @@ function buildPrefsUI(prefs) {
     settingDiv.title = prefDef.description;
     wireElementWithExtension(el, pref);
     settingDiv.appendChild(el);
-    mainContent.appendChild(settingDiv);
+    let placement = prefDef.placement || "#normal-settings";
+    $(placement).appendChild(settingDiv);
   }
   initThemesUI(JSON.parse(prefs.themes), prefs["selected-theme"]);
 }
@@ -87,12 +97,17 @@ function buildPrefsUI(prefs) {
 function wireElementWithExtension(el, pref) {
   el.addEventListener("change", function(e) {
     let prefDef = PrefDefinitions[pref];
+    let value;
     if (prefDef.type == "string") {
-      savePref(pref, this.value);
+      value = this.value;
     } else if (prefDef.type == "bool") {
-      savePref(pref, this.checked);
+      value = this.checked;
     } else {
-      savePref(pref, JSON.parse(this.value));
+      value = JSON.parse(this.value);
+    }
+    savePref(pref, value);
+    if (prefDef.onChange) {
+      prefDef.onChange(value);
     }
   });
 }

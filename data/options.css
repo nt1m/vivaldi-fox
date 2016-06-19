@@ -6,13 +6,26 @@ body {
   font-family: Fira Sans, sans-serif;
   background-color: #fbfbfb;
 }
+a {
+  color: #0996f8;
+}
+p {
+  font-size: 0.9em;
+  text-align: start;
+}
+.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
 .card h1 {
   font-size: 1.5em;
   text-align: center;
   margin-bottom: 0.5em;
+  font-weight: normal;
 }
-a {
-  color: #0996f8;
+.card h2 {
+  font-size: 1.25em;
+  font-weight: normal;
 }
 .header {
   position: sticky;

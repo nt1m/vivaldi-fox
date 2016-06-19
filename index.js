@@ -123,10 +123,6 @@ const ColourManager = {
     }
   },
 
-  destroy: doToAllWindows((win) => {
-    removeSheet(win, self.data.url("browser.css"), "author");
-  }),
-
   init() {
     this.onTabRemove = this.onTabRemove.bind(this);
     this.onTabChange = this.onTabChange.bind(this);
@@ -150,7 +146,9 @@ let Addon = {
     require("sdk/system/unload").when(this.destroy);
   },
   setupWindow(win) {
-    this.injectStyleSheetToWindow(win);
+    if (this.styleSheetEnabled) {
+      this.injectStyleSheetToWindow(win);
+    }
     ThemeManager.initThemes(win);
     this.onUpdatePrefs();
   },
@@ -161,6 +159,19 @@ let Addon = {
     this.setClassNameSetting("tab-icon-background",
       Preferences.prefs["tab-icon-background"]);
     ColourManager.onUpdatePrefs();
+    this.styleSheetEnabled = Preferences.prefs["use-addon-stylesheet"];
+  },
+  set styleSheetEnabled(enabled) {
+    doToAllWindows((win) => {
+      if (enabled) {
+        loadSheet(win, self.data.url("browser.css"), "author");
+      } else {
+        removeSheet(win, self.data.url("browser.css"), "author");
+      }
+    })();
+  },
+  get styleSheetEnabled() {
+    return Preferences.prefs["use-addon-stylesheet"];
   },
   setClassNameSetting(className, enabled) {
     return doToAllWindows((win) => {
@@ -178,12 +189,13 @@ let Addon = {
     } else {
       os = "linux";
     }
-    ColourManager.os = os;
     win.document.documentElement.classList.add("vivaldi-fox-os-" + os);
     loadSheet(win, self.data.url("browser.css"), "author");
   },
   destroy() {
-    ColourManager.destroy();
+    doToAllWindows((win) => {
+      removeSheet(win, self.data.url("browser.css"), "author");
+    })();
     ThemeManager.destroy();
   }
 };
