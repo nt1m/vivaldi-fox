@@ -82,7 +82,7 @@ const ColourManager = {
 
     let lum = getLuminance([r, g, b]);
     let ratio = getContrastRatio(lum, 0);
-    if (ratio > 7 && Preferences.prefs["toolbar-opacity"] < 50) {
+    if (ratio > 7 && Preferences.prefs["toolbar-opacity"] > 50) {
       doc.documentElement.style.setProperty("--theme-accent-colour", "#000");
     } else if (Preferences.prefs["toolbar-opacity"] > 50) {
       doc.documentElement.style.setProperty("--theme-accent-colour", "#fff");
