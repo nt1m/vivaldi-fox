@@ -18,6 +18,7 @@ let ColourUtils = module.exports = {
     return Math.max(l1 + 0.05, l2 + 0.05) / Math.min(l1 + 0.05, l2 + 0.05);
   },
   getColourFormat(colour) {
+    colour = colour.replace(/\s/g, "");
     if (colour.startsWith("#")) {
       return "hex";
     } else if (colour.startsWith("rgb") || colour.startsWith("rgba")) {
@@ -26,6 +27,7 @@ let ColourUtils = module.exports = {
     return "hsl";
   },
   toRgb(colour) {
+    colour = colour.replace(/\s/g, "");
     let r, g, b;
     if (ColourUtils.getColourFormat(colour) == "hex") {
       if (colour.length == 4) {
@@ -36,7 +38,6 @@ let ColourUtils = module.exports = {
       b = "0x" + colour[5] + colour[6];
     } else {
       let isAlpha = colour.startsWith("rgba");
-      colour = colour.replace(/\s/g, "");
       ([r, g, b] = colour.split(","));
       r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
       b = isAlpha ? b : b.substring(0, b.length - 1);
