@@ -198,12 +198,12 @@
   opacity: var(--theme-textbox-opacity) !important;
 }
 #titlebar:not(:-moz-lwtheme),
-#urlbar,
+#nav-bar #urlbar,
 #nav-bar #urlbar:hover:not([focused]),
 #nav-bar #search-container .searchbar-textbox {
   border-color: transparent;
-  background: var(--theme-secondary-background);
-  color: var(--theme-secondary-colour);
+  background: var(--theme-secondary-background) !important;
+  color: var(--theme-secondary-colour) !important;
   box-shadow: none !important;
 }
 #urlbar[focused],
