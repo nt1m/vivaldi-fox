@@ -3,7 +3,7 @@
 const THEME_STYLE_ID = "vivaldi-fox-theme-style";
 const Preferences = require("sdk/simple-prefs");
 const { doToAllWindows } = require("utils/misc");
-const { getLuminance, getContrastRatio, extractRGBFromCSSColour, toRgb } = require("utils/colour");
+const { getLuminance, getContrastRatio, toRgb } = require("utils/colour");
 module.exports = {
   initThemes(win) {
     let doc = win.document;
@@ -80,8 +80,9 @@ module.exports = {
       }
       if (this.os == "win") {
         let root = doc.documentElement;
-        let colour = win.getComputedStyle(root).getPropertyValue("background-color");
-        let RGB = extractRGBFromCSSColour(colour);
+        let colour = win.getComputedStyle(root)
+          .getPropertyValue("--theme-secondary-background");
+        let RGB = toRgb(colour);
         let ratio = getContrastRatio(getLuminance(RGB), 0);
         let buttonBox = doc.querySelector("#titlebar-buttonbox");
         buttonBox.classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
