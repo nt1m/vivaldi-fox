@@ -203,6 +203,7 @@ let Addon = {
       removeSheet(win, self.data.url("browser.css"), "author");
     })();
     ThemeManager.destroy();
+    require("toolbarbutton").destroy();
   }
 };
 
