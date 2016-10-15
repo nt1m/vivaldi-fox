@@ -27,22 +27,27 @@ let ColourUtils = module.exports = {
     return "hsl";
   },
   toRgb(colour) {
-    colour = colour.replace(/\s/g, "");
-    let r, g, b;
-    if (ColourUtils.getColourFormat(colour) == "hex") {
-      if (colour.length == 4) {
-        colour = "#" + colour[1].repeat(2) + colour[2].repeat(2) + colour[3].repeat(2);
+    try {
+      colour = colour.replace(/\s/g, "");
+      let r, g, b;
+      if (ColourUtils.getColourFormat(colour) == "hex") {
+        if (colour.length == 4) {
+          colour = "#" + colour[1].repeat(2) + colour[2].repeat(2) + colour[3].repeat(2);
+        }
+        r = "0x" + colour[1] + colour[2];
+        g = "0x" + colour[3] + colour[4];
+        b = "0x" + colour[5] + colour[6];
+      } else {
+        let isAlpha = colour.startsWith("rgba");
+        ([r, g, b] = colour.split(","));
+        r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
+        b = isAlpha ? b : b.substring(0, b.length - 1);
       }
-      r = "0x" + colour[1] + colour[2];
-      g = "0x" + colour[3] + colour[4];
-      b = "0x" + colour[5] + colour[6];
-    } else {
-      let isAlpha = colour.startsWith("rgba");
-      ([r, g, b] = colour.split(","));
-      r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-      b = isAlpha ? b : b.substring(0, b.length - 1);
+      return [Math.floor(Number(r)), Math.floor(Number(g)), Math.floor(Number(b))];
+    } catch (e) {
+      console.log("vivaldifox: toRgb failed with", colour);
+      return undefined;
     }
-    return [Math.floor(Number(r)), Math.floor(Number(g)), Math.floor(Number(b))];
   },
   getColourFromImage(imgEl) {
     let doc = imgEl.ownerDocument;

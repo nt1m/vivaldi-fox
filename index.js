@@ -75,10 +75,14 @@ const ColourManager = {
 
   setColour(win, colour) {
     let [r, g, b] = toRgb(colour);
+    if (typeof r == undefined || typeof g == undefined || typeof b == undefined) {
+      return;
+    }
     let bg = `rgba(${r}, ${g}, ${b}, ${Preferences.prefs["toolbar-opacity"] / 100})`;
 
     let doc = win.document;
     doc.documentElement.style.setProperty("--theme-accent-background", bg);
+    doc.documentElement.classList.add("vivaldi-fox-page-colours-used");
 
     let lum = getLuminance([r, g, b]);
     let ratio = getContrastRatio(lum, 0);
@@ -105,6 +109,7 @@ const ColourManager = {
     let doc = win.document;
     doc.documentElement.style.removeProperty("--theme-accent-background");
     doc.documentElement.style.removeProperty("--theme-accent-colour");
+    doc.documentElement.classList.remove("vivaldi-fox-page-colours-used");
     let navbar = doc.querySelector("#nav-bar");
     let onTransitionEnd = (e) => {
       if (e.target !== navbar) {
@@ -148,7 +153,7 @@ let Addon = {
     });
     this.onUpdatePrefs();
     Preferences.on("", this.onUpdatePrefs);
-    require("toolbarbutton").init();
+    require("./toolbarbutton").init();
     require("sdk/system/unload").when(this.destroy);
   },
   setupWindow(win) {
@@ -203,7 +208,7 @@ let Addon = {
       removeSheet(win, self.data.url("browser.css"), "author");
     })();
     ThemeManager.destroy();
-    require("toolbarbutton").destroy();
+    require("./toolbarbutton").destroy();
   }
 };
 

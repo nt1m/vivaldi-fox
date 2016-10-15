@@ -1,11 +1,11 @@
 :root {
   --toolbarbutton-hover-background: rgba(200,200,200,0.4);
   --toolbarbutton-hover-bordercolor: transparent;
-  --toolbarbutton-hover-boxshadow: 0 0 0 1px var(--theme-colour) inset;
+  --toolbarbutton-hover-boxshadow: none;
 
   --toolbarbutton-active-background: rgba(200,200,200,0.6);
   --toolbarbutton-active-bordercolor: transparent;
-  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--theme-colour) inset;
+  --toolbarbutton-active-boxshadow: none;
 
   --toolbarbutton-checkedhover-backgroundcolor: rgba(200,200,200,0.5);
   --tab-toolbar-navbar-overlap: 0px !important;
