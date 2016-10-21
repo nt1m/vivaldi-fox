@@ -1,32 +1,139 @@
 @import url(https://fonts.googleapis.com/css?family=Fira+Sans);
 
+/**** General styles ****/
+
 body {
   margin: 0;
   padding: 0;
   font-family: Fira Sans, sans-serif;
   background-color: #fbfbfb;
+
+  /* The platform may override the color, this is
+     why we need to set it explicitely to black */
+  color: #000;
 }
+
+h1 {
+  font-weight: 300;
+  margin: 0;
+}
+
 a {
   color: #0996f8;
 }
+
 p {
   font-size: 0.9em;
   text-align: start;
 }
+
 .disabled {
   opacity: 0.25;
   pointer-events: none;
 }
+
+.main-content {
+  padding: 1em;
+  text-align: center;
+}
+
+/**** Buttons ****/
+
+.button, button, input[type="color"] {
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+  background: #fcfcfc;
+  border: 1px solid rgba(0,0,0,0.1);
+  color: #000;
+  border-radius: 2px;
+  padding: 0.5em;
+  font-size: 0.8em;
+  font: inherit;
+}
+
+input[type="color"] {
+  padding: 2px;
+}
+
+input[type="color"]:hover {
+  background-color: #ebebeb;
+}
+
+input[type="color"]:active {
+  background-color: #c1c1c1;
+}
+
+.button::after,
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.button:hover::after,
+button:hover::after {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.button:active::after,
+button:active::after {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.button.remove,
+button.remove {
+  background-color: #d92215;
+  color: #fff;
+}
+
+.button.green {
+  background-color: #57bd35;
+  color: #fff;
+}
+
+.button.yellow {
+  background-color: #ffc446;
+}
+
+.button.black {
+  background-color: #111;
+  color: #fff;
+}
+
+button:focus,
+input[type=color]:focus,
+.button:focus {
+  box-shadow: 0 0 0 2px rgba(97,181,255,.75);
+}
+
+/**** Cards ****/
+
+.card {
+  background: #fff;
+  padding: 0.5em 1em;
+  margin: 1em 25%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
 .card h1 {
   font-size: 1.5em;
   text-align: center;
   margin-bottom: 0.5em;
   font-weight: normal;
 }
+
 .card h2 {
   font-size: 1.25em;
   font-weight: normal;
 }
+
+/**** Header ****/
+
 .header {
   position: sticky;
   top: 0;
@@ -35,40 +142,55 @@ p {
   padding: 1em;
   transition: padding 0.2s;
 }
+
 .header h1 {
   transition: font-size 0.2s;
 }
+
+.header > .icon {
+  margin-inline-end: 2em;
+}
+
+.icon {
+  background-image: url(img/icon.svg);
+  background-size: cover;
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .small-header > .header {
   padding: 0.5em;
 }
+
 .small-header > .header > h1 {
   font-size: 1.25em;
 }
-.main-content {
-  padding: 1em;
-  text-align: center;
-}
+
+/**** Settings ****/
+
 .setting {
   padding: 1em 0;
   overflow: auto;
   text-align: start;
 }
-.card {
-  background: #fff;
-  padding: 0.5em 1em;
-  margin: 1em 25%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
+
 .setting > input,
 .setting > select {
   float: right;
 }
+
 .row {
   display: flex;
 }
+
+/**** Themes Editor ****/
+
 #themes {
   text-align: left;
 }
+
 #themes-list {
   list-style: none;
   display: block;
@@ -78,6 +200,7 @@ p {
   margin: 0;
   overflow-y: auto;
 }
+
 #themes-list li span {
   position: absolute;
   bottom: 0.75em;
@@ -86,6 +209,7 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 #themes-list li {
   display: inline-block;
   cursor: pointer;
@@ -100,6 +224,7 @@ p {
   background-color: var(--theme-secondary);
   position: relative;
 }
+
 #themes-list li::before {
   content: "";
   display: block;
@@ -117,6 +242,7 @@ p {
   background-size: 45% 0.6em, 100% calc(100% - 0.6em);
   background-position: 0 0, 0 0.6em;
 }
+
 #themes-list li::after {
   content: "";
   display: block;
@@ -134,11 +260,13 @@ p {
   top: 0.8em;
   left: 0.4em;
 }
+
 #themes-list li.selected {
   color: #0996f8;
   font-weight: 600;
   border-bottom-color: #0996f8;
 }
+
 #add {
   width: 32px;
   height: 32px;
@@ -150,99 +278,32 @@ p {
   text-align: center;
   align-self: center;
 }
+
 #theme-editor:empty {
   text-align: center;
 }
+
 #theme-editor:empty::after {
   content: "Click on a theme to edit it\A or\A Create a theme using the + button";
   white-space: pre-wrap;
   line-height: 1.1em;
 }
+
 #theme-editor {
   padding: 1em 0;
 }
+
 #theme-editor div {
   overflow: auto;
   margin-bottom: 1em;
 }
+
 #theme-editor div input {
   float: right;
 }
-.button, button, input[type="color"] {
-  display: inline-block;
-  text-decoration: none;
-  position: relative;
-  background: #fcfcfc;
-  border: 1px solid rgba(0,0,0,0.1);
-  color: #000;
-  border-radius: 2px;
-  padding: 0.5em;
-  font-size: 0.8em;
-  font: inherit;
-}
-input[type="color"] {
-  padding: 2px;
-}
-input[type="color"]:hover {
-  background-color: #ebebeb;
-}
-input[type="color"]:active {
-  background-color: #c1c1c1;
-}
-.button::after,
-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-.button:hover::after,
-button:hover::after {
-  background-color: rgba(255,255,255,0.1);
-}
-.button:active::after,
-button:active::after {
-  background-color: rgba(0,0,0,0.1);
-}
-.button.remove,
-button.remove {
-  background-color: #d92215;
-  color: #fff;
-}
-.button.green {
-  background-color: #57bd35;
-  color: #fff;
-}
-.button.yellow {
-  background-color: #ffc446;
-}
-.button.black {
-  background-color: #111;
-  color: #fff;
-}
-button:focus,
-input[type=color]:focus,
-.button:focus {
-  box-shadow: 0 0 0 2px rgba(97,181,255,.75);
-}
-h1 {
-  font-weight: 300;
-  margin: 0;
-}
-.header > .icon {
-  margin-inline-end: 2em;
-}
-.icon {
-  background-image: url(img/icon.svg);
-  background-size: cover;
-  width: 2em;
-  height: 2em;
-  display: inline-block;
-  vertical-align: middle;
-}
+
+/**** Support me section ****/
+
 .button::before {
   margin-inline-end: 0.5em;
   vertical-align: middle;
@@ -251,15 +312,18 @@ h1 {
   display: inline-block;
   background-size: cover;
 }
+
 .money::before {
   content: "$";
   font-weight: bold;
   text-align: center;
 }
+
 .star::before {
   content: "";
   background-image: url(img/star.svg);
 }
+
 .github::before {
   content: "";
   background-image: url(img/github.png);
