@@ -1,13 +1,24 @@
 /* eslint-env browser */
+/* global chrome */
 "use strict";
+console.log("loadedd");
 let extractPageColour = function() {
   let $ = (s) => document.querySelector(s);
   let el = $("meta[name='theme-color']") ? $("meta[name='theme-color']") :
                                            $("meta[name='msapplication-TileColor']");
+  console.log(el);
   if (el) {
-    self.port.emit("theme-colour-change", el.getAttribute("content"));
+    chrome.runtime.sendMessage({
+      type: "theme-colour-change",
+      content: el.getAttribute("content")
+    }, () => {});
+    console.log("sentColor", el.getAttribute("content"));
   } else {
-    self.port.emit("theme-colour-change", "default");
+    chrome.runtime.sendMessage({
+      type: "theme-colour-change",
+      content: "default"
+    }, () => {});
+    console.log("sentColor", "default");
   }
 };
-extractPageColour();
+window.addEventListener("mouseover", extractPageColour);

@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "VivaldiFox",
+  "version": "2.0",
+  "description": "Add-on adding Vivaldi-style colouring to the browser",
+  "permissions": ["theme", "tabs"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["data/contentscript.js"]
+    }
+  ],
+  "theme": {
+    "colors": {
+      "toolbar": [1,1,1]
+    }
+  },
+  "author": "Tim Nguyen",
+  "applications": {
+    "gecko": {
+      "id": "vivaldi-fox@tim-addons.com",
+      "strict_min_version": "45.0"
+    }
+  }
+}
