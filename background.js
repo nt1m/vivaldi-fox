@@ -1,9 +1,4 @@
 var colorMap = new Map();
-browser.theme.update({
-  "colors": {
-    "toolbar": [0, 0, 0]
-  }
-});
 chrome.tabs.onActivated.addListener(function({tabId}) {
   console.log("tabActivated", tabId);
   applyColorFromMap(tabId);
@@ -22,7 +17,7 @@ function applyColorFromMap(tabId) {
   if (colorMap.get(tabId) == "default") {
     browser.theme.update({
       "colors": {
-        "toolbar": [1, 1, 1]
+        "toolbar": [255, 255, 255]
       }
     });
   } else {
@@ -47,7 +42,7 @@ function updateColorMap(tabId, value) {
   }
   let [r, g, b] = toRgb(value);
 
-  colorMap.set(tabId, [r / 255, g / 255, b / 255]);
+  colorMap.set(tabId, [r, g, b]);
 }
 /*
 chrome.tabs.get(tabId, function(tab) {

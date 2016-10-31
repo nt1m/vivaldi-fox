@@ -21,4 +21,4 @@ let extractPageColour = function() {
     console.log("sentColor", "default");
   }
 };
-window.addEventListener("mouseover", extractPageColour);
+extractPageColour();
