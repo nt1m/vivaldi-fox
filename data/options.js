@@ -273,7 +273,6 @@ function createThemeElement(theme) {
   let list = $("#themes-list");
   list.appendChild(item);
   item.onclick = () => {
-    console.log(theme)
     for (let i of item.parentNode.childNodes) {
       i.classList.remove("selected");
     }

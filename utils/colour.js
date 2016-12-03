@@ -1,5 +1,7 @@
 "use strict";
 
+/* global console */
+
 let ColourUtils = module.exports = {
   getLuminance(colour) {
     // Calculate relative luminance according to https://www.w3.org/TR/WCAG/#relativeluminancedef
