@@ -17,19 +17,13 @@ function applyColorFromMap(tabId) {
   if (colorMap.get(tabId) == "default") {
     browser.theme.update({
       "colors": {
-        "toolbar": [255, 255, 255]
+        "frame": [255, 255, 255]
       }
     });
   } else {
-    let kBg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==";
-
     browser.theme.update({
-      // The ntp image is applied, but not the color :?
-      "images": {
-        "theme_ntp_background": kBg
-      },
       "colors": {
-        "toolbar": colorMap.get(tabId)
+        "frame": colorMap.get(tabId)
       }
     });
     console.log("color applied", colorMap.get(tabId));

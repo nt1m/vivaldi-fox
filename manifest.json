@@ -16,7 +16,7 @@
   ],
   "theme": {
     "colors": {
-      "toolbar": [39, 43, 53]
+      "frame": [39, 43, 53]
     }
   },
   "author": "Tim Nguyen",
