@@ -1,4 +1,4 @@
-:root {
+#main-window:root {
   --toolbarbutton-hover-background: rgba(200,200,200,0.4);
   --toolbarbutton-hover-bordercolor: transparent;
   --toolbarbutton-hover-boxshadow: none;
@@ -8,6 +8,7 @@
   --toolbarbutton-active-boxshadow: none;
 
   --toolbarbutton-checkedhover-backgroundcolor: rgba(200,200,200,0.5);
+  --tab-selection-background-color: var(--theme-accent-background);
   --tab-toolbar-navbar-overlap: 0px !important;
 }
 
@@ -62,7 +63,7 @@
   margin: 0;
 }
 
-:root:not(.vivaldi-fox-australis-tabs) .tab-background,
+:root:not(.vivaldi-fox-australis-tabs) .tab-background:not([pinned]),
 :root:not(.vivaldi-fox-australis-tabs) .tabs-newtab-button {
   margin-inline-end: 0;
   margin-inline-start: 0;
