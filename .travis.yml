@@ -12,9 +12,9 @@ env:
 before_install:
   - sh -e /etc/init.d/xvfb start
 before_script:
-  - npm install -g jpm
+#  - npm install -g jpm
   - npm install -g eslint
   - npm install -g eslint-plugin-mozilla
 script:
   - eslint ./
-  - jpm test
+#  - jpm test
