@@ -181,7 +181,7 @@ function addTheme(name) {
 
 function showThemeEditor(theme) {
   let editor = $("#theme-editor");
-  editor.innerHTML = "";
+  editor.textContent = "";
   for (let prop in DefaultThemeData) {
     let type;
     if (prop.endsWith("opacity")) {
