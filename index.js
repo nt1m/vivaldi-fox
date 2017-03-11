@@ -122,13 +122,22 @@ const ColourManager = {
   },
   onUpdatePrefs() {
     if (Preferences.prefs["use-page-colours"]) {
+      // Tab close
       tabs.on("close", this.onTabRemove);
+
+      // Tab change
       tabs.on("activate", this.onTabChange);
+
+      // Back forward navigation
+      tabs.on("pageshow", this.onNewURL);
+
+      // Early page loads
       tabs.on("ready", this.onNewURL);
       this.onNewURL(tabs.activeTab);
     } else {
       tabs.off("close", this.onTabRemove);
       tabs.off("activate", this.onTabChange);
+      tabs.off("pageshow", this.onNewURL);
       tabs.off("ready", this.onNewURL);
       doToAllWindows(this.resetColours)();
     }
