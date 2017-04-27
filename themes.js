@@ -83,9 +83,11 @@ module.exports = {
         let colour = win.getComputedStyle(root)
           .getPropertyValue("--theme-secondary-background");
         let RGB = toRgb(colour);
-        let ratio = getContrastRatio(getLuminance(RGB), 0);
-        let buttonBox = doc.querySelector("#titlebar-buttonbox");
-        buttonBox.classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
+        if (RGB) {
+          let ratio = getContrastRatio(getLuminance(RGB), 0);
+          let buttonBox = doc.querySelector("#titlebar-buttonbox");
+          buttonBox.classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
+        }
       }
       win.ToolbarIconColor.inferFromText("lightweight-theme-styling-update");
     })();
