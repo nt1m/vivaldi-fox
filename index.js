@@ -28,7 +28,11 @@ const ColourManager = {
         this.resetColours(win);
       }
     } else if (win) {
-      this.setColour(win, this.tabColourMap.get(tab.id));
+      try {
+        this.setColour(win, this.tabColourMap.get(tab.id));
+      } catch(e) {
+        // Ignore
+      }
     }
   },
   onTabRemove(tab) {
@@ -100,7 +104,7 @@ const ColourManager = {
       if (e.target !== navbar) {
         return;
       }
-      win.ToolbarIconColor.inferFromText();
+      win.ToolbarIconColor.inferFromText("lightweight-theme-styling-update");
       DOMEvents.removeListener(navbar, "transitionend", onTransitionEnd);
     };
     DOMEvents.on(navbar, "transitionend", onTransitionEnd);
@@ -115,7 +119,7 @@ const ColourManager = {
       if (e.target !== navbar) {
         return;
       }
-      win.ToolbarIconColor.inferFromText();
+      win.ToolbarIconColor.inferFromText("lightweight-theme-styling-update");
       DOMEvents.removeListener(navbar, "transitionend", onTransitionEnd);
     };
     DOMEvents.on(navbar, "transitionend", onTransitionEnd);

@@ -87,7 +87,7 @@ module.exports = {
         let buttonBox = doc.querySelector("#titlebar-buttonbox");
         buttonBox.classList.toggle("vivaldi-fox-invert-controls", ratio < 3);
       }
-      win.ToolbarIconColor.inferFromText();
+      win.ToolbarIconColor.inferFromText("lightweight-theme-styling-update");
     })();
   },
   destroy() {

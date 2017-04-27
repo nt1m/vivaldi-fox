@@ -1,7 +1,7 @@
 {
   "title": "VivaldiFox",
   "name": "vivaldi-fox",
-  "version": "1.3",
+  "version": "1.4",
   "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
   "main": "index.js",
   "author": "Tim Nguyen",

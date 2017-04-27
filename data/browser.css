@@ -13,8 +13,9 @@
 }
 
 /** Tab bar **/
-#TabsToolbar {
+#main-window #TabsToolbar {
   --tab-stroke-background-size: 0 0;
+  -moz-appearance: none !important;
 }
 
 /* Thanks to jotted on reddit for the australis tabs! */
@@ -192,8 +193,9 @@
   box-shadow: none;
   border-top-color: transparent !important;
 }
-#navigator-toolbox::after {
+#main-window #navigator-toolbox::after {
   background: var(--theme-accent-background);
+  border-color: transparent !important;
 }
 #urlbar, #nav-bar #search-container .searchbar-textbox {
   opacity: var(--theme-textbox-opacity) !important;
