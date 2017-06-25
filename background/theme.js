@@ -1,11 +1,10 @@
 function clone(obj) {
-  return JSON.parse(JSON.stringify(obj));
-    // if (null == obj || "object" != typeof obj) return obj;
-    // var copy = obj.constructor();
-    // for (var attr in obj) {
-    //     if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    // }
-    // return copy;
+  if (null == obj || "object" != typeof obj) return obj;
+  let copy = obj.constructor();
+  for (let attr in obj) {
+    if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+  }
+  return copy;
 }
 
 class Theme {
@@ -15,7 +14,9 @@ class Theme {
    */
   constructor(properties) {
     this.currentProperties = clone(properties);
-    this.defaultProperties = clone(Object.freeze(clone(properties)));
+    this.defaultProperties = clone(properties);
+  
+    Object.freeze(this.defaultProperties);
     this.apply();
   }
 
@@ -31,10 +32,7 @@ class Theme {
    * @param Object newProperties
    */
   patch(newProperties) {
-    for (let key in newProperties) {
-      this.currentProperties[key] = clone(Object.assign(this.defaultProperties[key], newProperties[key]));
-    }
-        console.log("patch", this.currentProperties.colors !== this.defaultProperties.colors)
+    this.currentProperties = clone(Object.assign(clone(this.defaultProperties), newProperties));
 
     this.apply();
   }
@@ -43,10 +41,8 @@ class Theme {
    * Resets the theme by removing all patches applied on top of it
    */
   reset() {
-    console.log("default",this.defaultProperties);
     this.currentProperties = clone(this.defaultProperties);
-    console.log(this.currentProperties.colors !== this.defaultProperties.colors)
-    console.log(this.defaultProperties);
+
     return this.apply();
   }
 }

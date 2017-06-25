@@ -11,9 +11,9 @@ var currentTheme = new Theme({
 var tabManager = new TabManager({
   onSelectionChanged: async (tab) => {
     if (!colorMap.has(tab.id)) {
-      setColorHeuristic(tab);
+      await setColorHeuristic(tab);
     }
-    applyColorFromMap(tab.id);
+    await applyColorFromMap(tab.id);
   },
   onUpdated: async (tab) => {
     await setColorHeuristic(tab);
@@ -39,17 +39,8 @@ async function setColorHeuristic(tab) {
 
   updateColorMap(tab.id, "default");
 }
+
 var colorMap = tabManager.map;
-
-// var colorMap = new Map();
-// chrome.tabs.onActivated.addListener(function({tabId}) {
-//   console.log("tabActivated", tabId);
-//   applyColorFromMap(tabId);
-// });
-
-// chrome.tabs.onUpdated.addListener(function(tabId) {
-//   updateColorMap(tabId);
-// });
 
 async function applyColorFromMap(tabId) {
   if (!colorMap.has(tabId)) {
@@ -71,9 +62,5 @@ async function applyColorFromMap(tabId) {
 
 async function updateColorMap(tabId, value) {
   colorMap.set(tabId, value);
-  let tab = await browser.tabs.get(tabId);
-  if (tab.active) {
-    applyColorFromMap(tabId);
-  }
 }
 
