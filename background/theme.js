@@ -1,10 +1,21 @@
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+    // if (null == obj || "object" != typeof obj) return obj;
+    // var copy = obj.constructor();
+    // for (var attr in obj) {
+    //     if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    // }
+    // return copy;
+}
+
 class Theme {
   /**
    * Build a theme with properties from the manifest
    * @param Object properties
    */
   constructor(properties) {
-    this.currentProperties = this.properties = properties;
+    this.currentProperties = clone(properties);
+    this.defaultProperties = clone(Object.freeze(clone(properties)));
     this.apply();
   }
 
@@ -20,16 +31,22 @@ class Theme {
    * @param Object newProperties
    */
   patch(newProperties) {
-    this.currentProperties = Object.assign(this.properties, newProperties);
+    for (let key in newProperties) {
+      this.currentProperties[key] = clone(Object.assign(this.defaultProperties[key], newProperties[key]));
+    }
+        console.log("patch", this.currentProperties.colors !== this.defaultProperties.colors)
+
     this.apply();
-    return this.currentProperties;
   }
 
   /**
    * Resets the theme by removing all patches applied on top of it
    */
   reset() {
-    this.currentProperties = this.properties;
-    browser.theme.update(this.properties);
+    console.log("default",this.defaultProperties);
+    this.currentProperties = clone(this.defaultProperties);
+    console.log(this.currentProperties.colors !== this.defaultProperties.colors)
+    console.log(this.defaultProperties);
+    return this.apply();
   }
 }

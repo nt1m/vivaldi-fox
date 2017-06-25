@@ -6,18 +6,13 @@
   "permissions": ["theme", "tabs", "<all_urls>"],
   "background": {
     "scripts": [
+      "background/color.js",
+      "background/tab-manager.js",
       "background/color-utils.js",
       "background/theme.js", 
       "background/background.js"
     ]
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["data/contentscript.js"],
-      "run_at": "document_end"
-    }
-  ],
   "author": "Tim Nguyen",
   "applications": {
     "gecko": {

@@ -1,26 +1,4 @@
-function toRgb(color) {
-  try {
-    color = color.replace(/\s/g, "");
-    let r, g, b;
-    if (getColorFormat(color) == "hex") {
-      if (color.length == 4) {
-        color = "#" + color[1].repeat(2) + color[2].repeat(2) + color[3].repeat(2);
-      }
-      r = "0x" + color[1] + color[2];
-      g = "0x" + color[3] + color[4];
-      b = "0x" + color[5] + color[6];
-    } else {
-      let isAlpha = color.startsWith("rgba");
-      ([r, g, b] = color.split(","));
-      r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-      b = isAlpha ? b : b.substring(0, b.length - 1);
-    }
-    return [Math.floor(Number(r)), Math.floor(Number(g)), Math.floor(Number(b))];
-  } catch (e) {
-    console.log("vivaldifox: toRgb failed with", color);
-    return [255,255,255];
-  }
-}
+
 function getColorFormat(color) {
   color = color.replace(/\s/g, "");
   if (color.startsWith("#")) {
@@ -39,9 +17,9 @@ function createFaviconImage(icon) {
   });
 }
 function getColorFromImage(imgEl) {
-    let canvas = document.createElement("canvas");
-    let ctx = canvas.getContext("2d");
-    let colors = [];
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  let colors = [];
     // This will:
     // - Take the median of a sorted list of colors (excluding shades of gray)
     // - If image only contains shades of gray, it takes the average instead
@@ -114,6 +92,5 @@ function getColorFromImage(imgEl) {
       throw new Error("No color found.", result);
     }
     canvas.remove();
-    console.log(result)
-    return result;
+    return new Color("rgb(" + result.join(",") + ")");
 }

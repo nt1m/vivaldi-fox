@@ -3,24 +3,57 @@ var currentTheme = new Theme({
     headerURL: ""
   },
   colors: {
-    accentcolor: "#ffffff",
+    accentcolor: "#ececec",
     textcolor: "#000000"
   }
 });
-var colorMap = new Map();
-chrome.tabs.onActivated.addListener(function({tabId}) {
-  console.log("tabActivated", tabId);
-  applyColorFromMap(tabId);
+
+var tabManager = new TabManager({
+  onSelectionChanged: async (tab) => {
+    if (!colorMap.has(tab.id)) {
+      setColorHeuristic(tab);
+    }
+    applyColorFromMap(tab.id);
+  },
+  onUpdated: async (tab) => {
+    await setColorHeuristic(tab);
+  }
 });
+
+async function setColorHeuristic(tab) {
+  // may fail on privileged webpages.
+  try {
+    let [foundPageColor] = await browser.tabs.executeScript(tab.id, { file: "data/contentscript.js"})
+    if (foundPageColor) {
+      updateColorMap(tab.id, new Color(foundPageColor));
+      return;
+    }
+  } catch(e) {}
+
+  if (tab.favIconUrl) {
+    let img = await createFaviconImage(tab.favIconUrl);
+    let color = getColorFromImage(img);
+    updateColorMap(tab.id, color);
+    return;
+  }
+
+  updateColorMap(tab.id, "default");
+}
+var colorMap = tabManager.map;
+
+// var colorMap = new Map();
+// chrome.tabs.onActivated.addListener(function({tabId}) {
+//   console.log("tabActivated", tabId);
+//   applyColorFromMap(tabId);
+// });
 
 // chrome.tabs.onUpdated.addListener(function(tabId) {
 //   updateColorMap(tabId);
 // });
 
 async function applyColorFromMap(tabId) {
-  console.log(colorMap)
   if (!colorMap.has(tabId)) {
-    await updateColorMap(tabId);
+    return;
   }
   console.log("applying color", colorMap.get(tabId));
   if (colorMap.get(tabId) == "default") {
@@ -28,7 +61,8 @@ async function applyColorFromMap(tabId) {
   } else {
     currentTheme.patch({
       colors: {
-        accentcolor: colorMap.get(tabId),
+        accentcolor: colorMap.get(tabId).toString(),
+        textcolor: colorMap.get(tabId).textColor.toString()
       }
     });
     console.log("color applied", colorMap.get(tabId));
@@ -36,29 +70,10 @@ async function applyColorFromMap(tabId) {
 }
 
 async function updateColorMap(tabId, value) {
-  if (value == "default") {
-    colorMap.set(tabId, "default");
+  colorMap.set(tabId, value);
+  let tab = await browser.tabs.get(tabId);
+  if (tab.active) {
+    applyColorFromMap(tabId);
   }
-  if (!value) {
-    try {
-    let tab = await browser.tabs.get(tabId);
-    console.log(tab);
-    let img = await createFaviconImage(tab.favIconUrl);
-    console.log(img);
-    colorMap.set(tabId, getColorFromImage(img));
-    console.log(colorMap, tabId)
-    return;
-    } catch(e) {console.error(e)}
-  }
-  let color = toRgb(value);
-
-  colorMap.set(tabId, "rgb(" + color.join(",") + ")");
 }
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  console.log("received", message, sender);
-  if (!sender.tab) return false;
-  updateColorMap(sender.tab.id, message.content);
-  applyColorFromMap(sender.tab.id);
-});
 
