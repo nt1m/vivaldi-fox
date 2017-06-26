@@ -37,6 +37,35 @@ p {
   text-align: center;
 }
 
+
+.browser {
+  border: 1px solid rgba(12, 12, 13, 0.3);
+  font: message-box;
+}
+
+.tabbar {
+  display: flex;
+  background-color: var(--theme-tabbar-background);
+  color: var(--theme-tabbar-text-color);
+}
+
+.tab {
+  flex: 1;
+  max-width: 224px;
+  min-width: 40px;
+  background-color: var(--theme-navbar-background);
+  color: var(--theme-navbar-color);
+  border-right: 1px solid rgba(12, 12, 13, 0.3);
+  border-left: 1px solid rgba(12, 12, 13, 0.3);
+  padding: 10px;
+}
+
+.new-tab-button {
+  padding: 10px;
+  background: url(images/browser/new-tab.svg) no-repeat center;
+  -moz-context-properties: fill;
+}
+
 /**** Buttons ****/
 
 .button, button, input[type="color"] {

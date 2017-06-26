@@ -1,24 +1,26 @@
-var currentTheme = new Theme({
-  images: {
-    headerURL: ""
-  },
-  colors: {
-    accentcolor: "#ececec",
-    textcolor: "#000000"
-  }
-});
+var currentTheme, tabManager;
+async function init() {
+  const themes = await Settings.get("themes");
+  currentTheme = new Theme(themes[0]);
 
-var tabManager = new TabManager({
-  onSelectionChanged: async (tab) => {
-    if (!colorMap.has(tab.id)) {
+  tabManager = new TabManager({
+    onSelectionChanged: async (tab) => {
+      if (!tabManager.map.has(tab.id)) {
+        await setColorHeuristic(tab);
+      }
+      await applyColorFromMap(tab.id);
+    },
+    onUpdated: async (tab) => {
       await setColorHeuristic(tab);
     }
-    await applyColorFromMap(tab.id);
-  },
-  onUpdated: async (tab) => {
-    await setColorHeuristic(tab);
-  }
-});
+  });
+
+  Settings.onChanged(() => {
+    currentTheme = new Theme(themes[0]);
+  });
+}
+
+init();
 
 async function setColorHeuristic(tab) {
   // may fail on privileged webpages.
@@ -40,9 +42,10 @@ async function setColorHeuristic(tab) {
   updateColorMap(tab.id, "default");
 }
 
-var colorMap = tabManager.map;
 
 async function applyColorFromMap(tabId) {
+  var colorMap = tabManager.map;
+
   if (!colorMap.has(tabId)) {
     return;
   }
@@ -61,6 +64,6 @@ async function applyColorFromMap(tabId) {
 }
 
 async function updateColorMap(tabId, value) {
-  colorMap.set(tabId, value);
+  tabManager.map.set(tabId, value);
 }
 

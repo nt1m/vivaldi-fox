@@ -6,12 +6,16 @@
   "permissions": ["theme", "tabs", "<all_urls>"],
   "background": {
     "scripts": [
+      "shared/settings.js",
       "background/color.js",
       "background/tab-manager.js",
       "background/color-utils.js",
       "background/theme.js", 
       "background/background.js"
     ]
+  },
+  "options_ui": {
+    "page": "options/options.html"
   },
   "author": "Tim Nguyen",
   "applications": {
