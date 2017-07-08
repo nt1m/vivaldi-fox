@@ -1,0 +1,52 @@
+function evalRule(tree, context) {
+  switch (tree.type) {
+    case "ExpressionStatement":
+      return evalRule(tree.expression, context);
+    case "BinaryExpression":
+    case "LogicalExpression": {
+      let left = evalRule(tree.left, context);
+      let right = evalRule(tree.right, context);
+      switch (tree.operator) {
+        case "&&":
+          return left && right;
+        case "||":
+          return left || right;
+        case "<":
+          return left < right;
+        case ">":
+          return left > right;
+        case "<=":
+          return left <= right;
+        case ">=":
+          return left >= right;
+      }
+    }
+    case "UnaryExpression":
+      return tree.operator === "!" ? !evalRule(tree.argument, context) : evalRule(tree.argument, context);
+    case "Identifier":
+      return context[tree.name];
+    case "Literal":
+      return Number(tree.value);
+    default:
+      return false;
+  }
+}
+
+class Rule {
+  constructor(string) {
+    this.rule = string;
+  }
+
+  async getContext(tab) {
+    let object = {};
+    let keys = Object.keys(PROPERTIES).filter(k => this.rule.includes(k));
+    for (let key of keys) {
+      object[key] = await PROPERTIES[key].get(tab);
+    }
+    return object;
+  }
+
+  async applies(tab) {
+    return evalRule(this.rule, this.getContext(tab));
+  }
+}
