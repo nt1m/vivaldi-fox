@@ -1,29 +1,45 @@
 const SettingList = {
   themes: {
-    default: [{
-      images: {
-        headerURL: ""
+    defaultValue: {
+      default: {
+        images: {
+          headerURL: ""
+        },
+        colors: {
+          accentcolor: "#dedede",
+          textcolor: "#000"
+        }
       },
-      colors: {
-        accentcolor: "#ececec",
-        textcolor: "#000000"
-      }
-    }]
+      dark: {
+        images: {
+          headerURL: ""
+        },
+        colors: {
+          accentcolor: "#222",
+          textcolor: "#fff",
+        }
+      },
+    }
+  },
+  rules: {
+    defaultValue: [
+      ["dark", "!(hour > 20 || hour < 10)"],
+    ]
   }
 };
 
 const Settings = {
   async get(setting) {
     try {
-      const found = await browser.storage.sync.get(setting);
+      const found = await browser.storage.local.get(setting);
       return found["settings." + setting];
     } catch(e) {
-      return SettingList[setting].default;
+      return SettingList[setting].defaultValue;
     }
   },
 
   async set(setting, value) {
-    await browser.storage.sync.set({["settings." + setting]: value})
+    await browser.storage.local.set({["settings." + setting]: value})
   },
 
   onChanged(listener) {

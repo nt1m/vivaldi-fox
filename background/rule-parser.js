@@ -40,13 +40,16 @@ class Rule {
   async getContext(tab) {
     let object = {};
     let keys = Object.keys(PROPERTIES).filter(k => this.rule.includes(k));
+    console.log(keys);
     for (let key of keys) {
       object[key] = await PROPERTIES[key].get(tab);
+      console.log(object[key]);
     }
     return object;
   }
 
   async applies(tab) {
-    return evalRule(this.rule, this.getContext(tab));
+    console.log(window, this, esprima);
+    return evalRule(esprima.parse(this.rule).body[0], this.getContext(tab));
   }
 }

@@ -7,8 +7,9 @@
   "background": {
     "scripts": [
       "shared/settings.js",
-      "background/acorn.js",
+      "background/esprima.js",
       "background/rules.js",
+      "background/rule-manager.js",
       "background/rule-parser.js",
       "background/color.js",
       "background/tab-manager.js",
