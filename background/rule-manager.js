@@ -9,12 +9,13 @@ const RuleManager = {
   async getCurrent(tab) {
     let themes = await Settings.get("themes");
     try {
+      console.log([...this.rules].slice().reverse());
       for (let [theme, rule] of [...this.rules].slice().reverse()) {
         let ruleApplies = await (new Rule(rule)).applies(tab);
         console.log(ruleApplies)
         if (ruleApplies) {
           return themes[theme];
-        }
+        } 
       }
       return themes.default;
     } catch(e) {

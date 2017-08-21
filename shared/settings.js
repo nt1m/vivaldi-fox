@@ -7,7 +7,8 @@ const SettingList = {
         },
         colors: {
           accentcolor: "#dedede",
-          textcolor: "#000"
+          textcolor: "#000",
+          toolbar: "#f8f8f8",
         }
       },
       dark: {
@@ -15,15 +16,17 @@ const SettingList = {
           headerURL: ""
         },
         colors: {
-          accentcolor: "#222",
+          accentcolor: "#000",
           textcolor: "#fff",
+          toolbar: "#3a3a3a"
         }
       },
     }
   },
   rules: {
     defaultValue: [
-      ["dark", "!(hour > 20 || hour < 10)"],
+      ["dark", "privatebrowsing"],
+      ["dark", "hour > 20 || hour < 9"],
     ]
   }
 };
@@ -36,6 +39,14 @@ const Settings = {
     } catch(e) {
       return SettingList[setting].defaultValue;
     }
+  },
+
+  async getBatch(settings) {
+    let obj = {};
+    for (let setting of settings) {
+      obj[setting] = await this.get(setting);
+    }
+    return obj;
   },
 
   async set(setting, value) {

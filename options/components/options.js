@@ -1,6 +1,19 @@
 function Options({ themes }) {
-  console.log(themes);
+  let tabs = Object.keys(themes).map((theme) => {
+    return {
+      id: theme,
+      label: theme,
+      component: BrowserPreview({theme: themes[theme]})
+    }
+  });
   return React.createElement("div", {},
-    BrowserPreview({theme: themes[0]})
-  )
+    Section("Themes", 
+      Tabs({
+        selectedTab: app.state.selectedTab,
+        tabs
+      })
+    ),
+    Section("Default Theme"),
+    Section("Theming rules")
+  );
 }

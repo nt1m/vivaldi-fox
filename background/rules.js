@@ -1,4 +1,13 @@
 const PROPERTIES = {
+  privatebrowsing: {
+    type: "boolean",
+    validate(validate) {
+      return true;
+    },
+    async get(tab) {
+      return tab.incognito;
+    }
+  },
   container: {
     type: "string",
     validate(validate) {

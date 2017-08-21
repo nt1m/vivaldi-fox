@@ -8,14 +8,18 @@ async function init() {
       t = await RuleManager.getCurrent(tab);
       currentTheme = new Theme(t);
       if (!tabManager.map.has(tab.id)) {
-        await setColorHeuristic(tab);
+        await findColor(tab);
       }
-      await applyColorFromMap(tab.id);
+      await applyColor(tab.id, tab.windowId);
     },
-    onUpdated: async (tab) => {
+    onUpdated: async (tab, changeInfo) => {
+      if (!changeInfo.url && !changeInfo.favIconUrl) {
+        return;
+      }
       t = await RuleManager.getCurrent(tab);
       currentTheme = new Theme(t);
-      await setColorHeuristic(tab);
+      await findColor(tab);
+      await applyColor(tab);
     }
   });
 
@@ -26,10 +30,10 @@ async function init() {
 
 window.onload = init;
 
-async function setColorHeuristic(tab) {
-  if (currentTheme.applyPageColor.length <= 0) {
-    return;
-  }
+async function findColor(tab) {
+  // if (currentTheme.applyPageColor.length <= 0) {
+  //   return;
+  // }
   // may fail on privileged webpages.
   try {
     let [foundPageColor] = await browser.tabs.executeScript(tab.id, { file: "data/contentscript.js"})
@@ -45,15 +49,14 @@ async function setColorHeuristic(tab) {
     updateColorMap(tab.id, color);
     return;
   }
-
-  updateColorMap(tab.id, "default");
+  return;
 }
 
 
-async function applyColorFromMap(tabId) {
-  if (currentTheme.applyPageColor.length <= 0) {
-    return;
-  }
+async function applyColor(tabId, windowId) {
+  // if (currentTheme.applyPageColor.length <= 0) {
+  //   return;
+  // }
   var colorMap = tabManager.map;
 
   if (!colorMap.has(tabId)) {
@@ -61,14 +64,14 @@ async function applyColorFromMap(tabId) {
   }
   console.log("applying color", colorMap.get(tabId));
   if (colorMap.get(tabId) == "default") {
-    currentTheme.reset();
+    currentTheme.reset(windowId);
   } else {
     currentTheme.patch({
       colors: {
-        accentcolor: colorMap.get(tabId).toString(),
+        toolbar: colorMap.get(tabId).toString(),
         textcolor: colorMap.get(tabId).textColor.toString()
       }
-    });
+    }, windowId);
     console.log("color applied", colorMap.get(tabId));
   }
 }

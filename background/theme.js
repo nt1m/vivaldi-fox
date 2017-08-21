@@ -13,7 +13,8 @@ class Theme {
    * @param Object properties
    */
   constructor(properties) {
-    this.currentProperties = clone(properties);
+    this.applyPageColor = [0];
+    this.currentProperties = new Map();
     this.defaultProperties = clone(properties);
   
     Object.freeze(this.defaultProperties);
@@ -23,26 +24,32 @@ class Theme {
   /**
    * Apply the theme with patches
    */
-  apply() {
-    return browser.theme.update(this.currentProperties);
+  apply(windowId) {
+    if (!windowId) {
+      windowId = browser.windows.WINDOW_ID_CURRENT;
+    }
+    if (!this.currentProperties.has(windowId)) {
+      return browser.theme.update(windowId, this.defaultProperties);
+    }
+    return browser.theme.update(windowId, this.currentProperties.get(windowId));
   }
 
   /**
    * Patch specific properties of the theme
    * @param Object newProperties
    */
-  patch(newProperties) {
-    this.currentProperties = clone(Object.assign(clone(this.defaultProperties), newProperties));
+  patch(newProperties, windowId) {
+    this.currentProperties.set(windowId, clone(Object.assign(clone(this.defaultProperties), newProperties)));
 
-    this.apply();
+    this.apply(windowId);
   }
 
   /**
    * Resets the theme by removing all patches applied on top of it
    */
-  reset() {
-    this.currentProperties = clone(this.defaultProperties);
+  reset(windowId) {
+    this.currentProperties.delete(windowId);
 
-    return this.apply();
+    return this.apply(windowId);
   }
 }

@@ -41,31 +41,46 @@ p {
 .browser {
   border: 1px solid rgba(12, 12, 13, 0.3);
   font: message-box;
+  margin: 20px;
+  border-radius: 2px;
 }
 
-.tabbar {
+.browser .tabbar {
   display: flex;
+  padding-top: 2px;
   background-color: var(--theme-tabbar-background);
   color: var(--theme-tabbar-text-color);
 }
 
-.tab {
+.browser .tab {
+  z-index: 999;
   flex: 1;
   max-width: 224px;
   min-width: 40px;
-  background-color: var(--theme-navbar-background);
   color: var(--theme-navbar-color);
+  border-top: 2px solid transparent;
   border-right: 1px solid rgba(12, 12, 13, 0.3);
-  border-left: 1px solid rgba(12, 12, 13, 0.3);
   padding: 10px;
+  margin-bottom: -1px;
 }
 
-.new-tab-button {
+.browser .tab.selected {
+  border-top-color: rgba(12, 12, 13, 0.1);
+
+  background-color: var(--theme-navbar-background);
+}
+
+.browser .new-tab-button {
   padding: 10px;
   background: url(images/browser/new-tab.svg) no-repeat center;
   -moz-context-properties: fill;
 }
 
+.browser .navbar {
+  height: 30px;
+  background-color: var(--theme-navbar-background);
+  border-top: 1px solid rgba(12, 12, 13, 0.3);
+}
 /**** Buttons ****/
 
 .button, button, input[type="color"] {
