@@ -1,7 +1,7 @@
 var currentTheme, tabManager;
 async function init() {
   const themes = await Settings.get("themes");
-  currentTheme = new Theme(themes.default);
+  currentTheme = new Theme(themes[await Settings.get("defaultTheme")]);
 
   tabManager = new TabManager({
     onSelectionChanged: async (tab) => {

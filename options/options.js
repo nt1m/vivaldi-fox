@@ -1,6 +1,6 @@
 var app;
 async function init() {
-  let { themes, rules } = await Settings.getBatch(["themes", "rules"])
+  let { themes, rules, defaultTheme } = await Settings.getBatch(["themes", "rules", "defaultTheme"])
 
   app = new StateManager({
     async renderer() {
@@ -10,6 +10,7 @@ async function init() {
     initialState: {
       themes,
       rules,
+      defaultTheme,
       selectedTab: Object.keys(themes)[0],
     }
   });

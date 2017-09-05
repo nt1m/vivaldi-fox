@@ -8,6 +8,7 @@ const RuleManager = {
   },
   async getCurrent(tab) {
     let themes = await Settings.get("themes");
+    let defaultTheme = themes[await Settings.get("defaultTheme")];
     try {
       console.log([...this.rules].slice().reverse());
       for (let [theme, rule] of [...this.rules].slice().reverse()) {
@@ -17,9 +18,9 @@ const RuleManager = {
           return themes[theme];
         } 
       }
-      return themes.default;
+      return defaultTheme;
     } catch(e) {
-      return themes.default;
+      return defaultTheme;
     }
   }
 };

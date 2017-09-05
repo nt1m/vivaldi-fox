@@ -1,7 +1,7 @@
 const SettingList = {
   themes: {
     defaultValue: {
-      default: {
+      light: {
         images: {
           headerURL: ""
         },
@@ -28,6 +28,9 @@ const SettingList = {
       ["dark", "privatebrowsing"],
       ["dark", "hour > 20 || hour < 9"],
     ]
+  },
+  defaultTheme: {
+    defaultValue: "light",
   }
 };
 
