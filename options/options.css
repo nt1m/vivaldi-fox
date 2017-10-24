@@ -47,7 +47,7 @@ p {
 
 .browser .tabbar {
   display: flex;
-  padding-top: 2px;
+  padding-left: 40px;
   background-color: var(--theme-tabbar-background);
   color: var(--theme-tabbar-text-color);
 }
@@ -65,8 +65,8 @@ p {
 }
 
 .browser .tab.selected {
-  border-top-color: rgba(12, 12, 13, 0.1);
-
+  border-top-color: var(--theme-tabbar-background);
+  border-left: 1px solid rgba(12, 12, 13, 0.3);
   background-color: var(--theme-navbar-background);
 }
 

@@ -1,11 +1,11 @@
 function BrowserPreview({ theme }) {
-
   return React.createElement("div", {
     className: "browser",
     style: {
       "--theme-tabbar-background": theme.colors.accentcolor,
       "--theme-tabbar-color": theme.colors.textcolor,
-      "--theme-navbar-background": theme.colors.toolbar
+      "--theme-navbar-background": theme.colors.toolbar,
+      "--theme-navbar-color": theme.colors.toolbar_text,
     }
   },
     React.createElement("div", {

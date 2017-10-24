@@ -1,12 +1,16 @@
 var currentTheme, tabManager;
+
+async function resetTheme() {
+  let theme = await RuleManager.getCurrent();
+  currentTheme = new Theme(theme);
+}
+
 async function init() {
   const themes = await Settings.get("themes");
-  currentTheme = new Theme(themes[await Settings.get("defaultTheme")]);
+  await resetTheme();
 
   tabManager = new TabManager({
     onSelectionChanged: async (tab) => {
-      t = await RuleManager.getCurrent(tab);
-      currentTheme = new Theme(t);
       if (!tabManager.map.has(tab.id)) {
         await findColor(tab);
       }
@@ -16,8 +20,7 @@ async function init() {
       if (!changeInfo.url && !changeInfo.favIconUrl) {
         return;
       }
-      t = await RuleManager.getCurrent(tab);
-      currentTheme = new Theme(t);
+      await resetTheme();
       await findColor(tab);
       await applyColor(tab);
     }
@@ -59,17 +62,14 @@ async function applyColor(tabId, windowId) {
   // }
   var colorMap = tabManager.map;
 
-  if (!colorMap.has(tabId)) {
-    return;
-  }
   console.log("applying color", colorMap.get(tabId));
-  if (colorMap.get(tabId) == "default") {
+  if (colorMap.get(tabId) == "default" || !colorMap.has(tabId)) {
     currentTheme.reset(windowId);
   } else {
     currentTheme.patch({
       colors: {
         toolbar: colorMap.get(tabId).toString(),
-        textcolor: colorMap.get(tabId).textColor.toString()
+        toolbar_text: colorMap.get(tabId).textColor.toString()
       }
     }, windowId);
     console.log("color applied", colorMap.get(tabId));

@@ -1,7 +1,8 @@
 class StateManager {
-  constructor({ renderer, initialState }) {
+  constructor({ renderer, initialState, onStateUpdate }) {
     this.renderer = renderer;
     this.state = initialState;
+    this.onStateUpdate = onStateUpdate;
   }
 
   getState() {
@@ -10,7 +11,9 @@ class StateManager {
 
   setState(state) {
     this.state = Object.assign(this.state, state);
+    this.onStateUpdate(this.state);
     this.render();
+
     return this;
   }
 

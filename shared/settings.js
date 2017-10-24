@@ -8,6 +8,7 @@ const SettingList = {
         colors: {
           accentcolor: "#dedede",
           textcolor: "#000",
+          toolbar_text: "#000",
           toolbar: "#f8f8f8",
         }
       },
@@ -17,7 +18,8 @@ const SettingList = {
         },
         colors: {
           accentcolor: "#000",
-          textcolor: "#fff",
+          textcolor: "#ddd",
+          toolbar_text: "#ccc",
           toolbar: "#3a3a3a"
         }
       },
@@ -26,7 +28,7 @@ const SettingList = {
   rules: {
     defaultValue: [
       ["dark", "privatebrowsing"],
-      ["dark", "hour > 20 || hour < 9"],
+      ["dark", "(hour > 20) || (hour < 9)"],
     ]
   },
   defaultTheme: {
@@ -37,11 +39,13 @@ const SettingList = {
 const Settings = {
   async get(setting) {
     try {
-      const found = await browser.storage.local.get(setting);
+      const found = await browser.storage.local.get("settings." + setting);
+      if (!found["settings." + setting]) {
+        throw new Error();
+      }
       return found["settings." + setting];
-    } catch(e) {
-      return SettingList[setting].defaultValue;
-    }
+    } catch(e) { }
+    return SettingList[setting].defaultValue;
   },
 
   async getBatch(settings) {
@@ -54,6 +58,12 @@ const Settings = {
 
   async set(setting, value) {
     await browser.storage.local.set({["settings." + setting]: value})
+  },
+
+  async setBatch(settings) {
+    for (let setting in settings) {
+      await this.set(setting, settings[setting]);
+    }
   },
 
   onChanged(listener) {

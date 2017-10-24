@@ -78,6 +78,7 @@ const PROPERTIES = {
   hour: {
     type: "integer",
     validate(value) {
+      console.log(value);
       if (value >= 0 && value <= 23) {
         return true;
       } else {

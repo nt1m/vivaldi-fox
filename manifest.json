@@ -3,7 +3,7 @@
   "name": "Themilicious",
   "version": "2.0",
   "description": "Delicious themes",
-  "permissions": ["theme", "tabs", "<all_urls>"],
+  "permissions": ["theme", "tabs", "storage", "<all_urls>"],
   "background": {
     "scripts": [
       "shared/settings.js",
