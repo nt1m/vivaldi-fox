@@ -7,6 +7,9 @@ class TabManager {
     });
 
     chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
+      if (!changeInfo.url && !changeInfo.favIconUrl) {
+        return;
+      }
       await onUpdated(tab, changeInfo);
       if (tab.active) {
         await onSelectionChanged(tab);

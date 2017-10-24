@@ -23,15 +23,9 @@ const SettingList = {
       },
     }
   },
-  rules: {
-    defaultValue: [
-      ["dark", "privatebrowsing"],
-      ["dark", "hour > 20 || hour < 9"],
-    ]
-  },
   defaultTheme: {
     defaultValue: "light",
-  }
+  },
 };
 
 const Settings = {

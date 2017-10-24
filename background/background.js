@@ -5,7 +5,7 @@ async function init() {
 
   tabManager = new TabManager({
     onSelectionChanged: async (tab) => {
-      t = await RuleManager.getCurrent(tab);
+      t = themes[await Settings.get("defaultTheme")];
       currentTheme = new Theme(t);
       if (!tabManager.map.has(tab.id)) {
         await findColor(tab);
@@ -13,10 +13,7 @@ async function init() {
       await applyColor(tab.id, tab.windowId);
     },
     onUpdated: async (tab, changeInfo) => {
-      if (!changeInfo.url && !changeInfo.favIconUrl) {
-        return;
-      }
-      t = await RuleManager.getCurrent(tab);
+      t = themes[await Settings.get("defaultTheme")];
       currentTheme = new Theme(t);
       await findColor(tab);
       await applyColor(tab);
@@ -34,6 +31,7 @@ async function findColor(tab) {
   // if (currentTheme.applyPageColor.length <= 0) {
   //   return;
   // }
+
   // may fail on privileged webpages.
   try {
     let [foundPageColor] = await browser.tabs.executeScript(tab.id, { file: "data/contentscript.js"})

@@ -21,12 +21,5 @@ function Options({ themes, rules }) {
         }
       })
     ),
-    Section("Theme rules", 1,
-      Section("Presets", 2,
-      ),
-      Section("Advanced", 2,
-        ...rules.map(r => Rule({rule: r[1], themes, theme: r[0]}))
-      )
-    )
   );
 }
