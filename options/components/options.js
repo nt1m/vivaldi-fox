@@ -3,7 +3,7 @@ function Options({ themes }) {
     return {
       id: theme,
       label: theme,
-      component: ThemeEditor(theme),
+      component: ThemeEditor(themes[theme]),
     }
   });
   return React.createElement("div", {},

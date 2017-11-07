@@ -1,5 +1,4 @@
 function Setting({ id, type, values, name }) {
-  console.log(values);
   switch (type) {
     case "boolean":
       return React.createElement("div", {},

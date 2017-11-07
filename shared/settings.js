@@ -22,9 +22,28 @@ const Settings = {
           },
           colors: {
             accentcolor: "#dedede",
-            textcolor: "#444",
-            toolbar_text: "#000",
+            textcolor: "#444444",
             toolbar: "#f8f8f8",
+            toolbar_text: "#000000",
+            toolbar_field: "#ffffff",
+            toolbar_field_text: "#000000",
+          }
+        }
+      },
+      "dark": {
+        applyPageColors: ["toolbar_text", "toolbar"],
+        name: "dark",
+        properties: {
+          images: {
+            headerURL: ""
+          },
+          colors: {
+            textcolor: "#ffffff",
+            accentcolor: "#0c0c0d",
+            toolbar: "#323234",
+            toolbar_text: "#eeeeee",
+            toolbar_field: "#474749",
+            toolbar_field_text: "#F9F9FA",
           }
         }
       }

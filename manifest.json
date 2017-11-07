@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Themilicious",
+  "name": "VivaldiFox",
   "version": "2.0",
   "description": "Delicious themes",
   "permissions": ["theme", "tabs", "<all_urls>", "storage"],

@@ -17,3 +17,5 @@ const manager = new AddonState({
     }
   }
 });
+
+browser.tabs.create({url: "options/options.html"}) 
