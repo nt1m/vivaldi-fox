@@ -1,55 +1,46 @@
-function clone(obj) {
-  if (null == obj || "object" != typeof obj) return obj;
-  let copy = obj.constructor();
-  for (let attr in obj) {
-    if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-  }
-  return copy;
-}
+let textProperties = ["toolbar_text", "textcolor", "toolbar_field_text"];
 
 class Theme {
   /**
    * Build a theme with properties from the manifest
    * @param Object properties
    */
-  constructor(properties) {
-    this.applyPageColor = [0];
-    this.currentProperties = new Map();
-    this.defaultProperties = clone(properties);
-  
-    Object.freeze(this.defaultProperties);
+  constructor(theme) {
+    this.theme = theme;
     this.apply();
   }
 
   /**
    * Apply the theme with patches
    */
-  apply(windowId) {
-    if (!windowId) {
-      windowId = browser.windows.WINDOW_ID_CURRENT;
-    }
-    if (!this.currentProperties.has(windowId)) {
-      return browser.theme.update(windowId, this.defaultProperties);
-    }
-    return browser.theme.update(windowId, this.currentProperties.get(windowId));
+  apply() {
+    return browser.theme.update(this.theme.properties);
   }
 
   /**
    * Patch specific properties of the theme
-   * @param Object newProperties
    */
-  patch(newProperties, windowId) {
-    this.currentProperties.set(windowId, clone(Object.assign(clone(this.defaultProperties), newProperties)));
+  patch(background, text, windowId) {
+    let newColors = this.theme.applyPageColors.reduce((acc, x) => {
+      return Object.assign({
+        [x]: textProperties.includes(x) ? text : background,
+      }, acc);
+    }, {});
 
-    this.apply(windowId);
+    console.log(this.theme, newColors)
+    let { properties } = this.theme;
+
+    let theme = {
+      images: properties.images,
+      colors: Object.assign({}, properties.colors, newColors),
+    };
+    return browser.theme.update(windowId, theme);
   }
 
   /**
    * Resets the theme by removing all patches applied on top of it
    */
   reset(windowId) {
-    this.currentProperties.delete(windowId);
-
-    return this.apply(windowId);
+    return browser.theme.update(windowId, this.theme.properties);
   }
 }

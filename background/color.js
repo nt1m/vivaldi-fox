@@ -35,4 +35,9 @@ class Color {
   toString() {
     return "rgb(" + this.components.join(",") + ")";
   }
+
+  static equals(color, color2) {
+    return color[0] === color2[0] && color[1] === color2[1]
+    && color[2] === colors2[2];
+  }
 }

@@ -1,67 +1,46 @@
-const SettingList = {
-  themes: {
-    defaultValue: {
-      light: {
-        images: {
-          headerURL: ""
-        },
-        colors: {
-          accentcolor: "#dedede",
-          textcolor: "#000",
-          toolbar: "#f8f8f8",
-        }
-      },
-      dark: {
-        images: {
-          headerURL: ""
-        },
-        colors: {
-          accentcolor: "#000",
-          textcolor: "#fff",
-          toolbar: "#3a3a3a"
-        }
-      },
-    }
+const Settings = {
+  nightModeEnabled() {
+    return getSetting("nightModeEnabled", false);
   },
-  defaultTheme: {
-    defaultValue: "light",
+  getDefaultTheme() {
+    return getSetting("defaultTheme", "light");
   },
+  getNightTheme() {
+    return getSetting("defaultTheme", "dark");
+  },
+  getThemes() {
+    return getSetting("themes", {
+      "light": {
+        applyPageColors: ["toolbar_text", "toolbar"],
+        properties: {
+          images: {
+            headerURL: ""
+          },
+          colors: {
+            accentcolor: "#dedede",
+            textcolor: "#444",
+            toolbar_text: "#000",
+            toolbar: "#f8f8f8",
+          }
+        }
+      }
+    });
+  }
 };
 
-const Settings = {
-  async get(setting) {
-    try {
-      const found = await browser.storage.local.get(setting);
+async function getSetting(setting, fallback) {
+  try {
+    const found = await browser.storage.local.get(setting);
+    if (found.hasOwnProperty("settings." + setting)) {
       return found["settings." + setting];
-    } catch(e) {
-      return SettingList[setting].defaultValue;
+    } else {
+      return fallback;
     }
-  },
-
-  async getBatch(settings) {
-    let obj = {};
-    for (let setting of settings) {
-      obj[setting] = await this.get(setting);
-    }
-    return obj;
-  },
-
-  async set(setting, value) {
-    await browser.storage.local.set({["settings." + setting]: value})
-  },
-
-  onChanged(listener) {
-    return browser.storage.onChanged.addListener(changes => {
-      changes = Object.assign({}, changes);
-      for (let change in changes) {
-        if (!change.startsWith("settings.")) {
-          delete changes[change];
-        }
-      }
-
-      if (Object.keys(changes).length > 0) {
-        listener(changes);
-      }
-    })
+  } catch(e) {
+    return fallback;
   }
+}
+
+async function setSetting(setting) {
+  await browser.storage.local.set({["settings." + setting]: value});
 }
