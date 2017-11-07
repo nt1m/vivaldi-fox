@@ -1,9 +1,9 @@
-function Options({ themes, rules }) {
+function Options({ themes }) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
       label: theme,
-      component: BrowserPreview({theme: themes[theme]})
+      component: ThemeEditor(theme),
     }
   });
   return React.createElement("div", {},

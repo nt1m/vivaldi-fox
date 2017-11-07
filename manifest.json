@@ -8,7 +8,7 @@
     "scripts": [
       "shared/settings.js",
       "background/color.js",
-      "background/tab-manager.js",
+      "background/addon-state.js",
       "background/color-utils.js",
       "background/theme.js", 
       "background/background.js"

@@ -1,4 +1,4 @@
-class StateManager {
+class AddonState {
   constructor({ onTabColorChange, onSettingChange, onInit }) {
     this.state = {
       tabColorMap: new Map(),

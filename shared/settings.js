@@ -8,10 +8,14 @@ const Settings = {
   getNightTheme() {
     return getSetting("defaultTheme", "dark");
   },
+  getPageColorsOnInactive() {
+    return getSetting("pageColorInactiveWins", true);
+  },
   getThemes() {
     return getSetting("themes", {
       "light": {
         applyPageColors: ["toolbar_text", "toolbar"],
+        name: "light",
         properties: {
           images: {
             headerURL: ""
@@ -25,6 +29,15 @@ const Settings = {
         }
       }
     });
+  },
+  async getThemeProperty(property, type, theme) {
+    let themes = await getThemes();
+    return themes[theme][type][property];
+  },
+  async setThemeProperty(newValue, property, type, theme) {
+    let themes = await getThemes();
+    themes[theme][type][property] = newValue;
+    return setSetting("themes", themes);
   }
 };
 
@@ -41,6 +54,6 @@ async function getSetting(setting, fallback) {
   }
 }
 
-async function setSetting(setting) {
+async function setSetting(setting, value) {
   await browser.storage.local.set({["settings." + setting]: value});
 }

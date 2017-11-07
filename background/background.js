@@ -1,7 +1,7 @@
 
 let currentTheme;
 
-const manager = new StateManager({
+const manager = new AddonState({
   async onInit() {
     let themes = await Settings.getThemes();
     let defaultTheme = await Settings.getDefaultTheme();

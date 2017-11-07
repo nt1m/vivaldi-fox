@@ -1,7 +1,9 @@
+var { createElement } = React;
+
+
 var app;
 async function init() {
-  let { themes, rules, defaultTheme } = await Settings.getBatch(["themes", "rules", "defaultTheme"])
-
+  themes = await Settings.getThemes();
   app = new StateManager({
     async renderer() {
       let root = document.getElementById("app");
@@ -9,8 +11,7 @@ async function init() {
     },
     initialState: {
       themes,
-      rules,
-      defaultTheme,
+      defaultTheme: await Settings.getDefaultTheme(),
       selectedTab: Object.keys(themes)[0],
     }
   });
