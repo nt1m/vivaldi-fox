@@ -1,0 +1,8 @@
+language: node_js
+node_js: stable
+notifications:
+  email: false
+before_script:
+  - npm install -g eslint
+script:
+  - eslint ./
