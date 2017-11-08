@@ -112,7 +112,8 @@ async function findColor(tab) {
       file: "data/contentscript.js"
     });
     if (foundPageColor) {
-      return new Color(foundPageColor);
+      let color = new Color(foundPageColor);
+      return color;
     }
   } catch (e) {}
 

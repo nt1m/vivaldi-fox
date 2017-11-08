@@ -23,17 +23,8 @@ class AddonState {
     });
 
     browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-      if (!changeInfo.url && !changeInfo.favIconUrl) {
-        return;
-      }
       let color = await findColor(tab);
       let {tabColorMap} = this.state;
-
-      if (color && tabColorMap.get(tab.id) !== null &&
-          Color.equals(color, tabColorMap.get(tab.id))) {
-        // Don't bother changing the theme if color is still the same.
-        return;
-      }
 
       tabColorMap.set(tabId, color);
 
