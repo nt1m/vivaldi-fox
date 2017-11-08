@@ -1,6 +1,10 @@
+"use strict";
+
+/* exported Section */
+
 function Section(header, ...content) {
-  return React.createElement("section", {className: "card"},
-    React.createElement("h1", {}, header),
+  return createElement("section", {className: "card"},
+    createElement("h1", {}, header),
     ...content
   );
 }

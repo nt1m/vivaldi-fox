@@ -1,14 +1,21 @@
+"use strict";
+
+/* exported Options */
+
 function Options({ settings: {themes, defaultTheme, nightTheme} }) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
       label: theme,
       component: ThemeEditor(themes[theme], Object.keys(themes).length > 1),
-    }
+    };
   });
-  return React.createElement("div", {},
+  let nightThemeDesc = "The night theme is enabled from 8pm to 8am. " +
+    "To disable this feature, choose the same theme as the default theme.";
+
+  return createElement("div", {},
     Section("Selected Themes",
-      createElement("h2", {},"Default theme"),
+      createElement("h2", {}, "Default theme"),
       ThemeSelect({
         themes,
         defaultValue: defaultTheme,
@@ -17,7 +24,9 @@ function Options({ settings: {themes, defaultTheme, nightTheme} }) {
         }
       }),
       createElement("h2", {}, "Night theme"),
-      createElement("p", {className: "disabled"}, "The night theme is enabled from 8pm to 8am. To disable this feature, choose the same theme as the default theme."),
+      createElement("p", {
+        className: "disabled"
+      }, nightThemeDesc),
       ThemeSelect({
         themes,
         defaultValue: nightTheme,
@@ -33,5 +42,5 @@ function Options({ settings: {themes, defaultTheme, nightTheme} }) {
         tabs
       })
     ),
-  )
+  );
 }

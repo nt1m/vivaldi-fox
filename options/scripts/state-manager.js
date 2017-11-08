@@ -1,3 +1,7 @@
+"use strict";
+
+/* exported StateManager */
+
 class StateManager {
   constructor({ renderer, initialState, actions }) {
     this.renderer = renderer;

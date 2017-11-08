@@ -1,2 +1,6 @@
+"use strict";
+
+/* exported NIGHTMODE_MORNING, NIGHTMODE_EVENING */
+
 const NIGHTMODE_MORNING = 8;
 const NIGHTMODE_EVENING = 20;

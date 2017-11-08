@@ -5,7 +5,7 @@ module.exports = {
     "webextensions": true
   },
   "globals": {
-    "Settings": true,
+    "Settings": true
   },
   "parserOptions": {
     "ecmaVersion": 8
@@ -17,8 +17,8 @@ module.exports = {
     // Enforce one true brace style (opening brace on the same line) and avoid
     // start and end braces on the same line.
     "brace-style": [2, "1tbs", {"allowSingleLine": false}],
-    // Require camel case names
-    "camelcase": 2,
+    // Do not require camel case names
+    "camelcase": 0,
     // Allow trailing commas for easy list extension.  Having them does not
     // impair readability, but also not required either.
     "comma-dangle": 0,
@@ -125,12 +125,8 @@ module.exports = {
     // here is useless:
     // if (something) { return false; } else { return true; }
     "no-else-return": 2,
-    // Disallow empty statements. This will report an error for:
-    // try { something(); } catch (e) {}
-    // but will not report it for:
-    // try { something(); } catch (e) { /* Silencing the error because ...*/ }
-    // which is a valid use case.
-    "no-empty": 2,
+    // Disallow empty statements.
+    "no-empty": ["error", { "allowEmptyCatch": true }],
     // Disallow the use of empty character classes in regular expressions.
     "no-empty-character-class": 2,
     // Disallow use of eval(). We have other APIs to evaluate code in content.
@@ -153,8 +149,8 @@ module.exports = {
     "no-fallthrough": 2,
     // Allow the use of leading or trailing decimal points in numeric literals.
     "no-floating-decimal": 0,
-    // Disallow comments inline after code.
-    "no-inline-comments": 2,
+    // Allow comments inline after code.
+    "no-inline-comments": 0,
     // Disallow if as the only statement in an else block.
     "no-lonely-if": 2,
     // Allow mixing regular variable and require declarations (not a node env).

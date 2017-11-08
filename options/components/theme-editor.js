@@ -1,4 +1,8 @@
-const ThemeProperty = React.createFactory(class ThemePropertyFactory extends React.Component {
+"use strict";
+
+/* exported ThemeEditor */
+
+const ThemeProperty = createFactory(class ThemePropertyFactory extends Component {
   componentDidUpdate() {
     this.refs["color-input"].value = this.props.defaultValue;
   }
@@ -7,7 +11,6 @@ const ThemeProperty = React.createFactory(class ThemePropertyFactory extends Rea
       label,
       property,
       defaultValue,
-      setThemeProperty,
       themeName,
     } = this.props;
     return createElement("div", {className: "setting"},
@@ -30,25 +33,29 @@ function ThemePropertyGroup({
   textProperty,
   backgroundProperty,
 }) {
+  let { properties, applyPageColors } = theme;
+  let applyPageColorsChecked = applyPageColors.includes(backgroundProperty)
+    && applyPageColors.includes(textProperty);
   return createElement("div", {className: "card"},
     createElement("h2", {}, sectionName),
     ThemeProperty({
       themeName: theme.name,
       label: "Background",
       property: backgroundProperty,
-      defaultValue: theme.properties.colors[backgroundProperty]
+      defaultValue: properties.colors[backgroundProperty]
     }),
     ThemeProperty({
       themeName: theme.name,
       label: "Text",
       property: textProperty,
-      defaultValue: theme.properties.colors[textProperty]
+      defaultValue: properties.colors[textProperty]
     }),
     Checkbox({
-      defaultChecked: theme.applyPageColors.includes(backgroundProperty) && theme.applyPageColors.includes(textProperty),
+      defaultChecked: applyPageColorsChecked,
       label: "Apply page colors",
       onChange(e) {
-        app.actions.setThemeApplyPageColors(theme.name, backgroundProperty, textProperty, e.target.checked);
+        app.actions.setThemeApplyPageColors(
+          theme.name, backgroundProperty, textProperty, e.target.checked);
       }
     })
   );
@@ -82,5 +89,5 @@ function ThemeEditor(theme, deleteButton) {
         onClick: () => app.actions.deleteTheme(theme.name)
       }, "Delete theme")
     )
-  )
+  );
 }

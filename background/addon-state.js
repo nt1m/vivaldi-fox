@@ -1,9 +1,13 @@
+"use strict";
+
+/* exported AddonState */
+
 class AddonState {
   constructor({ onTabColorChange, onNightMode, onInit }) {
     this.state = {
       tabColorMap: new Map(),
     };
-  
+
     onTabColorChange = onTabColorChange.bind(this);
     onNightMode = onNightMode.bind(this);
     onInit = onInit.bind(this);
@@ -23,9 +27,10 @@ class AddonState {
         return;
       }
       let color = await findColor(tab);
-      let {tabColorMap} = this.state;      
+      let {tabColorMap} = this.state;
 
-      if (color && tabColorMap.get(tab.id) !== null && Color.equals(color, tabColorMap.get(tab.id))) {
+      if (color && tabColorMap.get(tab.id) !== null &&
+          Color.equals(color, tabColorMap.get(tab.id))) {
         // Don't bother changing the theme if color is still the same.
         return;
       }
@@ -39,7 +44,7 @@ class AddonState {
 
     this.refreshAddon = async () => {
       onInit();
-      
+
       await new Promise(r => setTimeout(r, 500));
       let tabs = await browser.tabs.query({ active: true });
       if (tabs.length == 0) {
@@ -81,20 +86,4 @@ function firstAlarm() {
   then.setMinutes(0);
   then.setSeconds(0);
   return then.getTime();
-}
-
-async function findColor(tab) {
-  try {
-    let [foundPageColor] = await browser.tabs.executeScript(tab.id, { file: "data/contentscript.js"})
-    if (foundPageColor) {
-      return new Color(foundPageColor);
-    }
-  } catch(e) {}
-
-  if (tab.favIconUrl) {
-    let img = await createFaviconImage(tab.favIconUrl);
-    let color = getColorFromImage(img);
-    return color;
-  }
-  return null;
 }

@@ -1,22 +1,24 @@
+"use strict";
+
+/* exported Tabs */
+/* eslint-disable indent */
+
 function Tabs({ tabs, selectedTab }) {
   let selected = tabs.find(t => t.id == selectedTab);
-  return React.createElement("div", {},
-    React.createElement("ul", {
+  return createElement("div", {},
+    createElement("ul", {
       className: "tabs"
     },
-      ...tabs.map(t => React.createElement("li", {
+      ...tabs.map(t => createElement("li", {
         className: selectedTab == t.id ? "selected" : null,
       },
-        React.createElement("a", {
+        createElement("a", {
           href: "#",
           onClick(e) {
             app.setState({ selectedTab: t.id });
             e.preventDefault();
           }
-        }, 
-          React.createElement("span", {}, t.label),
-          t.hasOwnProperty("badge") && React.createElement("span", { className: "badge" }, t.badge)
-        )
+        }, createElement("span", {}, t.label))
       )),
       createElement("button", {
         className: "addButton",
@@ -25,8 +27,8 @@ function Tabs({ tabs, selectedTab }) {
         }
       })
     ),
-    React.createElement("div", { className: "tab-panel" },
+    createElement("div", { className: "tab-panel" },
       selected.component
     )
-  )
+  );
 }

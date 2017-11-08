@@ -1,3 +1,6 @@
+"use strict";
+
+/* exported getColorFormat, findColor */
 
 function getColorFormat(color) {
   color = color.replace(/\s/g, "");
@@ -8,6 +11,7 @@ function getColorFormat(color) {
   }
   return "hsl";
 }
+
 function createFaviconImage(icon) {
   return new Promise((resolve, reject) => {
     let img = new Image();
@@ -100,4 +104,22 @@ function getColorFromImage(imgEl) {
   }
   canvas.remove();
   return new Color("rgb(" + result.join(",") + ")");
+}
+
+async function findColor(tab) {
+  try {
+    let [foundPageColor] = await browser.tabs.executeScript(tab.id, {
+      file: "data/contentscript.js"
+    });
+    if (foundPageColor) {
+      return new Color(foundPageColor);
+    }
+  } catch (e) {}
+
+  if (tab.favIconUrl) {
+    let img = await createFaviconImage(tab.favIconUrl);
+    let color = getColorFromImage(img);
+    return color;
+  }
+  return null;
 }

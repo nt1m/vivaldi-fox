@@ -1,7 +1,8 @@
+"use strict";
 
 let currentTheme;
 
-const manager = new AddonState({
+new AddonState({
   async onInit() {
     let themes = await Settings.getThemes();
     let date = new Date(Date.now());
@@ -12,10 +13,10 @@ const manager = new AddonState({
     } else {
       selectedTheme = await Settings.getNightTheme();
     }
-    
+
     currentTheme = new Theme(themes[selectedTheme]);
   },
-  async onTabColorChange ({ id, windowId }) {
+  async onTabColorChange({ id, windowId }) {
     let { tabColorMap } = this.state;
     let color = tabColorMap.get(id);
     if (!color) {

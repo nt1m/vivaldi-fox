@@ -1,4 +1,6 @@
-let callbacks = new Set();
+"use strict";
+
+/* exported Settings */
 
 const Settings = {
   getDefaultTheme() {
@@ -57,15 +59,6 @@ const Settings = {
   setNightTheme(theme) {
     setSetting("nightTheme", theme);
   },
-  async getThemeProperty(property, type, theme) {
-    let themes = await getThemes();
-    return themes[theme][type][property];
-  },
-  async setThemeProperty(newValue, property, type, theme) {
-    let themes = await getThemes();
-    themes[theme][type][property] = newValue;
-    return setSetting("themes", themes);
-  },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {
       changes = Object.assign({}, changes);
@@ -89,10 +82,9 @@ async function getSetting(setting, fallback) {
     const found = await browser.storage.local.get("settings." + setting);
     if (found.hasOwnProperty("settings." + setting)) {
       return found["settings." + setting];
-    } else {
-      return fallback;
     }
-  } catch(e) {
+    return fallback;
+  } catch (e) {
     return fallback;
   }
 }

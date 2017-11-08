@@ -1,12 +1,16 @@
-var { createElement } = React;
+"use strict";
 
+/* global React, ReactDOM */
+/* exported createElement, createFactory, Component */
+
+var { createElement, createFactory, Component } = React;
 
 var app;
 async function init() {
   app = new StateManager({
     async renderer() {
       let root = document.getElementById("app");
-      ReactDOM.render(Options(app.state), root)
+      ReactDOM.render(Options(app.state), root);
     },
     initialState: {
       settings: {
@@ -50,7 +54,7 @@ async function init() {
           return;
         }
         delete themes[name];
-        this.state.selectedTab = Object.keys(themes)[0];        
+        this.state.selectedTab = Object.keys(themes)[0];
 
         if (defaultTheme === name) {
           this.actions.setDefaultTheme(Object.keys(themes)[0]);
@@ -94,7 +98,7 @@ async function init() {
 
 try {
   init();
-} catch(e) {
+} catch (e) {
   Settings.clear();
-  alert("Corrupted add-on profile, please reload this page")
+  alert("Corrupted add-on profile, please reload this page");
 }

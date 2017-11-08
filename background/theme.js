@@ -1,4 +1,8 @@
-let textProperties = ["toolbar_text", "textcolor", "toolbar_field_text"];
+"use strict";
+
+const textProperties = ["toolbar_text", "textcolor", "toolbar_field_text"];
+
+/* exported Theme */
 
 class Theme {
   /**
@@ -22,7 +26,7 @@ class Theme {
    */
   patch(background, text, windowId) {
     if (this.theme.applyPageColors.length === 0) {
-      return;
+      return Promise.resolve();
     }
     let newColors = this.theme.applyPageColors.reduce((acc, x) => {
       return Object.assign({
