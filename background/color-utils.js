@@ -16,6 +16,9 @@ function createFaviconImage(icon) {
     img.src = icon;
   });
 }
+
+const MAX_ICON_SIZE = 256;
+
 function getColorFromImage(imgEl) {
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
@@ -25,7 +28,12 @@ function getColorFromImage(imgEl) {
   // - If image only contains shades of gray, it takes the average instead
   let width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth;
   let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight;
-  ctx.drawImage(imgEl, 0, 0);
+  // Apply a maximum width/height before drawing the image
+  let oldWidth = width;
+  width = Math.min(MAX_ICON_SIZE, width);
+  height = Math.round((width * height) / oldWidth);
+
+  ctx.drawImage(imgEl, 0, 0, width, height);
 
   let data = ctx.getImageData(0, 0, width, height).data;
   let count = 0;

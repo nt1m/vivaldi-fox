@@ -137,6 +137,7 @@ section {
   padding: 0.5em;
   font-size: 0.8em;
   font: inherit;
+  cursor: pointer;
 }
 
 input[type="color"] {
