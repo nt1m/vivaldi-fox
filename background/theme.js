@@ -21,13 +21,16 @@ class Theme {
    * Patch specific properties of the theme
    */
   patch(background, text, windowId) {
+    if (this.theme.applyPageColors.length === 0) {
+      return;
+    }
     let newColors = this.theme.applyPageColors.reduce((acc, x) => {
       return Object.assign({
         [x]: textProperties.includes(x) ? text : background,
       }, acc);
     }, {});
 
-    console.log(this.theme, newColors)
+    console.log("theme patch", this.theme, newColors)
     let { properties } = this.theme;
 
     let theme = {
@@ -41,6 +44,7 @@ class Theme {
    * Resets the theme by removing all patches applied on top of it
    */
   reset(windowId) {
+    console.log("theme reset");
     return browser.theme.update(windowId, this.theme.properties);
   }
 }

@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>VivaldiFox Options</title>
+  <meta name="theme-color" content="#EF3939"/>
   <meta charset="utf-8"/>
   <link rel="shortcut icon" href="img/icon.svg"/>
   <link rel="stylesheet" href="options.css"/>
@@ -10,12 +11,24 @@
   <div id="app">
 
   </div>
+  <section id="about" class="card">
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" hidden id="paypal-form">
+      <input type="hidden" name="cmd" value="_s-xclick">
+      <input type="hidden" name="hosted_button_id" value="EEJ6J6XWTT9PS">
+    </form>
+    <h1>About</h1>
+    <p>This add-on was created by <a href="https://twitter.com/therealntim">Tim Nguyen</a>.</p>
+    <p>You can support the add-on by: </p>
+    <a href="#" class="button money green" onclick="document.querySelector('#paypal-form').submit()">Donating</a>
+    <a href="https://addons.mozilla.org/en-US/firefox/addon/vivaldifox/reviews/add" class="button star yellow" target="_blank">Giving a good review</a>
+    <a href="https://github.com/nt1m/vivaldi-fox/issues" class="button github black" target="_blank">Reporting issues</a>
+  </section>
   <script src="lib/react.min.js"></script>
   <script src="lib/react-dom.min.js"></script>
   <script src="../shared/settings.js"></script>
   <script src="scripts/state-manager.js"></script>
   <script src="components/theme-select.js"></script>
-  <script src="components/setting.js"></script>
+  <script src="components/checkbox.js"></script>
   <script src="components/section.js"></script>
   <script src="components/tabs.js"></script>
   <script src="components/theme-editor.js"></script>

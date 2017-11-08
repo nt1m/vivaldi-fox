@@ -5,7 +5,7 @@ const Settings = {
     return getSetting("defaultTheme", "light");
   },
   getNightTheme() {
-    return getSetting("defaultTheme", "light");
+    return getSetting("nightTheme", "light");
   },
   getPageColorsOnInactive() {
     return getSetting("pageColorInactiveWins", true);
@@ -53,6 +53,9 @@ const Settings = {
   },
   setDefaultTheme(theme) {
     setSetting("defaultTheme", theme);
+  },
+  setNightTheme(theme) {
+    setSetting("nightTheme", theme);
   },
   async getThemeProperty(property, type, theme) {
     let themes = await getThemes();

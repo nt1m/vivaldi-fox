@@ -1,6 +1,6 @@
-function Section(header, level = 1, ...content) {
-  return React.createElement("div", {} ,
-    React.createElement("h" + level, {}, header),
+function Section(header, ...content) {
+  return React.createElement("section", {className: "card"},
+    React.createElement("h1", {}, header),
     ...content
   );
 }

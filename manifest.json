@@ -3,10 +3,11 @@
   "name": "VivaldiFox",
   "version": "2.0",
   "description": "Delicious themes",
-  "permissions": ["theme", "tabs", "<all_urls>", "storage"],
+  "permissions": ["theme", "tabs", "<all_urls>", "storage", "alarms"],
   "background": {
     "scripts": [
       "shared/settings.js",
+      "background/constants.js",
       "background/color.js",
       "background/addon-state.js",
       "background/color-utils.js",

@@ -10,7 +10,7 @@ const ThemeProperty = React.createFactory(class ThemePropertyFactory extends Rea
       setThemeProperty,
       themeName,
     } = this.props;
-    return createElement("div", {},
+    return createElement("div", {className: "setting"},
       createElement("span", {}, label),
       createElement("input", {
         type: "color",
@@ -44,11 +44,18 @@ function ThemePropertyGroup({
       property: textProperty,
       defaultValue: theme.properties.colors[textProperty]
     }),
+    Checkbox({
+      defaultChecked: theme.applyPageColors.includes(backgroundProperty) && theme.applyPageColors.includes(textProperty),
+      label: "Apply page colors",
+      onChange(e) {
+        app.actions.setThemeApplyPageColors(theme.name, backgroundProperty, textProperty, e.target.checked);
+      }
+    })
   );
 }
 
 function ThemeEditor(theme, deleteButton) {
-  return createElement("div", {className: theme.name},
+  return createElement("div", {className: "theme-editor"},
     ThemePropertyGroup({
       sectionName: "Frame",
       theme,
@@ -67,8 +74,13 @@ function ThemeEditor(theme, deleteButton) {
       backgroundProperty: "toolbar_field",
       textProperty: "toolbar_field_text"
     }),
-    deleteButton && createElement("button", {
-      onClick: () => app.actions.deleteTheme(theme.name)
-    }, "Delete theme")
+    deleteButton && createElement("div", {className: "card"},
+      createElement("h2", {}, "Danger!"),
+      createElement("p", {className: "disabled"}, "This can't be undone!"),
+      createElement("button", {
+        className: "red",
+        onClick: () => app.actions.deleteTheme(theme.name)
+      }, "Delete theme")
+    )
   )
 }

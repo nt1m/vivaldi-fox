@@ -1,4 +1,4 @@
-function Options({ settings: {themes, defaultTheme} }) {
+function Options({ settings: {themes, defaultTheme, nightTheme} }) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
@@ -7,29 +7,31 @@ function Options({ settings: {themes, defaultTheme} }) {
     }
   });
   return React.createElement("div", {},
-    Section("Themes", 1,
-      Tabs({
-        selectedTab: app.state.selectedTab,
-        tabs
-      })
-    ),
-    Section("Default Theme", 1,
+    Section("Selected Themes",
+      createElement("h2", {},"Default theme"),
       ThemeSelect({
         themes,
         defaultValue: defaultTheme,
         onChange: ({target}) => {
           app.actions.setDefaultTheme(target.value);
         }
-      })
-    ),
-    Section("Night mode", 1,
+      }),
+      createElement("h2", {}, "Night theme"),
+      createElement("p", {className: "disabled"}, "The night theme is enabled from 8pm to 8am. To disable this feature, choose the same theme as the default theme."),
       ThemeSelect({
-        label: "Night mode theme",
         themes,
-        onChange: () => {
+        defaultValue: nightTheme,
+        onChange: ({target}) => {
           app.actions.setNightTheme(target.value);
         }
       })
     ),
-  );
+
+    Section("Themes",
+      Tabs({
+        selectedTab: app.state.selectedTab,
+        tabs
+      })
+    ),
+  )
 }

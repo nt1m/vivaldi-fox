@@ -28,13 +28,12 @@ p {
 }
 
 .disabled {
-  opacity: 0.25;
+  opacity: 0.5;
   pointer-events: none;
 }
 
-.main-content {
-  padding: 1em;
-  text-align: center;
+section {
+  margin: 1em 25%;
 }
 
 /** Tabs **/
@@ -79,13 +78,6 @@ p {
   transform: none;
 }
 
-.badge {
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.2);
-  background: rgba(0,0,0,0.15);
-  padding: 0 5px;
-  margin-left: 5px;
-}
 /* 
 .browser {
   border: 1px solid rgba(12, 12, 13, 0.3);
@@ -179,8 +171,8 @@ button:active::after {
   background-color: rgba(0,0,0,0.1);
 }
 
-.button.remove,
-button.remove {
+.button.red,
+button.red {
   background-color: #d92215;
   color: #fff;
 }
@@ -210,7 +202,6 @@ input[type=color]:focus,
 .card {
   background: #fff;
   padding: 0.5em 1em;
-  margin: 1em 25%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
@@ -265,9 +256,10 @@ input[type=color]:focus,
 /**** Settings ****/
 
 .setting {
-  padding: 1em 0;
+  padding: 0.5em 0;
   overflow: auto;
   text-align: start;
+  display: block;
 }
 
 .setting > input,
@@ -277,6 +269,13 @@ input[type=color]:focus,
 
 .row {
   display: flex;
+}
+
+/**** Editor ****/
+.theme-editor {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
 }
 
 /**** Support me section ****/
@@ -298,10 +297,10 @@ input[type=color]:focus,
 
 .star::before {
   content: "";
-  background-image: url(img/star.svg);
+  background-image: url(images/good-review.svg);
 }
 
 .github::before {
   content: "";
-  background-image: url(img/github.png);
+  background-image: url(images/github.png);
 }

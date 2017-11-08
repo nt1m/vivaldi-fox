@@ -3,7 +3,6 @@ var { createElement } = React;
 
 var app;
 async function init() {
-  let themes = await Settings.getThemes();
   app = new StateManager({
     async renderer() {
       let root = document.getElementById("app");
@@ -11,11 +10,11 @@ async function init() {
     },
     initialState: {
       settings: {
-        themes,
+        themes: await Settings.getThemes(),
         defaultTheme: await Settings.getDefaultTheme(),
         nightTheme: await Settings.getNightTheme(),
       },
-      selectedTab: Object.keys(themes)[0],
+      selectedTab: await Settings.getDefaultTheme(),
     },
     actions: {
       addTheme() {
@@ -51,7 +50,7 @@ async function init() {
           return;
         }
         delete themes[name];
-        this.state.selectedTab = Object.keys(themes)[0];
+        this.state.selectedTab = Object.keys(themes)[0];        
 
         if (defaultTheme === name) {
           this.actions.setDefaultTheme(Object.keys(themes)[0]);
@@ -66,12 +65,25 @@ async function init() {
         Settings.setDefaultTheme(name);
       },
       setNightTheme(name) {
-        this.state.settings.defaultTheme = name;
-        Settings.setDefaultTheme(name);
+        this.state.settings.nightTheme = name;
+        Settings.setNightTheme(name);
       },
       setThemeProperty(theme, type, property, value) {
         let {themes} = this.state.settings;
         themes[theme].properties[type][property] = value;
+        Settings.setThemes(themes);
+      },
+      setThemeApplyPageColors(theme, prop1, prop2, value) {
+        let {themes} = this.state.settings;
+        let set = new Set(themes[theme].applyPageColors);
+        if (value) {
+          set.add(prop1);
+          set.add(prop2);
+        } else {
+          set.delete(prop1);
+          set.delete(prop2);
+        }
+        themes[theme].applyPageColors = [...set];
         Settings.setThemes(themes);
       }
     },
