@@ -1,26 +1,16 @@
-{
-  "plugins": [
-    "mozilla"
-  ],
-  "globals": {
-
-  },
+module.exports = {
   "env": {
     "es6": true,
-    "commonjs": true
+    "browser": true,
+    "webextensions": true
+  },
+  "globals": {
+    "Settings": true,
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
   },
   "rules": {
-    // These are the rules that have been configured so far to match the
-    // devtools coding style.
-
-    // Rules from the mozilla plugin
-    "mozilla/mark-test-function-used": 1,
-    "mozilla/no-aArgs": 1,
-    "mozilla/no-cpows-in-tests": 2,
-    // See bug 1224289.
-    "mozilla/reject-importGlobalProperties": 1,
-    "mozilla/var-only-at-top-level": 1,
-
     // Disallow using variables outside the blocks they are defined (especially
     // since only let and const are used, see "no-var").
     "block-scoped-var": 2,
@@ -393,6 +383,6 @@
     // entirely
     "operator-assignment": 0,
     // enforce operators to be placed before or after line breaks
-    "operator-linebreak": 0,
+    "operator-linebreak": 0
   }
 }
