@@ -30,7 +30,6 @@ class Theme {
       }, acc);
     }, {});
 
-    console.log("theme patch", this.theme, newColors)
     let { properties } = this.theme;
 
     let theme = {
@@ -44,7 +43,6 @@ class Theme {
    * Resets the theme by removing all patches applied on top of it
    */
   reset(windowId) {
-    console.log("theme reset");
     return browser.theme.update(windowId, this.theme.properties);
   }
 }

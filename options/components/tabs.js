@@ -23,7 +23,7 @@ function Tabs({ tabs, selectedTab }) {
         onClick() {
           app.actions.addTheme();
         }
-      }, "+")
+      })
     ),
     React.createElement("div", { className: "tab-panel" },
       selected.component

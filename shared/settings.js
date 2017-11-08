@@ -97,7 +97,6 @@ async function getSetting(setting, fallback) {
   }
 }
 
-
 async function setSetting(setting, value) {
   await browser.storage.local.set({["settings." + setting]: value});
 }

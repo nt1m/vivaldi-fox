@@ -1,10 +1,11 @@
 class AddonState {
-  constructor({ onTabColorChange, onSettingChange, onInit }) {
+  constructor({ onTabColorChange, onNightMode, onInit }) {
     this.state = {
       tabColorMap: new Map(),
     };
   
     onTabColorChange = onTabColorChange.bind(this);
+    onNightMode = onNightMode.bind(this);
     onInit = onInit.bind(this);
 
     browser.tabs.onActivated.addListener(async ({ tabId }) => {
@@ -60,7 +61,7 @@ class AddonState {
     );
     browser.alarms.onAlarm.addListener(({name}) => {
       if (name === "nightToggle") {
-        this.refreshAddon();
+        onNightMode();
       }
     });
     onInit();

@@ -15,7 +15,7 @@ const manager = new AddonState({
     
     currentTheme = new Theme(themes[selectedTheme]);
   },
-  async onTabColorChange ({ id, windowId, url }) {
+  async onTabColorChange ({ id, windowId }) {
     let { tabColorMap } = this.state;
     let color = tabColorMap.get(id);
     if (!color) {
@@ -23,9 +23,16 @@ const manager = new AddonState({
     } else {
       currentTheme.patch(color.toString(), color.textColor.toString(), windowId);
     }
+  },
+  async onNightMode() {
+    let defaultTheme = await Settings.getDefaultTheme();
+    let nightTheme = await Settings.getNightTheme();
+    if (defaultTheme !== nightTheme) {
+      await this.refreshAddon();
+    }
   }
 });
 
 browser.browserAction.onClicked.addListener(() => {
-  browser.tabs.create({ url: "options/options.html" });
+  browser.runtime.openOptionsPage();
 });

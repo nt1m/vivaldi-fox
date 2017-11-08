@@ -6,7 +6,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: Fira Sans, sans-serif;
-  background-color: #fbfbfb;
 
   /* The platform may override the color, this is
      why we need to set it explicitely to black */
@@ -33,7 +32,9 @@ p {
 }
 
 section {
-  margin: 1em 25%;
+  margin: 1em auto;
+  max-width: 800px;
+  width: -moz-available;
 }
 
 /** Tabs **/
@@ -173,17 +174,17 @@ button:active::after {
 
 .button.red,
 button.red {
-  background-color: #d92215;
+  background-color: #d70022;
   color: #fff;
 }
 
 .button.green {
-  background-color: #57bd35;
+  background-color: #12bc00;
   color: #fff;
 }
 
 .button.yellow {
-  background-color: #ffc446;
+  background-color: #ffe900;
 }
 
 .button.black {
@@ -217,42 +218,6 @@ input[type=color]:focus,
   font-weight: normal;
 }
 
-/**** Header ****/
-
-.header {
-  position: sticky;
-  top: 0;
-  background-color: #EF3939;
-  color: #fff;
-  padding: 1em;
-  transition: padding 0.2s;
-}
-
-.header h1 {
-  transition: font-size 0.2s;
-}
-
-.header > .icon {
-  margin-inline-end: 2em;
-}
-
-.icon {
-  background-image: url(img/icon.svg);
-  background-size: cover;
-  width: 2em;
-  height: 2em;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.small-header > .header {
-  padding: 0.5em;
-}
-
-.small-header > .header > h1 {
-  font-size: 1.25em;
-}
-
 /**** Settings ****/
 
 .setting {
@@ -276,6 +241,25 @@ input[type=color]:focus,
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
+}
+button.addButton {
+  border: none;
+  height: auto;
+  width: auto;
+  padding: .5em 0;
+  vertical-align: top;
+  margin-left: 1em;
+  cursor: pointer;
+}
+button.addButton::before {
+  content: "";
+  display: inline-block;
+  background-image: url(images/add.svg);
+  background-position: center;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  margin-bottom: -3px;
 }
 
 /**** Support me section ****/
