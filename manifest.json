@@ -29,11 +29,5 @@
     "default_title": "VivaldiFox",
     "default_icon": "icon.svg"
   },
-  "author": "Tim Nguyen",
-  "applications": {
-    "gecko": {
-      "id": "vivaldi-fox@tim-addons.com",
-      "strict_min_version": "57.0a1"
-    }
-  }
+  "author": "Tim Nguyen"
 }
