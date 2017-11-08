@@ -37,7 +37,56 @@ p {
   text-align: center;
 }
 
+/** Tabs **/
+.tabs, .tabs li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tabs li {
+  display: inline-block;
+  margin: 0 1em;
+}
 
+.tabs li a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  padding: .5em 0;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  height: 100%;
+  vertical-align: bottom;
+}
+.tabs li a::after {
+  content: "";
+  transition: transform 1s cubic-bezier(.07,.95,0,1);
+  transform: scale(0);
+  display: block;
+  background: #0a84ff;
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;  
+}
+
+.tabs li.selected a {
+  color: #0a84ff;
+}
+.tabs li.selected a::after {
+  transform: none;
+}
+
+.badge {
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.15);
+  padding: 0 5px;
+  margin-left: 5px;
+}
+/* 
 .browser {
   border: 1px solid rgba(12, 12, 13, 0.3);
   font: message-box;
@@ -81,6 +130,7 @@ p {
   background-color: var(--theme-navbar-background);
   border-top: 1px solid rgba(12, 12, 13, 0.3);
 }
+*/
 /**** Buttons ****/
 
 .button, button, input[type="color"] {
@@ -227,123 +277,6 @@ input[type=color]:focus,
 
 .row {
   display: flex;
-}
-
-/**** Themes Editor ****/
-
-#themes {
-  text-align: left;
-}
-
-#themes-list {
-  list-style: none;
-  display: block;
-  white-space: nowrap;
-  flex: 1;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-}
-
-#themes-list li span {
-  position: absolute;
-  bottom: 0.75em;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-#themes-list li {
-  display: inline-block;
-  cursor: pointer;
-  margin: 0;
-  margin-right: 0.5em;
-  overflow: hidden;
-  text-align: center;
-  width: 5em;
-  height: 4em;
-  border: 0.1em solid transparent;
-  box-sizing: border-box;
-  background-color: var(--theme-secondary);
-  position: relative;
-}
-
-#themes-list li::before {
-  content: "";
-  display: block;
-  height: 100%;
-  background-image: linear-gradient(
-    var(--theme-accent),
-    var(--theme-accent)
-  ),
-  linear-gradient(
-    var(--theme-accent),
-    var(--theme-accent) 0.7em,
-    #fff 0.7em
-  );
-  background-repeat: no-repeat, no-repeat;
-  background-size: 45% 0.6em, 100% calc(100% - 0.6em);
-  background-position: 0 0, 0 0.6em;
-}
-
-#themes-list li::after {
-  content: "";
-  display: block;
-  background: linear-gradient(
-    to right,
-    var(--theme-secondary),
-    var(--theme-secondary) 60%,
-    transparent 60%,
-    transparent calc(60% + 0.2em),
-    var(--theme-secondary) calc(60% + 0.2em)
-  );
-  height: 0.35em;
-  width: calc(100% - 0.8em);
-  position: absolute;
-  top: 0.8em;
-  left: 0.4em;
-}
-
-#themes-list li.selected {
-  color: #0996f8;
-  font-weight: 600;
-  border-bottom-color: #0996f8;
-}
-
-#add {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  font-size: 32px;
-  font-weight: bold;
-  font-family: monospace;
-  margin-inline-start: 1rem;
-  text-align: center;
-  align-self: center;
-}
-
-#theme-editor:empty {
-  text-align: center;
-}
-
-#theme-editor:empty::after {
-  content: "Click on a theme to edit it\A or\A Create a theme using the + button";
-  white-space: pre-wrap;
-  line-height: 1.1em;
-}
-
-#theme-editor {
-  padding: 1em 0;
-}
-
-#theme-editor div {
-  overflow: auto;
-  margin-bottom: 1em;
-}
-
-#theme-editor div input {
-  float: right;
 }
 
 /**** Support me section ****/

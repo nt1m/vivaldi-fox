@@ -18,6 +18,12 @@ function Tabs({ tabs, selectedTab }) {
           t.hasOwnProperty("badge") && React.createElement("span", { className: "badge" }, t.badge)
         )
       )),
+      createElement("button", {
+        className: "addButton",
+        onClick() {
+          app.actions.addTheme();
+        }
+      }, "+")
     ),
     React.createElement("div", { className: "tab-panel" },
       selected.component

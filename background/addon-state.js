@@ -4,7 +4,7 @@ class AddonState {
       tabColorMap: new Map(),
     };
   
-    onTabColorChange = onTabColorChange.bind(this);
+    this.onTabColorChange = onTabColorChange = onTabColorChange.bind(this);
     onInit = onInit.bind(this);
 
     browser.tabs.onActivated.addListener(async ({ tabId }) => {
@@ -35,7 +35,11 @@ class AddonState {
         await onTabColorChange(tab);
       }
     });
-    
+
+    Settings.onChanged (() => {
+      console.log("onChanged");
+      onInit();
+    });
     onInit();
   }
 }

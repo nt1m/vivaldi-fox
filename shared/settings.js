@@ -1,12 +1,11 @@
+let callbacks = new Set();
+
 const Settings = {
-  nightModeEnabled() {
-    return getSetting("nightModeEnabled", false);
-  },
   getDefaultTheme() {
     return getSetting("defaultTheme", "light");
   },
   getNightTheme() {
-    return getSetting("defaultTheme", "dark");
+    return getSetting("defaultTheme", "light");
   },
   getPageColorsOnInactive() {
     return getSetting("pageColorInactiveWins", true);
@@ -49,8 +48,11 @@ const Settings = {
       }
     });
   },
-  setThemes(setting, value) {
-    setSetting(setting, value);
+  setThemes(value) {
+    setSetting("themes", value);
+  },
+  setDefaultTheme(theme) {
+    setSetting("defaultTheme", theme);
   },
   async getThemeProperty(property, type, theme) {
     let themes = await getThemes();
@@ -60,12 +62,28 @@ const Settings = {
     let themes = await getThemes();
     themes[theme][type][property] = newValue;
     return setSetting("themes", themes);
+  },
+  onChanged(callback) {
+    return browser.storage.onChanged.addListener(changes => {
+      changes = Object.assign({}, changes);
+      for (let change in changes) {
+        if (!change.startsWith("settings.")) {
+          delete changes[change];
+        }
+      }
+      if (Object.keys(changes).length > 0) {
+        callback(changes);
+      }
+    });
+  },
+  clear() {
+    browser.storage.local.clear();
   }
 };
 
 async function getSetting(setting, fallback) {
   try {
-    const found = await browser.storage.local.get(setting);
+    const found = await browser.storage.local.get("settings." + setting);
     if (found.hasOwnProperty("settings." + setting)) {
       return found["settings." + setting];
     } else {
@@ -75,6 +93,7 @@ async function getSetting(setting, fallback) {
     return fallback;
   }
 }
+
 
 async function setSetting(setting, value) {
   await browser.storage.local.set({["settings." + setting]: value});

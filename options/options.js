@@ -13,6 +13,7 @@ async function init() {
       settings: {
         themes,
         defaultTheme: await Settings.getDefaultTheme(),
+        nightTheme: await Settings.getNightTheme(),
       },
       selectedTab: Object.keys(themes)[0],
     },
@@ -40,11 +41,40 @@ async function init() {
             }
           }
         };
-        themes[name] = defaultThemeData;
+        this.state.selectedTab = name;
+        this.state.settings.themes[name] = defaultThemeData;
+        Settings.setThemes(themes);
+      },
+      deleteTheme(name) {
+        let {themes, defaultTheme, nightTheme} = this.state.settings;
+        if (Object.keys(themes).length === 1) {
+          return;
+        }
+        delete themes[name];
+        this.state.selectedTab = Object.keys(themes)[0];
 
+        if (defaultTheme === name) {
+          this.actions.setDefaultTheme(Object.keys(themes)[0]);
+        }
+        if (nightTheme === name) {
+          this.actions.setNightTheme(Object.keys(themes)[0]);
+        }
+        Settings.setThemes(themes);
+      },
+      setDefaultTheme(name) {
+        this.state.settings.defaultTheme = name;
+        Settings.setDefaultTheme(name);
+      },
+      setNightTheme(name) {
+        this.state.settings.defaultTheme = name;
+        Settings.setDefaultTheme(name);
+      },
+      setThemeProperty(theme, type, property, value) {
+        let {themes} = this.state.settings;
+        themes[theme].properties[type][property] = value;
         Settings.setThemes(themes);
       }
-    }
+    },
   });
 
   app.render();
@@ -54,5 +84,5 @@ try {
   init();
 } catch(e) {
   Settings.clear();
-  alert("Corrupted add-on profile, please reload settings")
+  alert("Corrupted add-on profile, please reload this page")
 }

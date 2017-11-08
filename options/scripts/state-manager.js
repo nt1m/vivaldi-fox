@@ -1,7 +1,15 @@
 class StateManager {
-  constructor({ renderer, initialState }) {
+  constructor({ renderer, initialState, actions }) {
     this.renderer = renderer;
     this.state = initialState;
+    this.actions = {};
+
+    for (let action in actions) {
+      this.actions[action] = (...args) => {
+        actions[action].bind(this)(...args);
+        this.render();
+      };
+    }
   }
 
   getState() {

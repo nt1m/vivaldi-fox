@@ -1,9 +1,9 @@
-function Options({ settings: {themes} }) {
+function Options({ settings: {themes, defaultTheme} }) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
       label: theme,
-      component: ThemeEditor(themes[theme]),
+      component: ThemeEditor(themes[theme], Object.keys(themes).length > 1),
     }
   });
   return React.createElement("div", {},
@@ -16,23 +16,18 @@ function Options({ settings: {themes} }) {
     Section("Default Theme", 1,
       ThemeSelect({
         themes,
-        onChange: () => {
-
+        defaultValue: defaultTheme,
+        onChange: ({target}) => {
+          app.actions.setDefaultTheme(target.value);
         }
       })
     ),
     Section("Night mode", 1,
-      Setting({
-        type: "boolean",
-        setting: "nightModeEnabled",
-        label: "Enable night mode",
-        value: "",
-      }),
       ThemeSelect({
         label: "Night mode theme",
         themes,
         onChange: () => {
-          
+          app.actions.setNightTheme(target.value);
         }
       })
     ),

@@ -1,4 +1,4 @@
-ThemeProperty = React.createFactory(class ThemePropertyFactory extends React.Component {
+const ThemeProperty = React.createFactory(class ThemePropertyFactory extends React.Component {
   componentDidUpdate() {
     this.refs["color-input"].value = this.props.defaultValue;
   }
@@ -8,10 +8,18 @@ ThemeProperty = React.createFactory(class ThemePropertyFactory extends React.Com
       property,
       defaultValue,
       setThemeProperty,
+      themeName,
     } = this.props;
     return createElement("div", {},
       createElement("span", {}, label),
-      createElement("input", { type: "color", ref: "color-input", defaultValue })
+      createElement("input", {
+        type: "color",
+        ref: "color-input",
+        defaultValue,
+        onInput: ({target}) => {
+          app.actions.setThemeProperty(themeName, "colors", property, target.value);
+        }
+      })
     );
   }
 });
@@ -25,11 +33,13 @@ function ThemePropertyGroup({
   return createElement("div", {className: "card"},
     createElement("h2", {}, sectionName),
     ThemeProperty({
+      themeName: theme.name,
       label: "Background",
       property: backgroundProperty,
       defaultValue: theme.properties.colors[backgroundProperty]
     }),
     ThemeProperty({
+      themeName: theme.name,
       label: "Text",
       property: textProperty,
       defaultValue: theme.properties.colors[textProperty]
@@ -37,7 +47,7 @@ function ThemePropertyGroup({
   );
 }
 
-function ThemeEditor(theme) {
+function ThemeEditor(theme, deleteButton) {
   return createElement("div", {className: theme.name},
     ThemePropertyGroup({
       sectionName: "Frame",
@@ -57,5 +67,8 @@ function ThemeEditor(theme) {
       backgroundProperty: "toolbar_field",
       textProperty: "toolbar_field_text"
     }),
+    deleteButton && createElement("button", {
+      onClick: () => app.actions.deleteTheme(theme.name)
+    }, "Delete theme")
   )
 }
