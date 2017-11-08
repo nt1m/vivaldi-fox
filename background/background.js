@@ -7,9 +7,10 @@ const manager = new AddonState({
     let defaultTheme = await Settings.getDefaultTheme();
     currentTheme = new Theme(themes[defaultTheme]);
   },
-  async onTabColorChange ({ id, windowId }) {
+  async onTabColorChange ({ url, id, windowId }) {
     let { tabColorMap } = this.state;
     let color = tabColorMap.get(id);
+    console.log(url, color);
     if (color === null) {
       currentTheme.reset(windowId);
     } else {
@@ -18,4 +19,4 @@ const manager = new AddonState({
   }
 });
 
-browser.tabs.create({url: "options/options.html"}) 
+//browser.tabs.create({url: "options/options.html"}) 

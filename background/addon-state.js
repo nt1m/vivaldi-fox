@@ -7,7 +7,7 @@ class AddonState {
     onTabColorChange = onTabColorChange.bind(this);
     onInit = onInit.bind(this);
 
-    chrome.tabs.onActivated.addListener(async ({ tabId }) => {
+    browser.tabs.onActivated.addListener(async ({ tabId }) => {
       let {tabColorMap} = this.state;
       let tab = await browser.tabs.get(tabId);
 
@@ -17,14 +17,14 @@ class AddonState {
       onTabColorChange(tab);
     });
 
-    chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       if (!changeInfo.url && !changeInfo.favIconUrl) {
         return;
       }
       let color = await findColor(tab);
       let {tabColorMap} = this.state;      
 
-      if (tabColorMap.has(tab.id) && Color.equals(color, tabColorMap.get(tab.id))) {
+      if (color && tabColorMap.get(tab.id) !== null && Color.equals(color, tabColorMap.get(tab.id))) {
         // Don't bother changing the theme if color is still the same.
         return;
       }

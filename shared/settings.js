@@ -49,6 +49,9 @@ const Settings = {
       }
     });
   },
+  setThemes(setting, value) {
+    setSetting(setting, value);
+  },
   async getThemeProperty(property, type, theme) {
     let themes = await getThemes();
     return themes[theme][type][property];

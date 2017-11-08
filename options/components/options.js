@@ -1,4 +1,4 @@
-function Options({ themes }) {
+function Options({ settings: {themes} }) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
@@ -18,6 +18,21 @@ function Options({ themes }) {
         themes,
         onChange: () => {
 
+        }
+      })
+    ),
+    Section("Night mode", 1,
+      Setting({
+        type: "boolean",
+        setting: "nightModeEnabled",
+        label: "Enable night mode",
+        value: "",
+      }),
+      ThemeSelect({
+        label: "Night mode theme",
+        themes,
+        onChange: () => {
+          
         }
       })
     ),

@@ -1,9 +1,11 @@
-function ThemeSelect({ themes, onChange }) {
-  console.log(themes, Object.keys(themes).map(t => ({ id: t, label: t })))
+function ThemeSelect({ themes, onChange, setting, label }) {
   return Setting({
-    id: "defaultTheme",
     type: "string",
+    setting,
+    label,
     values: Object.keys(themes).map(t => ({ id: t, label: t })),
-    onChange,
+    onChange: () => {
+      
+    }
   });
 }
