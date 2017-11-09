@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "VivaldiFox",
-  "version": "2.0b3",
+  "version": "2.0b4",
   "icons": {
     "16": "icon.svg",
     "32": "icon.svg",
@@ -16,6 +16,7 @@
       "background/constants.js",
       "background/color.js",
       "background/addon-state.js",
+      "background/favicon-utils.js",
       "background/color-utils.js",
       "background/theme.js", 
       "background/background.js"

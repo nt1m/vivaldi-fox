@@ -12,6 +12,9 @@ const Settings = {
   getPageColorsOnInactive() {
     return getSetting("pageColorInactiveWins", true);
   },
+  getWhiteBackgroundFavicons() {
+    return getSetting("whiteBackgroundFavicons", false);
+  },
   getThemes() {
     return getSetting("themes", {
       "light": {
@@ -58,6 +61,9 @@ const Settings = {
   },
   setNightTheme(theme) {
     setSetting("nightTheme", theme);
+  },
+  setWhiteBackgroundFavicons(value) {
+    return setSetting("whiteBackgroundFavicons", value);
   },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {

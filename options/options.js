@@ -17,6 +17,7 @@ async function init() {
         themes: await Settings.getThemes(),
         defaultTheme: await Settings.getDefaultTheme(),
         nightTheme: await Settings.getNightTheme(),
+        whiteBackgroundFavicons: await Settings.getWhiteBackgroundFavicons()
       },
       selectedTab: await Settings.getDefaultTheme(),
     },
@@ -25,8 +26,12 @@ async function init() {
         let {themes} = this.state.settings;
         let name;
         do {
-          name = prompt("Name of theme");
-        } while (themes.hasOwnProperty(name) || !name);
+          name = prompt("Name of theme").trim();
+        } while (themes.hasOwnProperty(name) && name);
+        // User has canceled
+        if (!name) {
+          return;
+        }
         let defaultThemeData = {
           applyPageColors: ["toolbar_text", "toolbar"],
           name,
@@ -89,6 +94,11 @@ async function init() {
         }
         themes[theme].applyPageColors = [...set];
         Settings.setThemes(themes);
+      },
+      setWhiteBackgroundFavicons(value) {
+        this.state.settings.whiteBackgroundFavicons = value;
+        Settings.setWhiteBackgroundFavicons(value);
+        Settings.getWhiteBackgroundFavicons().then(console.log);
       }
     },
   });

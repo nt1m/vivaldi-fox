@@ -3,7 +3,7 @@
 /* exported AddonState */
 
 class AddonState {
-  constructor({ onTabColorChange, onNightMode, onInit }) {
+  constructor({ onTabColorChange, onFaviconChange, onNightMode, onInit }) {
     this.state = {
       tabColorMap: new Map(),
     };
@@ -23,6 +23,12 @@ class AddonState {
     });
 
     browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+      if (changeInfo.favIconUrl && !changeInfo.favIconUrl.startsWith("data:")) {
+        onFaviconChange(tab);
+      }
+      if (!changeInfo.url && !changeInfo.favIconUrl) {
+        return;
+      }
       let color = await findColor(tab);
       let {tabColorMap} = this.state;
 

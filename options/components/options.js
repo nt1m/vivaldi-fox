@@ -2,7 +2,12 @@
 
 /* exported Options */
 
-function Options({ settings: {themes, defaultTheme, nightTheme} }) {
+function Options({ settings: {
+  themes,
+  defaultTheme,
+  nightTheme,
+  whiteBackgroundFavicons
+}}) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
       id: theme,
@@ -14,7 +19,7 @@ function Options({ settings: {themes, defaultTheme, nightTheme} }) {
     "To disable this feature, choose the same theme as the default theme.";
 
   return createElement("div", {},
-    Section("Selected Themes",
+    Section("General settings",
       createElement("h2", {}, "Default theme"),
       ThemeSelect({
         themes,
@@ -32,6 +37,14 @@ function Options({ settings: {themes, defaultTheme, nightTheme} }) {
         defaultValue: nightTheme,
         onChange: ({target}) => {
           app.actions.setNightTheme(target.value);
+        }
+      }),
+      createElement("h2", {}, "Other settings"),
+      Checkbox({
+        label: "White background on page icons (experimental)",
+        defaultChecked: whiteBackgroundFavicons,
+        onChange: ({ target }) => {
+          app.actions.setWhiteBackgroundFavicons(target.checked);
         }
       })
     ),

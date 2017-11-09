@@ -58,6 +58,7 @@ section {
   overflow: hidden;
   height: 100%;
   vertical-align: bottom;
+  min-width: 10px;
 }
 .tabs li a::after {
   content: "";

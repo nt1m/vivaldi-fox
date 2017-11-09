@@ -12,21 +12,9 @@ function getColorFormat(color) {
   return "hsl";
 }
 
-function createFaviconImage(icon) {
-  return new Promise((resolve, reject) => {
-    let img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = icon;
-  });
-}
-
-const MAX_ICON_SIZE = 256;
-
 function getColorFromImage(imgEl) {
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
-  let colors = [];
   // This will:
   // - Take the median of a sorted list of colors (excluding shades of gray)
   // - If image only contains shades of gray, it takes the average instead
@@ -39,6 +27,7 @@ function getColorFromImage(imgEl) {
 
   ctx.drawImage(imgEl, 0, 0, width, height);
 
+  let colors = [];
   let data = ctx.getImageData(0, 0, width, height).data;
   let count = 0;
   let rValues = [], gValues = [], bValues = [];
