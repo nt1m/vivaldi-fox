@@ -23,10 +23,12 @@ class AddonState {
     });
 
     browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-      if (changeInfo.favIconUrl && !changeInfo.favIconUrl.startsWith("data:")) {
+      let faviconChanged = changeInfo.favIconUrl &&
+        !changeInfo.favIconUrl.startsWith("data:");
+      if (faviconChanged) {
         onFaviconChange(tab);
       }
-      if (!changeInfo.url && !changeInfo.favIconUrl) {
+      if (!changeInfo.url && !faviconChanged) {
         return;
       }
       let color = await findColor(tab);

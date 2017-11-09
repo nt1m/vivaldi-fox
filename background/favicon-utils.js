@@ -39,7 +39,15 @@ async function getReadableFavicon(faviconUrl) {
     borderRadius, borderRadius, width - borderRadius * 2, height - borderRadius * 2);
   ctx.fillRect(
     borderRadius, borderRadius, width - borderRadius * 2, height - borderRadius * 2);
-  ctx.drawImage(imgEl, 0, 0, width, height);
+
+  let scaleFactor = 0.875;
+  let offsetFactor = ((1 - scaleFactor) / 2);
+
+  ctx.drawImage(
+    imgEl, 0, 0, width, height,
+    offsetFactor * width, offsetFactor * height,
+    width * scaleFactor, height * scaleFactor
+  );
   try {
     return canvas.toDataURL();
   } catch (e) {
