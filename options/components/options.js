@@ -6,7 +6,8 @@ function Options({ settings: {
   themes,
   defaultTheme,
   nightTheme,
-  whiteBackgroundFavicons
+  whiteBackgroundFavicons,
+  pageColorsOnInactive,
 }}) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
@@ -40,6 +41,13 @@ function Options({ settings: {
         }
       }),
       createElement("h2", {}, "Other settings"),
+      Checkbox({
+        label: "Enable page colors on inactive windows",
+        defaultChecked: pageColorsOnInactive,
+        onChange: ({ target }) => {
+          app.actions.setPageColorsOnInactive(target.checked);
+        }
+      }),
       Checkbox({
         label: "White background on page icons (experimental)",
         defaultChecked: whiteBackgroundFavicons,

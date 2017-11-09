@@ -17,6 +17,7 @@ async function init() {
         themes: await Settings.getThemes(),
         defaultTheme: await Settings.getDefaultTheme(),
         nightTheme: await Settings.getNightTheme(),
+        pageColorsOnInactive: await Settings.getPageColorsOnInactive(),
         whiteBackgroundFavicons: await Settings.getWhiteBackgroundFavicons()
       },
       selectedTab: await Settings.getDefaultTheme(),
@@ -95,10 +96,13 @@ async function init() {
         themes[theme].applyPageColors = [...set];
         Settings.setThemes(themes);
       },
+      setPageColorsOnInactive(value) {
+        this.state.settings.pageColorsOnInactive = value;
+        Settings.setPageColorsOnInactive(value);
+      },
       setWhiteBackgroundFavicons(value) {
         this.state.settings.whiteBackgroundFavicons = value;
         Settings.setWhiteBackgroundFavicons(value);
-        Settings.getWhiteBackgroundFavicons().then(console.log);
       }
     },
   });

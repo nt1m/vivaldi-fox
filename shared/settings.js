@@ -10,7 +10,7 @@ const Settings = {
     return getSetting("nightTheme", "light");
   },
   getPageColorsOnInactive() {
-    return getSetting("pageColorInactiveWins", true);
+    return getSetting("pageColorsOnInactive", true);
   },
   getWhiteBackgroundFavicons() {
     return getSetting("whiteBackgroundFavicons", false);
@@ -61,6 +61,9 @@ const Settings = {
   },
   setNightTheme(theme) {
     setSetting("nightTheme", theme);
+  },
+  setPageColorsOnInactive(value) {
+    return setSetting("pageColorsOnInactive", value);
   },
   setWhiteBackgroundFavicons(value) {
     return setSetting("whiteBackgroundFavicons", value);

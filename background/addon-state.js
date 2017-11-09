@@ -3,12 +3,19 @@
 /* exported AddonState */
 
 class AddonState {
-  constructor({ onTabColorChange, onFaviconChange, onNightMode, onInit }) {
+  constructor({
+    onTabColorChange,
+    onWindowFocusChange,
+    onFaviconChange,
+    onNightMode,
+    onInit
+  }) {
     this.state = {
       tabColorMap: new Map(),
     };
 
     onTabColorChange = onTabColorChange.bind(this);
+    onWindowFocusChange = onWindowFocusChange.bind(this);
     onNightMode = onNightMode.bind(this);
     onInit = onInit.bind(this);
 
@@ -55,6 +62,7 @@ class AddonState {
     };
 
     Settings.onChanged(this.refreshAddon);
+    browser.windows.onFocusChanged.addListener(onWindowFocusChange);
 
     browser.alarms.create(
       "nightToggle",

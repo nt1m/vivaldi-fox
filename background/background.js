@@ -5,6 +5,17 @@ let currentTheme;
 let tabIconsChanged = new Set();
 let whiteFaviconCache = new Map();
 
+async function setColor({id, windowId}, tabColorMap) {
+  let color = tabColorMap.get(id);
+  let win = await browser.windows.get(windowId);
+  let pageColorsOnInactive = await Settings.getPageColorsOnInactive();
+  if (!color || (!pageColorsOnInactive && !win.focused)) {
+    currentTheme.reset(windowId);
+  } else {
+    currentTheme.patch(color.toString(), color.textColor.toString(), windowId);
+  }
+}
+
 new AddonState({
   async onInit() {
     let themes = await Settings.getThemes();
@@ -19,20 +30,27 @@ new AddonState({
 
     currentTheme = new Theme(themes[selectedTheme]);
   },
-  async onTabColorChange({ id, windowId }) {
-    let { tabColorMap } = this.state;
-    let color = tabColorMap.get(id);
-    if (!color) {
-      currentTheme.reset(windowId);
-    } else {
-      currentTheme.patch(color.toString(), color.textColor.toString(), windowId);
-    }
+  onTabColorChange(tab) {
+    return setColor(tab, this.state.tabColorMap);
   },
   async onNightMode() {
     let defaultTheme = await Settings.getDefaultTheme();
     let nightTheme = await Settings.getNightTheme();
     if (defaultTheme !== nightTheme) {
       await this.refreshAddon();
+    }
+  },
+  async onWindowFocusChange(focusedWindowId) {
+    if (await Settings.getPageColorsOnInactive()) {
+      return;
+    }
+
+    let tabs = await browser.tabs.query({ active: true });
+    if (tabs.length == 0) {
+      return;
+    }
+    for (let tab of tabs) {
+      setColor(tab, this.state.tabColorMap);
     }
   },
   async onFaviconChange(tab) {
