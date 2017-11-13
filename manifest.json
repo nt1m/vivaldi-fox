@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "VivaldiFox",
+  "author": "Tim Nguyen",
   "version": "2.0",
   "icons": {
     "16": "icon.svg",
@@ -30,5 +31,9 @@
     "default_title": "VivaldiFox",
     "default_icon": "icon.svg"
   },
-  "author": "Tim Nguyen"
+  "applications": {
+    "gecko": {
+      "strict_min_version": "57.0a1"
+    }
+  }
 }
