@@ -11,13 +11,13 @@ const Checkbox = createFactory(class CheckboxFactory extends Component {
   render() {
     let {defaultChecked, onChange, label} = this.props;
     return createElement("label", { className: "setting" },
+      createElement("span", {}, label),  
       createElement("input", {
         type: "checkbox",
         defaultChecked,
         onChange,
         ref: "checkbox"
-      }),
-      createElement("span", {}, label)
+      })
     );
   }
 });

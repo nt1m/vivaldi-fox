@@ -33,25 +33,9 @@ async function init() {
         if (!name) {
           return;
         }
-        let defaultThemeData = {
-          applyPageColors: ["toolbar_text", "toolbar"],
-          name,
-          properties: {
-            images: {
-              headerURL: ""
-            },
-            colors: {
-              accentcolor: "#dedede",
-              textcolor: "#444444",
-              toolbar: "#f8f8f8",
-              toolbar_text: "#000000",
-              toolbar_field: "#ffffff",
-              toolbar_field_text: "#000000",
-            }
-          }
-        };
+
         this.state.selectedTab = name;
-        this.state.settings.themes[name] = defaultThemeData;
+        this.state.settings.themes[name] = DEFAULT_THEMES.light;
         Settings.setThemes(themes);
       },
       deleteTheme(name) {

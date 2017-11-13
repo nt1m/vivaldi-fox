@@ -12,5 +12,6 @@ module.exports = {
     "Tabs": true,
     "ThemeSelect": true,
     "app": true,
+    "DEFAULT_THEMES": true,
   }
 };

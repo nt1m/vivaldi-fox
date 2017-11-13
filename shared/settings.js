@@ -2,6 +2,51 @@
 
 /* exported Settings */
 
+const DEFAULT_THEMES = {
+  "light": {
+    applyPageColors: ["toolbar_text", "toolbar"],
+    name: "light",
+    opacities: {
+      toolbar: 1,
+      toolbar_field: 1,
+    },
+    properties: {
+      images: {
+        headerURL: ""
+      },
+      colors: {
+        accentcolor: "#dedede",
+        textcolor: "#444444",
+        toolbar: "#f8f8f8",
+        toolbar_text: "#000000",
+        toolbar_field: "#ffffff",
+        toolbar_field_text: "#000000",
+      }
+    }
+  },
+  "dark": {
+    applyPageColors: ["toolbar_text", "toolbar"],
+    name: "dark",
+    opacities: {
+      toolbar: 1,
+      toolbar_field: 1,
+    },
+    properties: {
+      images: {
+        headerURL: ""
+      },
+      colors: {
+        textcolor: "#ffffff",
+        accentcolor: "#0c0c0d",
+        toolbar: "#323234",
+        toolbar_text: "#eeeeee",
+        toolbar_field: "#474749",
+        toolbar_field_text: "#F9F9FA",
+      }
+    }
+  }
+};
+
 const Settings = {
   getDefaultTheme() {
     return getSetting("defaultTheme", "light");
@@ -16,50 +61,7 @@ const Settings = {
     return getSetting("whiteBackgroundFavicons", false);
   },
   getThemes() {
-    return getSetting("themes", {
-      "light": {
-        applyPageColors: ["toolbar_text", "toolbar"],
-        name: "light",
-        opacities: {
-          toolbar: 1,
-          toolbar_field: 1,
-        },
-        properties: {
-          images: {
-            headerURL: ""
-          },
-          colors: {
-            accentcolor: "#dedede",
-            textcolor: "#444444",
-            toolbar: "#f8f8f8",
-            toolbar_text: "#000000",
-            toolbar_field: "#ffffff",
-            toolbar_field_text: "#000000",
-          }
-        }
-      },
-      "dark": {
-        applyPageColors: ["toolbar_text", "toolbar"],
-        name: "dark",
-        opacities: {
-          toolbar: 1,
-          toolbar_field: 1,
-        },
-        properties: {
-          images: {
-            headerURL: ""
-          },
-          colors: {
-            textcolor: "#ffffff",
-            accentcolor: "#0c0c0d",
-            toolbar: "#323234",
-            toolbar_text: "#eeeeee",
-            toolbar_field: "#474749",
-            toolbar_field_text: "#F9F9FA",
-          }
-        }
-      }
-    });
+    return getSetting("themes", DEFAULT_THEMES);
   },
   setThemes(value) {
     setSetting("themes", value);

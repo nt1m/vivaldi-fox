@@ -10,7 +10,8 @@ const Slider = createFactory(class SliderFactory extends Component {
   }
   render() {
     let {defaultValue, onChange, label} = this.props;
-    return createElement("label", { className: "setting" },
+    return createElement("label", { className: "setting slider" },
+      createElement("span", {}, label),
       createElement("input", {
         type: "range",
         defaultValue,
@@ -19,8 +20,7 @@ const Slider = createFactory(class SliderFactory extends Component {
         min: 0,
         max: 1,
         step: 0.01
-      }),
-      createElement("span", {}, label)
+      })
     );
   }
 });
