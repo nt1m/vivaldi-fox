@@ -83,6 +83,14 @@ async function init() {
         themes[theme].properties[type][property] = value;
         Settings.setThemes(themes);
       },
+      setThemeOpacityProperty(theme, prop, value) {
+        let {themes} = this.state.settings;
+        if (!themes[theme].opacities) {
+          themes[theme].opacities = {};
+        }
+        themes[theme].opacities[prop] = value;
+        Settings.setThemes(themes);
+      },
       setThemeApplyPageColors(theme, prop1, prop2, value) {
         let {themes} = this.state.settings;
         let set = new Set(themes[theme].applyPageColors);

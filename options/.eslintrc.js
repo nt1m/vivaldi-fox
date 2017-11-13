@@ -4,6 +4,7 @@ module.exports = {
     "createElement": true,
     "Component": true,
     "StateManager": true,
+    "Slider": true,
     "Options": true,
     "ThemeEditor": true,
     "Checkbox": true,

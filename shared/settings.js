@@ -20,6 +20,10 @@ const Settings = {
       "light": {
         applyPageColors: ["toolbar_text", "toolbar"],
         name: "light",
+        opacities: {
+          toolbar: 1,
+          toolbar_field: 1,
+        },
         properties: {
           images: {
             headerURL: ""
@@ -37,6 +41,10 @@ const Settings = {
       "dark": {
         applyPageColors: ["toolbar_text", "toolbar"],
         name: "dark",
+        opacities: {
+          toolbar: 1,
+          toolbar_field: 1,
+        },
         properties: {
           images: {
             headerURL: ""

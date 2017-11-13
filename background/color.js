@@ -27,7 +27,7 @@ class Color {
       ];
     } catch (e) {
       console.log("vivaldifox: toRgb failed with", color);
-      this.components = [255, 255, 255];
+      this.components = null;
     }
   }
 
@@ -41,6 +41,9 @@ class Color {
     return distanceB < distanceW ? new Color("#ffffff") : new Color("#000000");
   }
   toString() {
+    if (!this.components) {
+      return null;
+    }
     return "rgb(" + this.components.join(",") + ")";
   }
 

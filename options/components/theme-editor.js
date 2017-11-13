@@ -32,6 +32,7 @@ function ThemePropertyGroup({
   theme,
   textProperty,
   backgroundProperty,
+  opacityProperty
 }) {
   let { properties, applyPageColors } = theme;
   let applyPageColorsChecked = applyPageColors.includes(backgroundProperty)
@@ -49,6 +50,14 @@ function ThemePropertyGroup({
       label: "Text",
       property: textProperty,
       defaultValue: properties.colors[textProperty]
+    }),
+    opacityProperty && Slider({
+      themeName: theme.name,
+      label: "Opacity",
+      defaultValue: theme.opacities[opacityProperty],
+      onChange({target}) {
+        app.actions.setThemeOpacityProperty(theme.name, opacityProperty, target.value);
+      }
     }),
     Checkbox({
       defaultChecked: applyPageColorsChecked,
@@ -73,13 +82,15 @@ function ThemeEditor(theme, deleteButton) {
       sectionName: "Toolbar",
       theme,
       backgroundProperty: "toolbar",
-      textProperty: "toolbar_text"
+      textProperty: "toolbar_text",
+      opacityProperty: "toolbar"
     }),
     ThemePropertyGroup({
       sectionName: "Toolbar Fields",
       theme,
       backgroundProperty: "toolbar_field",
-      textProperty: "toolbar_field_text"
+      textProperty: "toolbar_field_text",
+      opacityProperty: "toolbar_field"
     }),
     deleteButton && createElement("div", {className: "card"},
       createElement("h2", {}, "Danger!"),

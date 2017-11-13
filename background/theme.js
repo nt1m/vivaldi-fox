@@ -1,6 +1,7 @@
 "use strict";
 
 const textProperties = ["toolbar_text", "textcolor", "toolbar_field_text"];
+const opacityProperties = ["toolbar", "toolbar_field"];
 
 /* exported Theme */
 
@@ -11,6 +12,9 @@ class Theme {
    */
   constructor(theme) {
     this.theme = theme;
+    this.propsWithOpacities =
+      Theme.getThemeWithOpacities(this.theme.properties, this.theme.opacities);
+    this.propsWithOpacitiesMap = new Map();
     this.apply();
   }
 
@@ -18,7 +22,7 @@ class Theme {
    * Apply the theme with patches
    */
   apply() {
-    return browser.theme.update(this.theme.properties);
+    return browser.theme.update(this.propsWithOpacities);
   }
 
   /**
@@ -34,12 +38,17 @@ class Theme {
       }, acc);
     }, {});
 
-    let { properties } = this.theme;
+    let { properties, opacities } = this.theme;
 
-    let theme = {
-      images: properties.images,
-      colors: Object.assign({}, properties.colors, newColors),
-    };
+    let theme;
+    if (this.propsWithOpacitiesMap.has(background)) {
+      theme = this.propsWithOpacitiesMap.get(background);
+    } else {
+      theme = Theme.getThemeWithOpacities({
+        images: properties.images,
+        colors: Object.assign({}, properties.colors, newColors),
+      }, opacities);
+    }
     return browser.theme.update(windowId, theme);
   }
 
@@ -47,6 +56,27 @@ class Theme {
    * Resets the theme by removing all patches applied on top of it
    */
   reset(windowId) {
-    return browser.theme.update(windowId, this.theme.properties);
+    return browser.theme.update(windowId, this.propsWithOpacities);
+  }
+
+  static getThemeWithOpacities(properties, opacities) {
+    if (!opacities) {
+      return properties;
+    }
+
+    let patchedColors = Object.assign({}, properties.colors);
+    for (let property of opacityProperties) {
+      if (opacities[property]) {
+        let components = (new Color(properties.colors[property])).components.join(",");
+        patchedColors[property] = `rgba(${components}, ${opacities[property]})`;
+      }
+    }
+
+    let theme = {
+      images: properties.images,
+      colors: patchedColors,
+    };
+
+    return theme;
   }
 }
