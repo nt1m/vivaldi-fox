@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VivaldiFox",
   "author": "Tim Nguyen",
-  "version": "2.0",
+  "version": "2.1.1",
   "icons": {
     "16": "icon.svg",
     "32": "icon.svg",

@@ -14,7 +14,7 @@ async function init() {
     },
     initialState: {
       settings: {
-        themes: await Settings.getThemes(),
+        themes: processThemes(await Settings.getThemes()),
         defaultTheme: await Settings.getDefaultTheme(),
         nightTheme: await Settings.getNightTheme(),
         pageColorsOnInactive: await Settings.getPageColorsOnInactive(),
@@ -36,6 +36,7 @@ async function init() {
 
         this.state.selectedTab = name;
         this.state.settings.themes[name] = DEFAULT_THEMES.light;
+        this.state.settings.themes[name].name = name;
         Settings.setThemes(themes);
       },
       deleteTheme(name) {
@@ -100,6 +101,18 @@ async function init() {
   });
 
   app.render();
+}
+
+function processThemes(themes) {
+  for (let theme in themes) {
+    if (!themes[theme].opacities) {
+      themes[theme].opacities = {
+        toolbar_field: 1,
+        toolbar: 1,
+      };
+    }
+  }
+  return themes;
 }
 
 try {
