@@ -3,32 +3,18 @@
 /* exported Color */
 
 class Color {
-  constructor(color) {
-    try {
-      color = color.replace(/\s/g, "");
-      let r, g, b;
-      if (getColorFormat(color) == "hex") {
-        if (color.length == 4) {
-          color = "#" + color[1].repeat(2) + color[2].repeat(2) + color[3].repeat(2);
-        }
-        r = "0x" + color[1] + color[2];
-        g = "0x" + color[3] + color[4];
-        b = "0x" + color[5] + color[6];
-      } else {
-        let isAlpha = color.startsWith("rgba");
-        ([r, g, b] = color.split(","));
-        r = isAlpha ? r.substring(5, r.length) : r.substring(4, r.length);
-        b = isAlpha ? b : b.substring(0, b.length - 1);
-      }
-      this.components = [
-        Math.floor(Number(r)),
-        Math.floor(Number(g)),
-        Math.floor(Number(b))
-      ];
-    } catch (e) {
-      console.log("vivaldifox: toRgb failed with", color);
+  constructor(cssColor) {
+    let span = document.createElement("span");
+    span.style.color = cssColor;
+    cssColor = window.getComputedStyle(span).color;
+    if (cssColor == "rgba(0, 0, 0, 0)" || !cssColor) {
+      console.log("vivaldifox: toRgb failed with", cssColor);
       this.components = null;
+      return;
     }
+    let rgb = cssColor.match(/^rgba?\((\d+), (\d+), (\d+)/);
+    rgb.shift();
+    this.components = rgb.map(x => parseInt(x, 10));
   }
 
   get textColor() {
