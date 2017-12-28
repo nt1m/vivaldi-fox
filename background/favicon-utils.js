@@ -27,7 +27,7 @@ async function getReadableFavicon(faviconUrl) {
   let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight;
   // Apply a maximum width/height before drawing the image
   let oldWidth = width;
-  width = Math.min(MAX_ICON_SIZE, width);
+  width = Math.min(MAX_PIXELS / height, width);
   height = Math.round((width * height) / oldWidth);
 
   let borderRadius = width / 8;

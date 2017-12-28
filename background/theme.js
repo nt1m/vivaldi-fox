@@ -72,7 +72,7 @@ class Theme {
       }
     }
 
-    patchedColors.toolbar_top_separator = "rgba(128,128,128, 0.3)"
+    patchedColors.toolbar_top_separator = "rgba(128, 128, 128, 0.2)";
     patchedColors.toolbar_bottom_separator = patchedColors.toolbar;
 
     let theme = {
