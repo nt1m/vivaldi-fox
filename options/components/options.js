@@ -9,6 +9,7 @@ function Options({ settings: {
   nightTheme,
   whiteBackgroundFavicons,
   pageColorsOnInactive,
+  useMetaTag,
 }}) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
@@ -19,8 +20,7 @@ function Options({ settings: {
   });
   let nightThemeDesc = "The night theme is enabled from 8pm to 8am. " +
     "To disable this feature, choose the same theme as the default theme.";
-  let pageColorDesc = "Page colors are extracted from the theme-color meta tag " +
-    "by default and uses the fallback source when not available.";
+  let pageColorDesc = "Select where the page color is extracted from:";
   return createElement("div", {},
     Section("General settings",
       createElement("h2", {}, "Default theme"),
@@ -47,20 +47,31 @@ function Options({ settings: {
         className: "disabled"
       }, pageColorDesc),
       Select({
-        label: "Fallback source",
+        label: "Color source",
         values: [
           {
             label: "Favicon",
             value: "favicon",
           },
           {
-            label: "Top of the page",
+            label: "Page header background",
             value: "page-top"
+          },
+          {
+            label: "Page header accent color",
+            value: "page-top-accent"
           }
         ],
         defaultValue: colorSource,
         onChange: ({ target }) => {
           app.actions.setColorSource(target.value);
+        }
+      }),
+      Checkbox({
+        label: "Use theme-color meta tag when available",
+        defaultChecked: useMetaTag,
+        onChange: ({ target }) => {
+          app.actions.setUseMetaTag(target.checked);
         }
       }),
       Checkbox({

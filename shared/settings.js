@@ -60,6 +60,9 @@ const Settings = {
   getWhiteBackgroundFavicons() {
     return getSetting("whiteBackgroundFavicons", false);
   },
+  getUseMetaTag() {
+    return getSetting("useMetaTag", true);
+  },
   getColorSource() {
     return getSetting("colorSource", "favicon");
   },
@@ -83,6 +86,9 @@ const Settings = {
   },
   setColorSource(value) {
     setSetting("colorSource", value);
+  },
+  setUseMetaTag(value) {
+    setSetting("useMetaTag", value);
   },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {

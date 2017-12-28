@@ -20,6 +20,7 @@ async function init() {
         pageColorsOnInactive: await Settings.getPageColorsOnInactive(),
         whiteBackgroundFavicons: await Settings.getWhiteBackgroundFavicons(),
         colorSource: await Settings.getColorSource(),
+        useMetaTag: await Settings.getUseMetaTag(),
       },
       selectedTab: await Settings.getDefaultTheme(),
     },
@@ -101,6 +102,10 @@ async function init() {
       setColorSource(value) {
         this.state.settings.colorSource = value;
         Settings.setColorSource(value);
+      },
+      setUseMetaTag(value) {
+        this.state.settings.useMetaTag = value;
+        Settings.setUseMetaTag(value);
       }
     },
   });

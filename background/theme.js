@@ -12,9 +12,9 @@ class Theme {
    */
   constructor(theme) {
     this.theme = theme;
-    this.propsWithOpacities =
-      Theme.getThemeWithOpacities(this.theme.properties, this.theme.opacities);
-    this.propsWithOpacitiesMap = new Map();
+    this.renderedProps =
+      Theme.getRenderedTheme(this.theme.properties, this.theme.opacities);
+    this.renderedPropsMap = new Map();
     this.apply();
   }
 
@@ -22,7 +22,7 @@ class Theme {
    * Apply the theme with patches
    */
   apply() {
-    return browser.theme.update(this.propsWithOpacities);
+    return browser.theme.update(this.renderedProps);
   }
 
   /**
@@ -41,10 +41,10 @@ class Theme {
     let { properties, opacities } = this.theme;
 
     let theme;
-    if (this.propsWithOpacitiesMap.has(background)) {
-      theme = this.propsWithOpacitiesMap.get(background);
+    if (this.renderedPropsMap.has(background)) {
+      theme = this.renderedPropsMap.get(background);
     } else {
-      theme = Theme.getThemeWithOpacities({
+      theme = Theme.getRenderedTheme({
         images: properties.images,
         colors: Object.assign({}, properties.colors, newColors),
       }, opacities);
@@ -56,10 +56,10 @@ class Theme {
    * Resets the theme by removing all patches applied on top of it
    */
   reset(windowId) {
-    return browser.theme.update(windowId, this.propsWithOpacities);
+    return browser.theme.update(windowId, this.renderedProps);
   }
 
-  static getThemeWithOpacities(properties, opacities) {
+  static getRenderedTheme(properties, opacities) {
     if (!opacities) {
       return properties;
     }
@@ -71,6 +71,9 @@ class Theme {
         patchedColors[property] = `rgba(${components}, ${opacities[property]})`;
       }
     }
+
+    patchedColors.toolbar_top_separator = "rgba(128,128,128, 0.3)"
+    patchedColors.toolbar_bottom_separator = patchedColors.toolbar;
 
     let theme = {
       images: properties.images,

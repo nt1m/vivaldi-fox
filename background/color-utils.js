@@ -24,7 +24,7 @@ function getColorFromImage(imgEl, ignoreGrey, yCrop) {
   // Apply a maximum width/height before drawing the image
   let oldWidth = width;
   let oldHeight = height;
-  width = Math.min(MAX_ICON_SIZE, width);
+  width = Math.min(MAX_PIXELS / oldHeight, width);
   height = Math.round((width * oldHeight) / oldWidth);
 
   canvas.width = width;
@@ -101,15 +101,17 @@ function getColorFromImage(imgEl, ignoreGrey, yCrop) {
 }
 
 async function findColor(tab) {
-  try {
-    let [foundPageColor] = await browser.tabs.executeScript(tab.id, {
-      file: "data/contentscript.js"
-    });
-    if (foundPageColor) {
-      let color = new Color(foundPageColor);
-      return color;
-    }
-  } catch (e) {}
+  if (await Settings.getUseMetaTag()) {
+    try {
+      let [foundPageColor] = await browser.tabs.executeScript(tab.id, {
+        file: "data/contentscript.js"
+      });
+      if (foundPageColor) {
+        let color = new Color(foundPageColor);
+        return color;
+      }
+    } catch (e) {}
+  }
 
   let colorSource = await Settings.getColorSource();
 
@@ -121,8 +123,14 @@ async function findColor(tab) {
     }
     case "page-top": {
       url = await browser.tabs.captureVisibleTab();
-      yCrop = 50;
+      yCrop = 3;
       ignoreGrey = false;
+      break;
+    }
+    case "page-top-accent": {
+      url = await browser.tabs.captureVisibleTab();
+      yCrop = 200;
+      ignoreGrey = true;
     }
   }
 
