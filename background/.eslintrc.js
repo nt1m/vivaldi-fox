@@ -2,7 +2,7 @@ module.exports = {
   "globals": {
     AddonState: true,
     Color: true,
-    createFaviconImage: true,
+    createImageFromUrl: true,
     getColorFormat: true,
     getReadableFavicon: true,
     findColor: true,

@@ -2,19 +2,19 @@
 
 /* exported getReadableFavicon */
 
-function createFaviconImage(icon) {
+function createImageFromUrl(url) {
   return new Promise((resolve, reject) => {
     let img = new Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
-    img.src = icon;
+    img.src = url;
   });
 }
 
 async function getReadableFavicon(faviconUrl) {
   let imgEl;
   try {
-    imgEl = await createFaviconImage(faviconUrl);
+    imgEl = await createImageFromUrl(faviconUrl);
   } catch (e) {
     return null;
   }

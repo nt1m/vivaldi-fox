@@ -9,6 +9,7 @@ module.exports = {
     "ThemeEditor": true,
     "Checkbox": true,
     "Section": true,
+    "Select": true,
     "Tabs": true,
     "ThemeSelect": true,
     "app": true,

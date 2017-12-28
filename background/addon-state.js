@@ -2,6 +2,10 @@
 
 /* exported AddonState */
 
+function canFindInactiveTabColor() {
+  return Settings.getColorSource().then(s => s === "favicon");
+}
+
 class AddonState {
   constructor({
     onTabColorChange,
@@ -24,7 +28,8 @@ class AddonState {
       let tab = await browser.tabs.get(tabId);
 
       if (!tabColorMap.has(tabId)) {
-        tabColorMap.set(tabId, await findColor(tab));
+        let color = await findColor(tab);
+        tabColorMap.set(tabId, color);
       }
       onTabColorChange(tab);
     });
@@ -38,10 +43,14 @@ class AddonState {
       if (!changeInfo.url && !faviconChanged) {
         return;
       }
-      let color = await findColor(tab);
-      let {tabColorMap} = this.state;
 
-      tabColorMap.set(tabId, color);
+      let canFindInactive = await canFindInactiveTabColor();
+      if (canFindInactive || tab.active) {
+        let color = await findColor(tab);
+        let {tabColorMap} = this.state;
+
+        tabColorMap.set(tabId, color);
+      }
 
       if (tab.active) {
         await onTabColorChange(tab);
@@ -57,6 +66,10 @@ class AddonState {
         return;
       }
       for (let tab of tabs) {
+        if (tab.active) {
+          let color = await findColor(tab);
+          this.state.tabColorMap.set(tab.id, color);
+        }
         onTabColorChange(tab);
       }
     };
@@ -68,7 +81,7 @@ class AddonState {
       "nightToggle",
       {
         when: firstAlarm(),
-        periodInMinutes: 12 * 60, // 12 hours
+        periodInMinutes: (NIGHTMODE_EVENING - NIGHTMODE_MORNING) * 60,
       }
     );
     browser.alarms.onAlarm.addListener(({name}) => {

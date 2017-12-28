@@ -12,20 +12,25 @@ function getColorFormat(color) {
   return "hsl";
 }
 
-function getColorFromImage(imgEl) {
+function getColorFromImage(imgEl, ignoreGrey, yCrop) {
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
+
   // This will:
   // - Take the median of a sorted list of colors (excluding shades of gray)
   // - If image only contains shades of gray, it takes the average instead
-  let width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth;
-  let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight;
+  let width = imgEl.naturalWidth || imgEl.offsetWidth;
+  let height = yCrop || imgEl.naturalHeight || imgEl.offsetHeight;
   // Apply a maximum width/height before drawing the image
   let oldWidth = width;
+  let oldHeight = height;
   width = Math.min(MAX_ICON_SIZE, width);
-  height = Math.round((width * height) / oldWidth);
+  height = Math.round((width * oldHeight) / oldWidth);
 
-  ctx.drawImage(imgEl, 0, 0, width, height);
+  canvas.width = width;
+  canvas.height = height;
+
+  ctx.drawImage(imgEl, 0, 0, oldWidth, oldHeight, 0, 0, width, height);
 
   let colors = [];
   let data = ctx.getImageData(0, 0, width, height).data;
@@ -48,16 +53,16 @@ function getColorFromImage(imgEl) {
     bAvg += b;
     count++;
     // Shade of gray, move on
-    if (r == g && g == b) {
+    if (r == g && g == b && ignoreGrey) {
       continue;
     }
-    if (rValues.indexOf(r) == -1) {
+    if (!rValues.includes(r)) {
       rValues.push(r);
     }
-    if (gValues.indexOf(g) == -1) {
+    if (!gValues.includes(g)) {
       gValues.push(g);
     }
-    if (bValues.indexOf(b) == -1) {
+    if (!bValues.includes(b)) {
       bValues.push(b);
     }
     colors.push([Math.floor(r), Math.floor(g), Math.floor(b)]);
@@ -106,10 +111,26 @@ async function findColor(tab) {
     }
   } catch (e) {}
 
-  if (tab.favIconUrl) {
-    let img = await createFaviconImage(tab.favIconUrl);
-    let color = getColorFromImage(img);
+  let colorSource = await Settings.getColorSource();
+
+  let url, yCrop = false, ignoreGrey = true;
+  switch (colorSource) {
+    case "favicon": {
+      url = tab.favIconUrl;
+      break;
+    }
+    case "page-top": {
+      url = await browser.tabs.captureVisibleTab();
+      yCrop = 50;
+      ignoreGrey = false;
+    }
+  }
+
+  if (url) {
+    let img = await createImageFromUrl(url);
+    let color = getColorFromImage(img, ignoreGrey, yCrop);
     return color;
   }
+
   return null;
 }

@@ -60,6 +60,9 @@ const Settings = {
   getWhiteBackgroundFavicons() {
     return getSetting("whiteBackgroundFavicons", false);
   },
+  getColorSource() {
+    return getSetting("colorSource", "favicon");
+  },
   getThemes() {
     return getSetting("themes", DEFAULT_THEMES);
   },
@@ -73,10 +76,13 @@ const Settings = {
     setSetting("nightTheme", theme);
   },
   setPageColorsOnInactive(value) {
-    return setSetting("pageColorsOnInactive", value);
+    setSetting("pageColorsOnInactive", value);
   },
   setWhiteBackgroundFavicons(value) {
-    return setSetting("whiteBackgroundFavicons", value);
+    setSetting("whiteBackgroundFavicons", value);
+  },
+  setColorSource(value) {
+    setSetting("colorSource", value);
   },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {
