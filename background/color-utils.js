@@ -1,6 +1,6 @@
 "use strict";
 
-/* exported getColorFormat, findColor */
+/* exported getColorFormat, findBaseColor */
 
 function getColorFormat(color) {
   color = color.replace(/\s/g, "");
@@ -100,20 +100,12 @@ function getColorFromImage(imgEl, ignoreGrey, yCrop) {
   return new Color("rgb(" + result.join(",") + ")");
 }
 
-async function findColor(tab) {
-  if (await Settings.getUseMetaTag()) {
-    try {
-      let [foundPageColor] = await browser.tabs.executeScript(tab.id, {
-        file: "data/contentscript.js"
-      });
-      if (foundPageColor) {
-        let color = new Color(foundPageColor);
-        return color;
-      }
-    } catch (e) {}
-  }
-
+async function findBaseColor(tab) {
   let colorSource = await Settings.getColorSource();
+
+  if (colorSource == "none") {
+    return;
+  }
 
   let url, yCrop = false, ignoreGrey = true;
   switch (colorSource) {
@@ -122,15 +114,16 @@ async function findColor(tab) {
       break;
     }
     case "page-top": {
-      url = await browser.tabs.captureVisibleTab();
+      url = await browser.tabs.captureTab(tab.id);
       yCrop = 3;
       ignoreGrey = false;
       break;
     }
     case "page-top-accent": {
-      url = await browser.tabs.captureVisibleTab();
+      url = await browser.tabs.captureTab(tab.id);
       yCrop = 200;
       ignoreGrey = true;
+      break;
     }
   }
 

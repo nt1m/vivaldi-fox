@@ -9,7 +9,7 @@ function Options({ settings: {
   nightTheme,
   whiteBackgroundFavicons,
   pageColorsOnInactive,
-  useMetaTag,
+  usePageDefinedColors,
 }}) {
   let tabs = Object.keys(themes).map((theme) => {
     return {
@@ -46,8 +46,15 @@ function Options({ settings: {
       createElement("p", {
         className: "disabled"
       }, pageColorDesc),
+      Checkbox({
+        label: "Use colors defined by the web page when available",
+        defaultChecked: usePageDefinedColors,
+        onChange: ({ target }) => {
+          app.actions.setUsePageDefinedColors(target.checked);
+        }
+      }),
       Select({
-        label: "Color source",
+        label: "Alternate color source",
         values: [
           {
             label: "Favicon",
@@ -60,18 +67,15 @@ function Options({ settings: {
           {
             label: "Page header accent color",
             value: "page-top-accent"
+          },
+          {
+            label: "None",
+            value: "none"
           }
         ],
         defaultValue: colorSource,
         onChange: ({ target }) => {
           app.actions.setColorSource(target.value);
-        }
-      }),
-      Checkbox({
-        label: "Use theme-color meta tag when available",
-        defaultChecked: useMetaTag,
-        onChange: ({ target }) => {
-          app.actions.setUseMetaTag(target.checked);
         }
       }),
       Checkbox({

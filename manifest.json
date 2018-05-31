@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VivaldiFox",
   "author": "Tim Nguyen",
-  "version": "2.3",
+  "version": "3.0",
   "icons": {
     "16": "icon.svg",
     "32": "icon.svg",
@@ -19,10 +19,18 @@
       "background/addon-state.js",
       "background/favicon-utils.js",
       "background/color-utils.js",
-      "background/theme.js", 
+      "background/theme.js",
       "background/background.js"
     ]
   },
+  "content_scripts": [{
+    "matches": [
+      "<all_urls>"
+    ],
+    "js": [
+      "data/contentscript.js"
+    ]
+  }],
   "options_ui": {
     "page": "options/options.html",
     "browser_style": false,

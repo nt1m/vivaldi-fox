@@ -60,7 +60,7 @@ const Settings = {
   getWhiteBackgroundFavicons() {
     return getSetting("whiteBackgroundFavicons", false);
   },
-  getUseMetaTag() {
+  getUsePageDefinedColors() {
     return getSetting("useMetaTag", true);
   },
   getColorSource() {
@@ -87,7 +87,7 @@ const Settings = {
   setColorSource(value) {
     setSetting("colorSource", value);
   },
-  setUseMetaTag(value) {
+  setUsePageDefinedColors(value) {
     setSetting("useMetaTag", value);
   },
   onChanged(callback) {

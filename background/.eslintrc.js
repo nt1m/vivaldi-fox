@@ -5,7 +5,7 @@ module.exports = {
     createImageFromUrl: true,
     getColorFormat: true,
     getReadableFavicon: true,
-    findColor: true,
+    findBaseColor: true,
     Theme: true,
     MAX_PIXELS: true,
     NIGHTMODE_MORNING: true,

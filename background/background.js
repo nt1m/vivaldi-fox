@@ -2,7 +2,6 @@
 
 let currentTheme;
 
-let tabIconsChanged = new Set();
 let whiteFaviconCache = new Map();
 
 async function setColor({id, windowId}, tabColorMap) {
@@ -58,9 +57,6 @@ new AddonState({
     if (!whiteFaviconsEnabled) {
       return;
     }
-    if (tabIconsChanged.has(tab.id) && whiteFaviconCache.has(tab.favIconUrl)) {
-      return;
-    }
 
     let whiteFavicon;
     if (whiteFaviconCache.has(tab.favIconUrl)) {
@@ -71,7 +67,6 @@ new AddonState({
 
     if (whiteFavicon) {
       whiteFaviconCache.set(tab.favIconUrl, whiteFavicon);
-      tabIconsChanged.add(tab.id);
     }
 
     if (!whiteFavicon) {

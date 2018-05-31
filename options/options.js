@@ -20,7 +20,7 @@ async function init() {
         pageColorsOnInactive: await Settings.getPageColorsOnInactive(),
         whiteBackgroundFavicons: await Settings.getWhiteBackgroundFavicons(),
         colorSource: await Settings.getColorSource(),
-        useMetaTag: await Settings.getUseMetaTag(),
+        usePageDefinedColors: await Settings.getUsePageDefinedColors(),
       },
       selectedTab: await Settings.getDefaultTheme(),
     },
@@ -99,13 +99,13 @@ async function init() {
         this.state.settings.whiteBackgroundFavicons = value;
         Settings.setWhiteBackgroundFavicons(value);
       },
-      setColorSource(value) {
+      async setColorSource(value) {
         this.state.settings.colorSource = value;
         Settings.setColorSource(value);
       },
-      setUseMetaTag(value) {
-        this.state.settings.useMetaTag = value;
-        Settings.setUseMetaTag(value);
+      setUsePageDefinedColors(value) {
+        this.state.settings.usePageDefinedColors = value;
+        Settings.setUsePageDefinedColors(value);
       }
     },
   });
