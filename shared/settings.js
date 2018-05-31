@@ -11,9 +11,6 @@ const DEFAULT_THEMES = {
       toolbar_field: 1,
     },
     properties: {
-      images: {
-        headerURL: ""
-      },
       colors: {
         accentcolor: "#dedede",
         textcolor: "#444444",
@@ -32,9 +29,6 @@ const DEFAULT_THEMES = {
       toolbar_field: 1,
     },
     properties: {
-      images: {
-        headerURL: ""
-      },
       colors: {
         textcolor: "#ffffff",
         accentcolor: "#0c0c0d",

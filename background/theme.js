@@ -76,9 +76,13 @@ class Theme {
     patchedColors.toolbar_bottom_separator = patchedColors.toolbar;
 
     let theme = {
-      images: properties.images,
       colors: patchedColors,
     };
+
+    let ffVersion = parseInt(navigator.userAgent.split("Firefox/")[1], 10);
+    if (ffVersion < 60) {
+      theme.images = properties.images;
+    }
 
     return theme;
   }
