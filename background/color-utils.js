@@ -104,7 +104,7 @@ async function findBaseColor(tab) {
   let colorSource = await Settings.getColorSource();
 
   if (colorSource == "none") {
-    return;
+    return null;
   }
 
   let url, yCrop = false, ignoreGrey = true;

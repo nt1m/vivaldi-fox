@@ -62,7 +62,7 @@ class AddonState {
 
       try {
         // await browser.tabs.sendMessage(tabId, {hi: "hi"});
-        await browser.tabs.executeScript(tabId, {code: "'hi';"})
+        await browser.tabs.executeScript(tabId, {code: "'hi';"});
       } catch (e) {
         console.log(e);
         let color = false;
