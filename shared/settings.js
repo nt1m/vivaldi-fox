@@ -48,6 +48,12 @@ const Settings = {
   getNightTheme() {
     return getSetting("nightTheme", "light");
   },
+  getNightModeStart() {
+    return getSetting("nightModeStart", 20);
+  },
+  getNightModeEnd() {
+    return getSetting("nightModeEnd", 8);
+  },
   getPageColorsOnInactive() {
     return getSetting("pageColorsOnInactive", true);
   },
@@ -71,6 +77,12 @@ const Settings = {
   },
   setNightTheme(theme) {
     setSetting("nightTheme", theme);
+  },
+  setNightModeStart(time) {
+    setSetting("nightModeStart", time);
+  },
+  setNightModeEnd(time) {
+    setSetting("nightModeEnd", time);
   },
   setPageColorsOnInactive(value) {
     setSetting("pageColorsOnInactive", value);

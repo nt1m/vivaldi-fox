@@ -15,13 +15,26 @@ async function setColor({id, windowId}, tabColorMap) {
   }
 }
 
+async function isDayMode() {
+  let date = new Date(Date.now());
+  let nightModeStart = await Settings.getNightModeStart();
+  let nightModeEnd = await Settings.getNightModeEnd();
+
+  if (nightModeStart > nightModeEnd) {
+    return date.getHours() >= nightModeEnd &&
+           date.getHours() < nightModeStart;
+  } else {
+    return date.getHours() < nightModeStart ||
+           date.getHours() >= nightModeEnd;
+  }
+}
+
 new AddonState({
   async onInit() {
     let themes = await Settings.getThemes();
-    let date = new Date(Date.now());
 
     let selectedTheme;
-    if (date.getHours() >= NIGHTMODE_MORNING && date.getHours() < NIGHTMODE_EVENING) {
+    if (await isDayMode()) {
       selectedTheme = await Settings.getDefaultTheme();
     } else {
       selectedTheme = await Settings.getNightTheme();

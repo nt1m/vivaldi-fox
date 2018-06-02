@@ -17,6 +17,8 @@ async function init() {
         themes: processThemes(await Settings.getThemes()),
         defaultTheme: await Settings.getDefaultTheme(),
         nightTheme: await Settings.getNightTheme(),
+        nightModeStart: await Settings.getNightModeStart(),
+        nightModeEnd: await Settings.getNightModeEnd(),
         pageColorsOnInactive: await Settings.getPageColorsOnInactive(),
         whiteBackgroundFavicons: await Settings.getWhiteBackgroundFavicons(),
         colorSource: await Settings.getColorSource(),
@@ -64,6 +66,14 @@ async function init() {
       setNightTheme(name) {
         this.state.settings.nightTheme = name;
         Settings.setNightTheme(name);
+      },
+      setNightModeStart(time) {
+        this.state.settings.nightModeStart = time;
+        Settings.setNightModeStart(time);
+      },
+      setNightModeEnd(time) {
+        this.state.settings.nightModeEnd = time;
+        Settings.setNightModeEnd(time);
       },
       setThemeProperty(theme, type, property, value) {
         let {themes} = this.state.settings;

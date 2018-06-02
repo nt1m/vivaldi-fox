@@ -64,7 +64,6 @@ class AddonState {
         // await browser.tabs.sendMessage(tabId, {hi: "hi"});
         await browser.tabs.executeScript(tabId, {code: "'hi';"});
       } catch (e) {
-        console.log(e);
         let color = false;
         let baseColor = await findBaseColor(tab);
         if (baseColor) {
@@ -82,6 +81,10 @@ class AddonState {
 
     this.refreshAddon = async () => {
       onInit();
+
+      browser.alarms.create(
+        "nightToggle", { when: (await firstAlarm()) }
+      );
 
       await new Promise(r => setTimeout(r, 400));
 
@@ -101,31 +104,45 @@ class AddonState {
     Settings.onChanged(this.refreshAddon);
     browser.windows.onFocusChanged.addListener(onWindowFocusChange);
 
-    browser.alarms.create(
-      "nightToggle",
-      {
-        when: firstAlarm(),
-        periodInMinutes: (NIGHTMODE_EVENING - NIGHTMODE_MORNING) * 60,
-      }
-    );
-    browser.alarms.onAlarm.addListener(({name}) => {
+    (async () => {
+      browser.alarms.create(
+        "nightToggle", { when: (await firstAlarm()) }
+      );
+    })();
+    browser.alarms.onAlarm.addListener(async ({name}) => {
       if (name === "nightToggle") {
         onNightMode();
+        browser.alarms.create(
+          "nightToggle", { when: (await firstAlarm()) }
+        );
       }
     });
     onInit();
   }
 }
 
-function firstAlarm() {
+async function firstAlarm() {
   let now = new Date(Date.now());
   let then = new Date(Date.now());
-  if (now.getHours() >= NIGHTMODE_EVENING) {
-    then.setHours(24 + NIGHTMODE_MORNING);
-  } else if (now.getHours() < NIGHTMODE_MORNING) {
-    then.setHours(NIGHTMODE_MORNING);
+  let nightModeStart = await Settings.getNightModeStart();
+  let nightModeEnd = await Settings.getNightModeEnd();
+
+  if (nightModeStart > nightModeEnd) {
+    if (now.getHours() >= nightModeStart) {
+      then.setHours(24 + nightModeEnd);
+    } else if (now.getHours() < nightModeEnd) {
+      then.setHours(nightModeEnd);
+    } else {
+      then.setHours(nightModeStart);
+    }
   } else {
-    then.setHours(NIGHTMODE_EVENING);
+    if (now.getHours() >= nightModeEnd) {
+      then.setHours(24 + nightModeStart);
+    } else if (now.getHours() < nightModeStart) {
+      then.setHours(nightModeStart);
+    } else {
+      then.setHours(nightModeEnd);
+    }
   }
   then.setMinutes(0);
   then.setSeconds(0);

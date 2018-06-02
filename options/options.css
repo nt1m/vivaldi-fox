@@ -26,6 +26,14 @@ p {
   text-align: start;
 }
 
+p > input {
+  font: inherit;
+  border: 0;
+  width: 2ch;
+  -moz-appearance: textfield;
+  border-bottom: 1px solid currentColor;
+}
+
 .header {
   position: sticky;
   top: 0;
@@ -56,6 +64,9 @@ p {
 
 .disabled {
   opacity: 0.5;
+}
+
+.disabled:not(p) {
   pointer-events: none;
 }
 
@@ -98,7 +109,7 @@ section {
   width: 100%;
   position: absolute;
   bottom: 0;
-  left: 0;  
+  left: 0;
 }
 
 .tabs li.selected a {
@@ -108,7 +119,7 @@ section {
   transform: none;
 }
 
-/* 
+/*
 .browser {
   border: 1px solid rgba(12, 12, 13, 0.3);
   font: message-box;

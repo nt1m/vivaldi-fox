@@ -7,6 +7,8 @@ function Options({ settings: {
   colorSource,
   defaultTheme,
   nightTheme,
+  nightModeStart,
+  nightModeEnd,
   whiteBackgroundFavicons,
   pageColorsOnInactive,
   usePageDefinedColors,
@@ -18,7 +20,7 @@ function Options({ settings: {
       component: ThemeEditor(themes[theme], Object.keys(themes).length > 1),
     };
   });
-  let nightThemeDesc = "The night theme is enabled from 8pm to 8am. " +
+  let nightThemeDesc =
     "To disable this feature, choose the same theme as the default theme.";
   let pageColorDesc = "Select where the page color is extracted from:";
   return createElement("div", {},
@@ -32,9 +34,32 @@ function Options({ settings: {
         }
       }),
       createElement("h2", {}, "Night theme"),
+      createElement("p", { className: "disabled" },
+        createElement("span", {}, "Enable from "),
+        Input({
+          defaultValue: nightModeStart,
+          type: "number",
+          min: 0,
+          max: 23,
+          onChange: ({ target }) => {
+            app.actions.setNightModeStart(target.value);
+          }
+        }),
+        createElement("span", {}, "h to "),
+        Input({
+          defaultValue: nightModeEnd,
+          type: "number",
+          min: 0,
+          max: 23,
+          onChange: ({ target }) => {
+            app.actions.setNightModeEnd(target.value);
+          }
+        }),
+        createElement("span", {}, "h. " + nightThemeDesc),
+      ),
       createElement("p", {
         className: "disabled"
-      }, nightThemeDesc),
+      }, ),
       ThemeSelect({
         themes,
         defaultValue: nightTheme,
