@@ -1,5 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Fira+Sans);
-
 /**** General styles ****/
 
 body {
@@ -278,10 +276,45 @@ input[type=color]:focus,
 }
 
 /**** Editor ****/
+.theme-editor-container {
+  position: relative;
+  padding-bottom: 3em;
+}
+.theme-editor-expander {
+  display: none;
+}
+.theme-editor-expander + label {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+}
+.theme-editor-expander + label::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  background-image: url(images/expand.svg);
+  background-size: cover;
+  margin-right: 1em;
+}
+.theme-editor-expander:checked + label::before {
+  background-image: url(images/retract.svg);
+}
 .theme-editor {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
+  transition: max-height 0.2s;
+  max-height: 1600px;
+  overflow: hidden;
+}
+.theme-editor-expander:not(:checked) ~ .theme-editor {
+  max-height: 520px;
+  mask-image: linear-gradient(to top, transparent, black 2em);
 }
 button.addButton {
   border: none;
@@ -329,3 +362,6 @@ button.addButton::before {
   content: "";
   background-image: url(images/github.png);
 }
+
+/* font import */
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans);

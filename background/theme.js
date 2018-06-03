@@ -1,7 +1,22 @@
 "use strict";
 
-const textProperties = ["toolbar_text", "textcolor", "toolbar_field_text"];
-const opacityProperties = ["toolbar", "toolbar_field"];
+const textProperties = [
+  "toolbar_text",
+  "textcolor",
+  "toolbar_field_text",
+  "tab_text",
+  "popup_text",
+  "popup_highlight_text",
+];
+const opacityProperties = [
+  "toolbar",
+  "toolbar_field",
+  "toolbar_field_border",
+  "toolbar_top_separator",
+  "toolbar_bottom_separator",
+  "toolbar_field_separator",
+  "toolbar_vertical_separator",
+];
 
 /* exported Theme */
 
@@ -71,9 +86,6 @@ class Theme {
         patchedColors[property] = `rgba(${components}, ${opacities[property]})`;
       }
     }
-
-    patchedColors.toolbar_top_separator = "rgba(128, 128, 128, 0.2)";
-    patchedColors.toolbar_bottom_separator = patchedColors.toolbar;
 
     let theme = {
       colors: patchedColors,

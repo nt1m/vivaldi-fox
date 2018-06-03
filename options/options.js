@@ -88,15 +88,34 @@ async function init() {
         themes[theme].opacities[prop] = value;
         Settings.setThemes(themes);
       },
+      setNativeTheme(theme, prop1, prop2, enabled) {
+        let {themes} = this.state.settings;
+        if (enabled) {
+          delete themes[theme].properties.colors[prop1];
+          if (prop2) {
+            delete themes[theme].properties.colors[prop2];
+          }
+        } else {
+          themes[theme].properties.colors[prop1] = "#ffffff";
+          if (prop2) {
+            themes[theme].properties.colors[prop2] = "#000000";
+          }
+        }
+        Settings.setThemes(themes);
+      },
       setThemeApplyPageColors(theme, prop1, prop2, value) {
         let {themes} = this.state.settings;
         let set = new Set(themes[theme].applyPageColors);
         if (value) {
           set.add(prop1);
-          set.add(prop2);
+          if (prop2) {
+            set.add(prop2);
+          }
         } else {
           set.delete(prop1);
-          set.delete(prop2);
+          if (prop2) {
+            set.delete(prop2);
+          }
         }
         themes[theme].applyPageColors = [...set];
         Settings.setThemes(themes);
@@ -109,7 +128,7 @@ async function init() {
         this.state.settings.whiteBackgroundFavicons = value;
         Settings.setWhiteBackgroundFavicons(value);
       },
-      async setColorSource(value) {
+      setColorSource(value) {
         this.state.settings.colorSource = value;
         Settings.setColorSource(value);
       },

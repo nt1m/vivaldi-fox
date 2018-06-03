@@ -96,8 +96,8 @@ class AddonState {
         if (tab.active) {
           let color = await findBaseColor(tab);
           this.state.tabColorMap.set(tab.id, color);
+          onTabColorChange(tab);
         }
-        onTabColorChange(tab);
       }
     };
 
