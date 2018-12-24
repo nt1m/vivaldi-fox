@@ -17,6 +17,22 @@ const opacityProperties = [
   "toolbar_field_separator",
   "toolbar_vertical_separator",
 ];
+const aliases = {
+  accentcolor: "frame",
+  textcolor: "tab_background_text",
+  toolbar_text: "bookmark_text",
+};
+
+function fixAliases(theme) {
+  for (let oldAlias in aliases) {
+    let newAlias = aliases[oldAlias];
+    if (theme.colors[oldAlias]) {
+      theme.colors[newAlias] = theme.colors[oldAlias];
+      theme.colors[oldAlias] = null;
+    }
+  }
+  return theme;
+}
 
 /* exported Theme */
 
@@ -96,6 +112,6 @@ class Theme {
       theme.images = properties.images;
     }
 
-    return theme;
+    return fixAliases(theme);
   }
 }

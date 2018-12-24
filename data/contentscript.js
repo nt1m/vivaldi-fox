@@ -1,6 +1,6 @@
 "use strict";
 
-(function() {
+window.addEventListener("load", function() {
   const setColor = (color) => {
     browser.runtime.sendMessage({
       command: "color",
@@ -102,4 +102,4 @@
   };
 
   getColor();
-})();
+});

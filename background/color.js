@@ -5,8 +5,10 @@
 class Color {
   constructor(cssColor) {
     let span = document.createElement("span");
+    document.body.appendChild(span);
     span.style.color = cssColor;
     cssColor = window.getComputedStyle(span).color;
+    span.remove();
     if (cssColor == "rgba(0, 0, 0, 0)" || !cssColor) {
       console.log("vivaldifox: toRgb failed with", cssColor);
       this.components = null;

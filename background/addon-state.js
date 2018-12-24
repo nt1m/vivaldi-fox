@@ -19,6 +19,15 @@ class AddonState {
     onNightMode = onNightMode.bind(this);
     onInit = onInit.bind(this);
 
+    const findAndSetColor = async (tab) => {
+      let baseColor = await findBaseColor(tab);
+      let color = false;
+      if (baseColor) {
+        color = new Color(baseColor);
+      }
+      this.state.tabColorMap.set(tab.id, color);
+    };
+
     browser.runtime.onMessage.addListener(async (message, {tab}) => {
       let usePageDefinedColors = await Settings.getUsePageDefinedColors();
       let hasPageDefinedColor = false;
@@ -50,31 +59,26 @@ class AddonState {
 
     browser.tabs.onActivated.addListener(async ({ tabId }) => {
       let tab = await browser.tabs.get(tabId);
-
+      if (!this.state.tabColorMap.has(tabId)) {
+        await findAndSetColor(tab);
+      }
       onTabColorChange(tab);
     });
 
     browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-      let faviconChanged = tab.favIconUrl && !tab.favIconUrl.startsWith("data:");
-      if (faviconChanged) {
+      if (changeInfo.status == "loading") {
+        return;
+      }
+
+      if (changeInfo.favIconUrl) {
         onFaviconChange(tab);
       }
 
-      try {
-        // await browser.tabs.sendMessage(tabId, {hi: "hi"});
-        await browser.tabs.executeScript(tabId, {code: "'hi';"});
-      } catch (e) {
-        let color = false;
-        let baseColor = await findBaseColor(tab);
-        if (baseColor) {
-          color = new Color(baseColor);
-        }
-        this.state.tabColorMap.set(tab.id, color);
-        if (tab.active) {
-          onTabColorChange(tab);
-        }
+      await findAndSetColor(tab);
+      if (tab.active) {
+        onTabColorChange(tab);
       }
-    });
+    }, {properties: ["favIconUrl", "status"]});
 
     browser.tabs.onRemoved.addListener((tabId) =>
       this.state.tabColorMap.delete(tabId));

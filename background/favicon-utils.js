@@ -11,18 +11,47 @@ function createImageFromUrl(url) {
   });
 }
 
+function imageMostlyTransparent(imgEl) {
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  let width = imgEl.naturalWidth || imgEl.offsetWidth;
+  let height = imgEl.naturalHeight || imgEl.offsetHeight;
+  // Apply a maximum width/height before drawing the image
+  let oldWidth = width;
+  let oldHeight = height;
+  width = Math.min(MAX_PIXELS / oldHeight, width);
+  height = Math.round((width * oldHeight) / oldWidth);
+
+  canvas.width = width;
+  canvas.height = height;
+
+  ctx.drawImage(imgEl, 0, 0, oldWidth, oldHeight, 0, 0, width, height);
+
+  let data = ctx.getImageData(0, 0, width, height).data;
+  let transparent = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    let r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    if (a < 128) {
+      transparent++;
+    }
+  }
+  return (transparent / (data.length / 4)) > 0.25; // 25% transparent pixels or more
+}
+
 async function getReadableFavicon(faviconUrl) {
   let imgEl;
   try {
     imgEl = await createImageFromUrl(faviconUrl);
   } catch (e) {
+    console.log(favIconUrl, "failed loading")
     return null;
+  }
+
+  if (!imageMostlyTransparent(imgEl)) {
+    return;
   }
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
-  // This will:
-  // - Take the median of a sorted list of colors (excluding shades of gray)
-  // - If image only contains shades of gray, it takes the average instead
   let width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth;
   let height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight;
   // Apply a maximum width/height before drawing the image
