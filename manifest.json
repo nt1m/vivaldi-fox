@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VivaldiFox",
   "author": "Tim Nguyen",
-  "version": "3.1",
+  "version": "3.2",
   "icons": {
     "16": "icon.svg",
     "32": "icon.svg",
@@ -10,7 +10,7 @@
     "96": "icon.svg"
   },
   "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
-  "permissions": ["theme", "tabs", "<all_urls>", "storage", "alarms"],
+  "permissions": ["theme", "tabs", "<all_urls>", "storage", "alarms", "browserSettings"],
   "background": {
     "scripts": [
       "shared/settings.js",

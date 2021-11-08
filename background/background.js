@@ -102,3 +102,15 @@ new AddonState({
 browser.browserAction.onClicked.addListener(() => {
   browser.runtime.openOptionsPage();
 });
+
+// Using the browser's theme color scheme with this extension interacts poorly with webpages
+// See https://github.com/nt1m/vivaldi-fox/issues/120
+async function setOverrideContentColorSchemeSetting() {
+  let { value, levelOfControl } = await browser.browserSettings.overrideContentColorScheme.get({});
+
+  if (levelOfControl != "not_controllable" && value == "browser") {
+    browser.browserSettings.overrideContentColorScheme.set({ value: "system" });
+  }
+}
+
+setOverrideContentColorSchemeSetting();
