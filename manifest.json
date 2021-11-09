@@ -23,6 +23,9 @@
       "background/background.js"
     ]
   },
+  "commands": {
+    "_execute_browser_action": {}
+  },
   "content_scripts": [{
     "matches": [
       "<all_urls>"
