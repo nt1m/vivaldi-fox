@@ -72,7 +72,7 @@ function ThemePropertyGroup({
           app.actions.setThemeOpacityProperty(theme.name, opacityProperty, target.value);
         }
       }),
-      Checkbox({
+      !hideApplyPageColors && Checkbox({
         defaultChecked: applyPageColorsChecked,
         label: "Apply page colors",
         onChange(e) {
