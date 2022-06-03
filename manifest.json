@@ -10,7 +10,8 @@
     "96": "icon.svg"
   },
   "description": "An add-on that allows colouring Firefox in a Vivaldi style fashion.",
-  "permissions": ["theme", "tabs", "<all_urls>", "storage", "alarms", "browserSettings"],
+  "permissions": ["theme", "tabs", "storage", "alarms", "browserSettings"],
+  "optional_permissions": ["<all_urls>"],
   "background": {
     "scripts": [
       "shared/settings.js",
