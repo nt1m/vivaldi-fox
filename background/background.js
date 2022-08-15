@@ -41,6 +41,14 @@ new AddonState({
     }
 
     currentTheme = new Theme(themes[selectedTheme]);
+
+    let firstRun = await Settings.getFirstRun();
+    if(firstRun) {
+      chrome.tabs.create({
+        url: chrome.runtime.getURL("/welcome/welcomePage.html")
+      });
+      Settings.setFirstRun(false);
+    }
   },
   onTabColorChange(tab) {
     return setColor(tab, this.state.tabColorMap);
