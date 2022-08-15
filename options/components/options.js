@@ -75,7 +75,7 @@ function Options({ settings: {
         label: "Use colors defined by the web page when available",
         defaultChecked: usePageDefinedColors,
         onChange: ({ target }) => {
-          app.actions.setUsePageDefinedColors(target.checked);
+          app.actions.setUsePageDefinedColors(target);
         }
       }),
       Select({
@@ -100,7 +100,7 @@ function Options({ settings: {
         ],
         defaultValue: colorSource,
         onChange: ({ target }) => {
-          app.actions.setColorSource(target.value);
+          app.actions.setColorSource(target);
         }
       }),
       Checkbox({

@@ -128,15 +128,45 @@ async function init() {
         this.state.settings.whiteBackgroundFavicons = value;
         Settings.setWhiteBackgroundFavicons(value);
       },
-      setColorSource(value) {
-        this.state.settings.colorSource = value;
-        Settings.setColorSource(value);
+      setColorSource(target) {
+        let value = target.value;
+        const permissionsToRequest = {
+          origins: ["<all_urls>"]
+        }
+        if(value == "page-top" || value == "page-top-accent") {
+          browser.permissions.request(permissionsToRequest).then((response) => {
+            if(response) {
+              this.state.settings.colorSource = value;
+              Settings.setColorSource(value);
+              target.value = value;
+            } else {
+              // Couldn't get permission, need to revert value
+              target.value = this.state.settings.colorSource;
+            }
+          });
+        } else {
+          this.state.settings.colorSource = value;
+          Settings.setColorSource(value);
+          target.value = value;
+        }
       },
-      setUsePageDefinedColors(value) {
-        this.state.settings.usePageDefinedColors = value;
-        Settings.setUsePageDefinedColors(value);
+      setUsePageDefinedColors(target) {
+        let value = target.checked;
+        const permissionsToRequest = {
+          origins: ["<all_urls>"]
+        }
+        browser.permissions.request(permissionsToRequest).then((response) => {
+          if(response) {
+            this.state.settings.usePageDefinedColors = value;
+            Settings.setUsePageDefinedColors(value);
+            target.checked = value;
+          } else {
+            // Couldn't get permission, need to revert checkbox
+            target.checked = false;
+          }
+        });
       }
-    },
+    }
   });
 
   app.render();
