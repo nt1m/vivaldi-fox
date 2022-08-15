@@ -61,13 +61,16 @@ const Settings = {
     return getSetting("whiteBackgroundFavicons", false);
   },
   getUsePageDefinedColors() {
-    return getSetting("useMetaTag", true);
+    return getSetting("useMetaTag", false);
   },
   getColorSource() {
     return getSetting("colorSource", "favicon");
   },
   getThemes() {
     return getSetting("themes", DEFAULT_THEMES);
+  },
+  getFirstRun() {
+    return getSetting("firstRun", true);
   },
   setThemes(value) {
     setSetting("themes", value);
@@ -95,6 +98,9 @@ const Settings = {
   },
   setUsePageDefinedColors(value) {
     setSetting("useMetaTag", value);
+  },
+  setFirstRun(value) {
+    setSetting("firstRun", value);
   },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {
