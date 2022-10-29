@@ -1,0 +1,16 @@
+a:not(:hover) {
+  text-decoration: none;
+}
+
+.group {
+  display: flex;
+  align-items: start;
+}
+
+.group p {
+  opacity: 0.6;
+}
+
+.group input {
+  margin-inline-end: 1em;
+}
