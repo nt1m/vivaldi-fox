@@ -71,8 +71,8 @@ const Settings = {
   getThemes() {
     return getSetting("themes", DEFAULT_THEMES);
   },
-  getFirstRun() {
-    return getSetting("firstRun", true);
+  getIsFirstRun() {
+    return getSetting("isFirstRun", true);
   },
   setThemes(value) {
     setSetting("themes", value);
@@ -101,8 +101,8 @@ const Settings = {
   setUsePageDefinedColors(value) {
     setSetting("useMetaTag", value);
   },
-  setFirstRun(value) {
-    setSetting("firstRun", value);
+  setIsFirstRun(value) {
+    setSetting("isFirstRun", value);
   },
   onChanged(callback) {
     return browser.storage.onChanged.addListener(changes => {

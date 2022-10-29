@@ -42,13 +42,17 @@ new AddonState({
 
     currentTheme = new Theme(themes[selectedTheme]);
 
-    let firstRun = await Settings.getFirstRun();
-    if (firstRun) {
+    let hasAllUrlsPermissions = await browser.permissions.contains({
+      origins: ["<all_urls>"]
+    });
+    let isFirstRun = await Settings.getIsFirstRun();
+    if (isFirstRun && !hasAllUrlsPermissions) {
       chrome.tabs.create({
         url: chrome.runtime.getURL("/welcome/welcome.html")
       });
-      Settings.setFirstRun(false);
     }
+    if (isFirstRun)
+      Settings.setIsFirstRun(false);
   },
   onTabColorChange(tab) {
     return setColor(tab, this.state.tabColorMap);
