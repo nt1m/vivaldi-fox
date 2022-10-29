@@ -12,12 +12,13 @@ const DEFAULT_THEMES = {
     },
     properties: {
       colors: {
-        accentcolor: "#dedede",
+        accentcolor: "#f0f0f4",
         textcolor: "#444444",
-        toolbar: "#f8f8f8",
+        toolbar: "#f9f9fb",
+        tab_line: "transparent",
         toolbar_text: "#000000",
-        toolbar_field: "#ffffff",
-        toolbar_field_text: "#000000",
+        toolbar_field: "#f0f0f4",
+        toolbar_field_text: "rgb(21,20,26)",
       }
     }
   },
@@ -31,10 +32,11 @@ const DEFAULT_THEMES = {
     properties: {
       colors: {
         textcolor: "#ffffff",
-        accentcolor: "#0c0c0d",
-        toolbar: "#323234",
+        accentcolor: "#1c1b22",
+        tab_line: "transparent",
+        toolbar: "rgb(66,65,77)",
         toolbar_text: "#eeeeee",
-        toolbar_field: "#474749",
+        toolbar_field: "rgb(28,27,34)",
         toolbar_field_text: "#F9F9FA",
       }
     }
@@ -133,5 +135,5 @@ async function getSetting(setting, fallback) {
 }
 
 async function setSetting(setting, value) {
-  await browser.storage.local.set({["settings." + setting]: value});
+  await browser.storage.local.set({ ["settings." + setting]: value });
 }
