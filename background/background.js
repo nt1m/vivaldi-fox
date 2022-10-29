@@ -43,9 +43,9 @@ new AddonState({
     currentTheme = new Theme(themes[selectedTheme]);
 
     let firstRun = await Settings.getFirstRun();
-    if(firstRun) {
+    if (firstRun) {
       chrome.tabs.create({
-        url: chrome.runtime.getURL("/welcome/welcomePage.html")
+        url: chrome.runtime.getURL("/welcome/welcome.html")
       });
       Settings.setFirstRun(false);
     }

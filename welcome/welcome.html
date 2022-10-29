@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to VivaldiFox!</title>
+  <meta charset="utf-8"/>
+  <meta content="#EF3939" name="theme-color"/>
+  <link rel="stylesheet" href="../shared/shared.css"/>
+  <link rel="stylesheet" href="welcome.css"/>
+</head>
+<body>
+  <div class="header">
+    <h1><span class="icon"></span>VivaldiFox</h1>
+  </div>
+  <section class="card">
+    <h1>Thank you for installing VivaldiFox!</h1>
+      <p>Some websites define their accent color through <a href="https://developer.mozilla.org/docs/Web/HTML/Element/meta/name/theme-color" target="_blank"><code>&lt;meta name="theme-color"&gt;</code></a>. This feature is recommended and requires extra permission.</p>
+      <button class="button green" id="request-permission">Allow VivaldiFox to use colors defined by websites</button>
+    </div>
+
+    <h1>Choose your alternate color source</h1>
+    <p>VivaldiFox will use the color source below the website does not define any color, or if the option above is not enabled.</p>
+    <div class="group">
+      <input type="radio" id="favicon" name="color-source" value="favicon" checked>
+      <div>
+        <label for="favicon">Favicon</label>
+        <p>Sample the accent color from the page icon.</p>
+      </div>
+    </div>
+    
+    <div class="group">
+      <input type="radio" id="page-top" name="color-source" value="page-top">
+      <div>
+        <label for="page-top">Page header background</label>
+        <p>Use the page header background color as accent color. Note: this requires permission to access all websites in order to screenshot the header.</p>
+      </div>
+    </div>
+    
+    <div class="group">
+      <input type="radio" id="page-top-accent" name="color-source" value="page-top-accent">
+      <div>
+        <label for="page-top-accent">Page header accent color</label>
+        <p>Use the page header dominant color as accent color. Note: this requires permission to access all websites in order to screenshot the header.</p>
+      </div>
+    </div>
+
+    <p>You can always change these options later on from the <a href="../options/options.html" target="_blank">options page</a>.</p>
+  </section>
+  <script src="../shared/settings.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

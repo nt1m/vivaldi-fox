@@ -132,10 +132,10 @@ async function init() {
         let value = target.value;
         const permissionsToRequest = {
           origins: ["<all_urls>"]
-        }
-        if(value == "page-top" || value == "page-top-accent") {
-          browser.permissions.request(permissionsToRequest).then((response) => {
-            if(response) {
+        };
+        if (value == "page-top" || value == "page-top-accent") {
+          browser.permissions.request(permissionsToRequest).then((granted) => {
+            if (granted) {
               this.state.settings.colorSource = value;
               Settings.setColorSource(value);
               target.value = value;
@@ -155,8 +155,8 @@ async function init() {
         const permissionsToRequest = {
           origins: ["<all_urls>"]
         }
-        browser.permissions.request(permissionsToRequest).then((response) => {
-          if(response) {
+        browser.permissions.request(permissionsToRequest).then((granted) => {
+          if (granted) {
             this.state.settings.usePageDefinedColors = value;
             Settings.setUsePageDefinedColors(value);
             target.checked = value;
