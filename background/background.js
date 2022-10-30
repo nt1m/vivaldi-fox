@@ -30,7 +30,7 @@ async function isDayMode() {
 }
 
 new AddonState({
-  async onInit() {
+  async onInit(state) {
     let themes = await Settings.getThemes();
 
     let selectedTheme;
@@ -53,6 +53,13 @@ new AddonState({
     }
     if (isFirstRun)
       Settings.setIsFirstRun(false);
+    if (await Settings.getUsePageDefinedColors() && hasAllUrlsPermissions) {
+      let file = "data/contentscript.js";
+      state.contentScriptObj = await browser.contentScripts.register({
+        matches: ["<all_urls>"],
+        js: [{file}],
+      });
+    }
   },
   onTabColorChange(tab) {
     return setColor(tab, this.state.tabColorMap);

@@ -12,6 +12,7 @@ class AddonState {
   }) {
     this.state = {
       tabColorMap: new Map(),
+      contentScriptObj: null,
     };
 
     onTabColorChange = onTabColorChange.bind(this);
@@ -29,6 +30,26 @@ class AddonState {
     };
 
     browser.runtime.onMessage.addListener(async (message, {tab}) => {
+      if (message.command === "enableContentScript") {
+        this.handleContentScriptMessage(message);
+      } else {
+        this.handleColorMessage(message, {tab});
+      }
+    });
+
+    this.handleContentScriptMessage = async (message) => {
+      if(message.value === true) {
+        let file = "data/contentscript.js";
+        this.state.contentScriptObj = await browser.contentScripts.register({
+          matches: ["<all_urls>"],
+          js: [{file}],
+        });
+      } else if (this.state.contentScriptObj !== null) {
+        this.state.contentScriptObj.unregister()
+      }
+  };
+
+    this.handleColorMessage = async (message, {tab}) => {
       let usePageDefinedColors = await Settings.getUsePageDefinedColors();
       let hasPageDefinedColor = false;
 
@@ -55,7 +76,7 @@ class AddonState {
       if (tab.active) {
         onTabColorChange(tab);
       }
-    });
+    };
 
     browser.tabs.onActivated.addListener(async ({ tabId }) => {
       let tab = await browser.tabs.get(tabId);
@@ -84,7 +105,7 @@ class AddonState {
       this.state.tabColorMap.delete(tabId));
 
     this.refreshAddon = async () => {
-      onInit();
+      onInit(this.state);
 
       browser.alarms.create(
         "nightToggle", { when: (await firstAlarm()) }
@@ -121,7 +142,7 @@ class AddonState {
         );
       }
     });
-    onInit();
+    onInit(this.state);
   }
 }
 

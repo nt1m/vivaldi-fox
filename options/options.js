@@ -160,6 +160,10 @@ async function init() {
             this.state.settings.usePageDefinedColors = value;
             Settings.setUsePageDefinedColors(value);
             target.checked = value;
+            browser.runtime.sendMessage({
+              command: "enableContentScript",
+              velue: value,
+            });
           } else {
             // Couldn't get permission, need to revert checkbox
             target.checked = false;
