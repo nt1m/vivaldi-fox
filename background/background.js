@@ -54,14 +54,14 @@ new AddonState({
     if (isFirstRun)
       Settings.setIsFirstRun(false);
 
-    let usePageDefinedColors = await Settings.getUsePageDefinedColors() ;
-    if (usePageDefinedColors && this.state.contentScript === null) {
-      let file = "data/contentscript.js";
+    let usePageDefinedColors = await Settings.getUsePageDefinedColors();
+    if (usePageDefinedColors && this.state.contentScript) {
+      let file = ;
       this.state.contentScript = await browser.contentScripts.register({
         matches: ["<all_urls>"],
-        js: [{file}],
+        js: [{ file: "data/contentscript.js" }],
       });
-    } else if (!usePageDefinedColors && this.state.contentScript !== null) {
+    } else if (!usePageDefinedColors && !this.state.contentScript) {
       this.state.contentScript.unregister();
       this.state.contentScript = null;
     }
