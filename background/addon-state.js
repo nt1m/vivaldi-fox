@@ -12,6 +12,7 @@ class AddonState {
   }) {
     this.state = {
       tabColorMap: new Map(),
+      contentScript: null,
     };
 
     onTabColorChange = onTabColorChange.bind(this);

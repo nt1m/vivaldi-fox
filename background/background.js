@@ -53,6 +53,17 @@ new AddonState({
     }
     if (isFirstRun)
       Settings.setIsFirstRun(false);
+
+    let usePageDefinedColors = await Settings.getUsePageDefinedColors();
+    if (usePageDefinedColors && this.state.contentScript) {
+      this.state.contentScript = await browser.contentScripts.register({
+        matches: ["<all_urls>"],
+        js: [{ file: "data/contentscript.js" }],
+      });
+    } else if (!usePageDefinedColors && this.state.contentScript !== null) {
+      this.state.contentScript.unregister();
+      this.state.contentScript = null;
+    }
   },
   onTabColorChange(tab) {
     return setColor(tab, this.state.tabColorMap);
