@@ -30,27 +30,6 @@ class AddonState {
     };
 
     browser.runtime.onMessage.addListener(async (message, {tab}) => {
-      if (message.command === "enableContentScript") {
-        this.enableContentScript(message.value);
-      } else {
-        this.handleColorMessage(message, {tab});
-      }
-    });
-
-    this.enableContentScript = async (value) => {
-      if (value === true) {
-        let file = "data/contentscript.js";
-        this.state.contentScript = await browser.contentScripts.register({
-          matches: ["<all_urls>"],
-          js: [{file}],
-        });
-      } else if (this.state.contentScript !== null) {
-        await this.state.contentScript.unregister();
-        this.state.contentScript = null;
-      }
-    };
-
-    this.handleColorMessage = async (message, {tab}) => {
       let usePageDefinedColors = await Settings.getUsePageDefinedColors();
       let hasPageDefinedColor = false;
 
@@ -77,7 +56,7 @@ class AddonState {
       if (tab.active) {
         onTabColorChange(tab);
       }
-    };
+    });
 
     browser.tabs.onActivated.addListener(async ({ tabId }) => {
       let tab = await browser.tabs.get(tabId);

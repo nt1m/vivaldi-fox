@@ -4,13 +4,7 @@ const ALL_URLS = {
 
 function requestPermissions() {
   browser.permissions.request(ALL_URLS)
-    .then(granted => {
-      browser.runtime.sendMessage({
-        command: "enableContentScript",
-        value: granted,
-      });
-      Settings.setUsePageDefinedColors(granted);
-    });
+    .then(granted => Settings.setUsePageDefinedColors(granted));
 }
 
 document.querySelector("#request-permission").addEventListener("click", requestPermissions);

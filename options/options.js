@@ -158,12 +158,8 @@ async function init() {
         browser.permissions.request(permissionsToRequest).then((granted) => {
           if (granted) {
             this.state.settings.usePageDefinedColors = value;
-            Settings.setUsePageDefinedColors(value);
             target.checked = value;
-            browser.runtime.sendMessage({
-              command: "enableContentScript",
-              value: value,
-            });
+            Settings.setUsePageDefinedColors(value);
           } else {
             // Couldn't get permission, need to revert checkbox
             target.checked = false;
