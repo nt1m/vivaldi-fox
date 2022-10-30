@@ -162,7 +162,7 @@ async function init() {
             target.checked = value;
             browser.runtime.sendMessage({
               command: "enableContentScript",
-              velue: value,
+              value: value,
             });
           } else {
             // Couldn't get permission, need to revert checkbox

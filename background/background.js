@@ -53,7 +53,7 @@ new AddonState({
     }
     if (isFirstRun)
       Settings.setIsFirstRun(false);
-    if (await Settings.getUsePageDefinedColors() && hasAllUrlsPermissions) {
+    if (await Settings.getUsePageDefinedColors() && state.contentScriptObj === null) {
       let file = "data/contentscript.js";
       state.contentScriptObj = await browser.contentScripts.register({
         matches: ["<all_urls>"],

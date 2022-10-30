@@ -31,23 +31,24 @@ class AddonState {
 
     browser.runtime.onMessage.addListener(async (message, {tab}) => {
       if (message.command === "enableContentScript") {
-        this.handleContentScriptMessage(message);
+        this.enableContentScript(message.value);
       } else {
         this.handleColorMessage(message, {tab});
       }
     });
 
-    this.handleContentScriptMessage = async (message) => {
-      if(message.value === true) {
+    this.enableContentScript = async (value) => {
+      if (value === true) {
         let file = "data/contentscript.js";
         this.state.contentScriptObj = await browser.contentScripts.register({
           matches: ["<all_urls>"],
           js: [{file}],
         });
       } else if (this.state.contentScriptObj !== null) {
-        this.state.contentScriptObj.unregister()
+        await this.state.contentScriptObj.unregister();
+        this.state.contentScriptObj = null;
       }
-  };
+    };
 
     this.handleColorMessage = async (message, {tab}) => {
       let usePageDefinedColors = await Settings.getUsePageDefinedColors();
