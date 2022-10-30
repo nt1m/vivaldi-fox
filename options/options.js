@@ -6,6 +6,11 @@
 var { createElement, createFactory, Component } = React;
 
 var app;
+
+const ALL_URLS = {
+  origins: ["<all_urls>"]
+};
+
 async function init() {
   app = new StateManager({
     async renderer() {
@@ -124,21 +129,28 @@ async function init() {
         this.state.settings.pageColorsOnInactive = value;
         Settings.setPageColorsOnInactive(value);
       },
-      setWhiteBackgroundFavicons(value) {
-        this.state.settings.whiteBackgroundFavicons = value;
-        Settings.setWhiteBackgroundFavicons(value);
+      setWhiteBackgroundFavicons(target) {
+        let value = target.checked;
+        browser.permissions.request(ALL_URLS).then((granted) => {
+          if (granted) {
+            this.state.settings.whiteBackgroundFavicons = value;
+            target.checked = value;
+            Settings.setWhiteBackgroundFavicons(value);
+          } else {
+            // Couldn't get permission, need to revert value
+            target.checked = this.state.settings.whiteBackgroundFavicons;
+          }
+        });
       },
       setColorSource(target) {
         let value = target.value;
-        const permissionsToRequest = {
-          origins: ["<all_urls>"]
-        };
+
         if (value == "page-top" || value == "page-top-accent") {
-          browser.permissions.request(permissionsToRequest).then((granted) => {
+          browser.permissions.request(ALL_URLS).then((granted) => {
             if (granted) {
               this.state.settings.colorSource = value;
-              Settings.setColorSource(value);
               target.value = value;
+              Settings.setColorSource(value);
             } else {
               // Couldn't get permission, need to revert value
               target.value = this.state.settings.colorSource;

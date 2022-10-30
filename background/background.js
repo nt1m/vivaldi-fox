@@ -110,13 +110,10 @@ new AddonState({
     }
     await browser.tabs.executeScript(tab.id, {
       code: `
-          // Ensure a 'link[rel~=icon]' exists in the head
-          if (!document.querySelector("link[rel~=icon]")) {
-            document.head.insertAdjacentHTML(\'beforeend\', \'<link rel="icon">\');
-          }
           for (let icon of document.querySelectorAll("link[rel~=icon]")) {
-            icon.href = "${whiteFavicon}";
+            icon.remove();
           }
+          document.head.insertAdjacentHTML(\'beforeend\', \'<link rel="icon" href="${whiteFavicon}">\');
           `
     });
   }

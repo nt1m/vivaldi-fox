@@ -108,7 +108,7 @@ p > input {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
   transition: max-height 0.2s;
-  max-height: 1600px;
+  max-height: 1700px;
   overflow: hidden;
 }
 .theme-editor-expander:not(:checked) ~ .theme-editor {

@@ -115,7 +115,7 @@ function Options({ settings: {
         label: "White background on page icons (experimental, page reload needed)",
         defaultChecked: whiteBackgroundFavicons,
         onChange: ({ target }) => {
-          app.actions.setWhiteBackgroundFavicons(target.checked);
+          app.actions.setWhiteBackgroundFavicons(target);
         }
       })
     ),
