@@ -27,14 +27,6 @@
   "commands": {
     "_execute_browser_action": {}
   },
-  "content_scripts": [{
-    "matches": [
-      "<all_urls>"
-    ],
-    "js": [
-      "data/contentscript.js"
-    ]
-  }],
   "options_ui": {
     "page": "options/options.html",
     "browser_style": false,
