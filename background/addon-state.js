@@ -12,7 +12,7 @@ class AddonState {
   }) {
     this.state = {
       tabColorMap: new Map(),
-      contentScriptObj: null,
+      contentScript: null,
     };
 
     onTabColorChange = onTabColorChange.bind(this);
@@ -40,13 +40,13 @@ class AddonState {
     this.enableContentScript = async (value) => {
       if (value === true) {
         let file = "data/contentscript.js";
-        this.state.contentScriptObj = await browser.contentScripts.register({
+        this.state.contentScript = await browser.contentScripts.register({
           matches: ["<all_urls>"],
           js: [{file}],
         });
-      } else if (this.state.contentScriptObj !== null) {
-        await this.state.contentScriptObj.unregister();
-        this.state.contentScriptObj = null;
+      } else if (this.state.contentScript !== null) {
+        await this.state.contentScript.unregister();
+        this.state.contentScript = null;
       }
     };
 
