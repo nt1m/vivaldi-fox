@@ -85,7 +85,7 @@ class AddonState {
       this.state.tabColorMap.delete(tabId));
 
     this.refreshAddon = async () => {
-      onInit(this.state);
+      onInit();
 
       browser.alarms.create(
         "nightToggle", { when: (await firstAlarm()) }
@@ -122,7 +122,7 @@ class AddonState {
         );
       }
     });
-    onInit(this.state);
+    onInit();
   }
 }
 

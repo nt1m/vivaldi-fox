@@ -30,7 +30,7 @@ async function isDayMode() {
 }
 
 new AddonState({
-  async onInit(state) {
+  async onInit() {
     let themes = await Settings.getThemes();
 
     let selectedTheme;
@@ -55,15 +55,15 @@ new AddonState({
       Settings.setIsFirstRun(false);
 
     let usePageDefinedColors = await Settings.getUsePageDefinedColors() ;
-    if (usePageDefinedColors && state.contentScript === null) {
+    if (usePageDefinedColors && this.state.contentScript === null) {
       let file = "data/contentscript.js";
-      state.contentScript = await browser.contentScripts.register({
+      this.state.contentScript = await browser.contentScripts.register({
         matches: ["<all_urls>"],
         js: [{file}],
       });
-    } else if (!usePageDefinedColors && state.contentScript !== null) {
-      state.contentScript.unregister();
-      state.contentScript = null;
+    } else if (!usePageDefinedColors && this.state.contentScript !== null) {
+      this.state.contentScript.unregister();
+      this.state.contentScript = null;
     }
   },
   onTabColorChange(tab) {
